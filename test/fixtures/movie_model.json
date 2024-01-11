@@ -1,0 +1,21 @@
+{
+  "adult": false,
+  "backdrop_path": "backdropPath",
+  "id": 1,
+  "title": "title",
+  "original_language": "en",
+  "original_title": "Original Title",
+  "overview": "overview",
+  "poster_path": "posterPath",
+  "media_type": "movie",
+  "genre_ids": [
+    10,
+    20
+  ],
+  "popularity": 2998.858,
+  "release_date": "2023-12-15",
+  "video": false,
+  "vote_average": 1.0,
+  "vote_count": 961,
+  "runtime": 157
+}
