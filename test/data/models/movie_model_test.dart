@@ -8,7 +8,7 @@ import '../../fixtures/fixture_reader.dart';
 
 void main() {
 
-  MovieModel testMovieModel = MovieModel(id: 1, title: "title", overview: "overview", posterPath: "posterPath", voteAverage: 1.0, backdropPath: "backdropPath", genreIds: [10, 20], releaseDate: DateTime.parse("2023-12-15"), runtime: 157);
+  MovieModel testMovieModel = MovieModel(id: 1, title: "title", overview: "overview", posterPath: "posterPath", voteAverage: 1.0, backdropPath: "backdropPath", genreIds: [10, 20], genres: [], releaseDate: DateTime.parse("2023-12-15"), runtime: 157);
 
   test("Should be a subclass of Movie entity", () {
     // assert

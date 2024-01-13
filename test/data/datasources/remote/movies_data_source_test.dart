@@ -17,8 +17,6 @@ void main() {
   late MockClient mockClient;
   late MoviesDataSource moviesDataSource;
 
-  MovieModel testMovieModel = MovieModel(id: 1, title: "title", overview: "overview", posterPath: "posterPath", voteAverage: 1.0, backdropPath: "backdropPath", genreIds: [10, 20], releaseDate: DateTime.parse("2023-12-15"), runtime: 157);
-
   setUp(() {
     mockClient = MockClient();
     moviesDataSource = MoviesDataSource(mockClient);

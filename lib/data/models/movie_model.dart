@@ -1,7 +1,9 @@
+import 'package:movie_finder/data/models/genre_model.dart';
+import 'package:movie_finder/domain/entities/genre.dart';
 import 'package:movie_finder/domain/entities/movie.dart';
 
 class MovieModel extends Movie {
-  const MovieModel({required super.id, required super.title, required super.overview, required super.posterPath, required super.voteAverage, required super.backdropPath, required super.genreIds, required super.releaseDate, required super.runtime});
+  const MovieModel({required super.id, required super.title, required super.overview, required super.posterPath, required super.voteAverage, required super.backdropPath, required super.genreIds, required super.genres, required super.releaseDate, required super.runtime});
 
   factory MovieModel.fromJson(Map<String, dynamic> json) {
     return MovieModel(
@@ -12,6 +14,7 @@ class MovieModel extends Movie {
         voteAverage: json['vote_average'] ?? 0,
         backdropPath: json['backdrop_path'] ?? "",
         genreIds: (json['genre_ids'] as List<dynamic>?)?.map((e) => e as int).toList(),
+        genres: json['genres'] != null ? (json['genres'] as List<dynamic>?)?.map((e) => GenreModel.fromJson(e as Map<String, dynamic>)).toList() as List<Genre> : [],
         releaseDate: json['release_date'] != null ? DateTime.parse(json['release_date']) : null,
         runtime: json['runtime'] ?? 0
     );
