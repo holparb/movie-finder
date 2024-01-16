@@ -9,7 +9,7 @@ import '../../helper/test_widget_creator.dart';
 void main() {
 
   testWidgets("renders the outer container widget with correct size", (widgetTester) async {
-    await widgetTester.pumpWidget(createWidgetUnderTest(const MovieListItem(movie: testMovieWithNullReleaseDateAndRuntime)));
+    await widgetTester.pumpWidget(createWidgetUnderTest(const MovieListItem(movie: testMovieWithNoDetailsInfo)));
 
     SizedBox container = widgetTester.firstWidget(find.byType(SizedBox));
     expect(container, isNotNull);
@@ -17,7 +17,7 @@ void main() {
   });
 
   testWidgets("renders all necessary widgets inside outer container", (widgetTester) async {
-    await widgetTester.pumpWidget(createWidgetUnderTest(const MovieListItem(movie: testMovieWithNullReleaseDateAndRuntime)));
+    await widgetTester.pumpWidget(createWidgetUnderTest(const MovieListItem(movie: testMovieWithNoDetailsInfo)));
 
     expect(find.byType(Card), findsOneWidget);
     expect(find.byType(CachedNetworkImage), findsOneWidget);
@@ -27,11 +27,11 @@ void main() {
   });
 
   testWidgets("renders text widgets with correct text", (widgetTester) async {
-    await widgetTester.pumpWidget(createWidgetUnderTest(const MovieListItem(movie: testMovieWithNullReleaseDateAndRuntime)));
+    await widgetTester.pumpWidget(createWidgetUnderTest(const MovieListItem(movie: testMovieWithNoDetailsInfo)));
 
     Text titleText = find.byType(Text).evaluate().elementAt(0).widget as Text;
     expect(titleText, isNotNull);
-    expect(titleText.data, testMovieWithNullReleaseDateAndRuntime.title);
+    expect(titleText.data, testMovieWithNoDetailsInfo.title);
 
     Text genreText = find.byType(Text).evaluate().elementAt(1).widget as Text;
     expect(genreText, isNotNull);

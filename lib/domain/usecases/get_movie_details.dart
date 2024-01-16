@@ -12,5 +12,4 @@ class GetMovieDetailsUseCase implements UseCase<DataState<Movie>, int> {
   Future<DataState<Movie>> call({int? params}) async {
     return await repository.getMovieDetails(params!);
   }
-
 }

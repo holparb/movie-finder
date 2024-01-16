@@ -40,6 +40,28 @@ void main() {
       expect(result.error, error);
     });
   });
+
+  group("Get movie details from MovieRepositoryImplementation", () {
+    test("Should return a valid movie object if no exception was thrown", () async {
+      // arrange
+      when(remoteDataSource.getMovieDetails(testMovieDetailModel.id)).thenAnswer((_) async => testMovieDetailModel);
+      // act
+      final result = await repository.getMovieDetails(testMovieDetailModel.id);
+      // assert
+      expect(result, DataSuccess(testMovieDetailModel));
+    });
+
+    test("Should return DataFailure when a DataError exception is thrown by the remote data source", () async {
+      // arrange
+      DataError error = const DataError(message: "Data fetch failed!");
+      when(remoteDataSource.getMovieDetails(any)).thenThrow(error);
+      // act
+      final result = await repository.getMovieDetails(1);
+      // assert
+      expect(result, isA<DataFailure>());
+      expect(result.error, error);
+    });
+  });
   
 
 }

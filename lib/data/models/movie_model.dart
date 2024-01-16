@@ -13,7 +13,7 @@ class MovieModel extends Movie {
         posterPath: json['poster_path'] ?? "",
         voteAverage: json['vote_average'] ?? 0,
         backdropPath: json['backdrop_path'] ?? "",
-        genreIds: (json['genre_ids'] as List<dynamic>?)?.map((e) => e as int).toList(),
+        genreIds: json['genre_ids'] != null ?(json['genre_ids'] as List<dynamic>?)?.map((e) => e as int).toList() : [],
         genres: json['genres'] != null ? (json['genres'] as List<dynamic>?)?.map((e) => GenreModel.fromJson(e as Map<String, dynamic>)).toList() as List<Genre> : [],
         releaseDate: json['release_date'] != null ? DateTime.parse(json['release_date']) : null,
         runtime: json['runtime'] ?? 0

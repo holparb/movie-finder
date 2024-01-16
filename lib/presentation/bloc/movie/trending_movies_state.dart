@@ -32,5 +32,4 @@ class MoviesError extends MoviesState {
 
   @override
   List<Object?> get props => [error];
-
 }

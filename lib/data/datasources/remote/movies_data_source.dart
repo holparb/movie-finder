@@ -11,11 +11,12 @@ class MoviesDataSource {
 
   MoviesDataSource(this.client);
 
+  /// Creates https://api.themoviedb.org/3/{endpoint} url
   String _createUrlString(String endpoint) {
     return "${TmdbApiConfig.baseUrl}$endpoint?api_key=${TmdbApiConfig.apiKey}";
   }
 
-  /// Calls the https://api.themoviedb.org/3/{endpoint} endpoint
+  /// Calls the given url wraps the response in a [DataSuccess] object if data was successfully fetched
   ///
   /// Throws a [DataError] for all error codes.
   Future<http.Response> getResponse(String url) async {

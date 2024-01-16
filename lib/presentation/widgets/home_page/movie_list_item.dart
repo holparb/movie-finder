@@ -1,8 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_finder/config/tmdb_api_config.dart';
 import 'package:movie_finder/domain/entities/movie.dart';
+import 'package:movie_finder/presentation/bloc/movie_details/movie_details_bloc.dart';
+import 'package:movie_finder/presentation/bloc/movie_details/movie_details_event.dart';
 import 'package:movie_finder/router/app_router.dart';
 
 class MovieListItem extends StatelessWidget {
@@ -15,7 +18,7 @@ class MovieListItem extends StatelessWidget {
     return SizedBox(
       width: 300,
       child: GestureDetector(
-        onTap: () => context.pushRoute(MovieDetailRoute(movie: movie)),
+        onTap: () { context.pushRoute(MovieDetailsRoute(movie: movie)); BlocProvider.of<MovieDetailsBloc>(context).add(GetMovieDetails(id: movie.id));},
         child: Card(
           elevation: 0,
           shape: RoundedRectangleBorder(

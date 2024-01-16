@@ -1,34 +1,40 @@
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_finder/domain/entities/movie.dart';
-import 'package:movie_finder/presentation/widgets/movie_detail/movie_detail_picture.dart';
+import 'package:movie_finder/presentation/bloc/movie_details/movie_details_bloc.dart';
+import 'package:movie_finder/presentation/bloc/movie_details/movie_details_state.dart';
+import 'package:movie_finder/presentation/widgets/movie_detail/movie_details_body.dart';
 
 @RoutePage()
-class MovieDetailPage extends StatelessWidget {
-  const MovieDetailPage({super.key, required this.movie});
+class MovieDetailsPage extends StatelessWidget {
+  const MovieDetailsPage({super.key, required this.movie});
 
   final Movie movie;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            MovieDetailPicture(movie: movie),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                movie.overview,
-                style: Theme.of(context).textTheme.bodyMedium,
-                textAlign: TextAlign.center,
-              ),
-            )
-          ],
-        ),
-      )
+    return BlocConsumer<MovieDetailsBloc, MovieDetailsState>(
+      listenWhen: (_, state) => state is MovieDetailsError,
+      listener: (context, state) => ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Movie details could not be loaded, some data will not be available!"))),
+      builder: (_, state) {
+        if(state is MovieDetailsLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if(state is MovieDetailsError) {
+          // Display details page but with an object from the list as fallback, which may be missing some fields
+          return MovieDetailsBody(movie: movie);
+        }
+        if(state is MovieDetailsLoaded) {
+          // Display details page
+          return MovieDetailsBody(movie: state.movie);
+        }
+        return const SizedBox();
+      }
     );
   }
 }

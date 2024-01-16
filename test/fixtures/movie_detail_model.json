@@ -1,0 +1,33 @@
+{
+  "adult": false,
+  "backdrop_path": "backdropPath",
+  "belongs_to_collection": null,
+  "budget": 23500000,
+  "genres": [
+    {
+      "id": 1,
+      "name": "name"
+    },
+    {
+      "id": 2,
+      "name": "name2"
+    }
+  ],
+  "homepage": "",
+  "id": 1,
+  "imdb_id": "tt0119698",
+  "original_language": "en",
+  "original_title": "Movie",
+  "overview": "overview",
+  "popularity": 58.923,
+  "poster_path": "posterPath",
+  "release_date": "1997-07-12",
+  "revenue": 169000000,
+  "runtime": 157,
+  "status": "Released",
+  "tagline": "tagline",
+  "title": "Movie",
+  "video": false,
+  "vote_average": 1.0,
+  "vote_count": 1
+}

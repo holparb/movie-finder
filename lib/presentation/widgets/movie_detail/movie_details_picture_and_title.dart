@@ -2,10 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_finder/config/tmdb_api_config.dart';
 import 'package:movie_finder/domain/entities/movie.dart';
-import 'package:movie_finder/presentation/widgets/movie_detail/movie_detail_subtext.dart';
+import 'package:movie_finder/presentation/widgets/movie_detail/movie_details_subtext.dart';
 
-class MovieDetailPicture extends StatelessWidget {
-  const MovieDetailPicture({super.key, required this.movie});
+class MovieDetailsPictureAndTitle extends StatelessWidget {
+  const MovieDetailsPictureAndTitle({super.key, required this.movie});
 
   final Movie movie;
 
@@ -17,9 +17,9 @@ class MovieDetailPicture extends StatelessWidget {
         children: [
           Positioned.fill(
             child: CachedNetworkImage(
-              imageUrl: "${TmdbApiConfig.imageBaseUrl}${movie.backdropPath}" ?? "",
+              imageUrl: "${TmdbApiConfig.imageBaseUrl}${movie.backdropPath}",
               fit: BoxFit.fitHeight,
-              filterQuality: FilterQuality.medium,
+              filterQuality: FilterQuality.high,
               errorWidget: (_, __, ___) =>
                   Container(color: Colors.grey),
             ),
@@ -51,7 +51,7 @@ class MovieDetailPicture extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      MovieDetailSubtext(movie: movie)
+                      MovieDetailsSubtext(movie: movie)
                     ],
                   )
               )
