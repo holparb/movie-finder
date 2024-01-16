@@ -1,12 +1,12 @@
 # movie_finder
 
-Personal hobby project for keep skills up to date and trying the Tmdb API.  
-It's a work in progress, I'll be adding new UI elements and features constantly.
+Discover/search for movies, and add the to your own list (TMDB account required). Uses the TMDB API.
+It's a work in progress, new UI elements and features will be constantlyadded.
 
 What's next:
 - Local data handling
 - Discover movies list on home page
-- Login with Tmdb account
+- Login with TMDB account
 - Add movies to favorite list
 - Connection check
 - Bottom nav with Search and my list items
