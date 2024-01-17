@@ -12,4 +12,3 @@ What's next:
 - Bottom nav with Search and my list items
 - User favorites list (with remove items option)
 - Search for movies
-
