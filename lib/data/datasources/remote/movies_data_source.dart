@@ -33,11 +33,20 @@ class MoviesDataSource {
     return response;
   }
 
-  Future<List<MovieModel>> getTrendingMovies() async {
-    final response = await getResponse(_createUrlString(TmdbApiConfig.trendingMoviesEndpoint));
+  /// Returns list of movies for the given endpoint
+  Future<List<MovieModel>> getMoviesList(String endpoint) async {
+    final response = await getResponse(_createUrlString(endpoint));
     final data = json.decode(response.body);
     final List<dynamic> results = data['results'];
     return results.map((json) => MovieModel.fromJson(json)).toList();
+  }
+
+  Future<List<MovieModel>> getTrendingMovies() async {
+    return await getMoviesList(TmdbApiConfig.trendingMoviesEndpoint);
+  }
+
+  Future<List<MovieModel>> getPopularMovies() async {
+    return await getMoviesList(TmdbApiConfig.popularMoviesEndpoint);
   }
 
   Future<MovieModel> getMovieDetails(int id) async {

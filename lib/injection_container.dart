@@ -4,8 +4,10 @@ import 'package:movie_finder/data/datasources/remote/movies_data_source.dart';
 import 'package:movie_finder/data/repositories/movie_repository.dart';
 import 'package:movie_finder/domain/repositories/movie_repository.dart';
 import 'package:movie_finder/domain/usecases/get_movie_details.dart';
+import 'package:movie_finder/domain/usecases/get_popular_movies.dart';
 import 'package:movie_finder/domain/usecases/get_trending_movies.dart';
-import 'package:movie_finder/presentation/bloc/movie/trending_movies_bloc.dart';
+import 'package:movie_finder/presentation/bloc/movies/popular_movies_bloc.dart';
+import 'package:movie_finder/presentation/bloc/movies/trending_movies_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_finder/presentation/bloc/movie_details/movie_details_bloc.dart';
 import 'package:movie_finder/router/app_router.dart';
@@ -29,8 +31,10 @@ Future<void> initializeDependencies() async {
   // usecases
   serviceLocator.registerSingleton<GetTrendingMoviesUseCase>(GetTrendingMoviesUseCase(serviceLocator()));
   serviceLocator.registerSingleton<GetMovieDetailsUseCase>(GetMovieDetailsUseCase(serviceLocator()));
+  serviceLocator.registerSingleton<GetPopularMoviesUseCase>(GetPopularMoviesUseCase(serviceLocator()));
 
   // blocs
-  serviceLocator.registerFactory<MoviesBloc>(() => MoviesBloc(serviceLocator()));
+  serviceLocator.registerFactory<TrendingMoviesBloc>(() => TrendingMoviesBloc(serviceLocator()));
+  serviceLocator.registerFactory<PopularMoviesBloc>(() => PopularMoviesBloc(serviceLocator()));
   serviceLocator.registerFactory<MovieDetailsBloc>(() => MovieDetailsBloc(serviceLocator()));
 }

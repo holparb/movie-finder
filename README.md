@@ -5,10 +5,10 @@ It's a work in progress, new UI elements and features will be constantly added.
 
 What's next:
 - ~~Connection check~~
-- Add local data handling
-- Login with TMDB account
-- Add movies to favorite list
 - Discover movies list on home page
 - Bottom nav with Search and my list items
+- Login with TMDB account
 - User favorites list (with remove items option)
+- Add movies to favorite list
 - Search for movies
+- Add local data handling

@@ -1,14 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/domain/usecases/get_trending_movies.dart';
-import 'package:movie_finder/presentation/bloc/movie/trending_movies_event.dart';
-import 'package:movie_finder/presentation/bloc/movie/trending_movies_state.dart';
+import 'package:movie_finder/presentation/bloc/movies/movies_event.dart';
+import 'package:movie_finder/presentation/bloc/movies/movies_state.dart';
 
-class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
+class TrendingMoviesBloc extends Bloc<MoviesEvent, MoviesState> {
 
   final GetTrendingMoviesUseCase _getTrendingMoviesUseCase;
 
-  MoviesBloc(this._getTrendingMoviesUseCase) : super(const MoviesEmpty()) {
+  TrendingMoviesBloc(this._getTrendingMoviesUseCase) : super(const MoviesEmpty()) {
     on <GetTrendingMovies> (onGetTrendingMovies);
   }
 
@@ -17,7 +17,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     final dataState = await _getTrendingMoviesUseCase();
 
     if(dataState is DataSuccess && dataState.data!.isNotEmpty) {
-      emit(MoviesLoaded(dataState.data!));
+      emit(TrendingMoviesLoaded(dataState.data!));
     }
 
     if(dataState is DataFailure) {

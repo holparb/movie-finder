@@ -20,8 +20,15 @@ class MoviesLoading extends MoviesState {
   const MoviesLoading();
 }
 
-class MoviesLoaded extends MoviesState {
-  const MoviesLoaded(List<Movie> movies) : super(movies: movies);
+class TrendingMoviesLoaded extends MoviesState {
+  const TrendingMoviesLoaded(List<Movie> movies) : super(movies: movies);
+
+  @override
+  List<Object?> get props => [movies];
+}
+
+class PopularMoviesLoaded extends MoviesState {
+  const PopularMoviesLoaded(List<Movie> movies) : super(movies: movies);
 
   @override
   List<Object?> get props => [movies];

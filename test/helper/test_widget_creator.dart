@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_finder/injection_container.dart';
-import 'package:movie_finder/presentation/bloc/movie/trending_movies_bloc.dart';
+import 'package:movie_finder/presentation/bloc/movies/trending_movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movie_details/movie_details_bloc.dart';
 
 Widget createWidgetUnderTest(Widget widget) {
@@ -10,7 +10,7 @@ Widget createWidgetUnderTest(Widget widget) {
       theme: ThemeData(),
       home: MultiBlocProvider(
         providers: [
-          BlocProvider<MoviesBloc>(create: (_) => serviceLocator()),
+          BlocProvider<TrendingMoviesBloc>(create: (_) => serviceLocator()),
           BlocProvider<MovieDetailsBloc>(create: (_) => serviceLocator())
         ],
         child: widget

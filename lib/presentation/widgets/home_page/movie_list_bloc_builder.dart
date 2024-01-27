@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_finder/presentation/bloc/movie/trending_movies_bloc.dart';
-import 'package:movie_finder/presentation/bloc/movie/trending_movies_state.dart';
+import 'package:movie_finder/presentation/bloc/movies/movies_event.dart';
+import 'package:movie_finder/presentation/bloc/movies/popular_movies_bloc.dart';
+import 'package:movie_finder/presentation/bloc/movies/trending_movies_bloc.dart';
+import 'package:movie_finder/presentation/bloc/movies/movies_state.dart';
 import 'package:movie_finder/presentation/widgets/home_page/movie_scrolling_list.dart';
 
-class MovieListBlocBuilder extends StatelessWidget {
-  const MovieListBlocBuilder({super.key});
+/// Generic class for building movie lists based on bloc state
+/// The type is the loaded movie state type, e.g.: TrendingMoviesLoaded
+class MoviesListBlocBuilder<B extends Bloc<MoviesEvent, MoviesState>, S extends MoviesState> extends StatelessWidget {
+  const MoviesListBlocBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MoviesBloc, MoviesState> (
+    return BlocBuilder<B, MoviesState> (
       buildWhen: (previousState, currentState) {
         return previousState.movies != currentState.movies;
       },
@@ -22,11 +26,19 @@ class MovieListBlocBuilder extends StatelessWidget {
         else if(state is MoviesError) {
           return const Text("Couldn't load movies, try again!");
         }
-        else if(state is MoviesLoaded) {
+        else if(state is S) {
           return MovieScrollingList(movies: state.movies!,);
         }
-        return const SizedBox();
+        return const Text("No movies, list empty");
       },
     );
   }
+}
+
+class TrendingMoviesListBlocBuilder extends MoviesListBlocBuilder<TrendingMoviesBloc, TrendingMoviesLoaded> {
+  const TrendingMoviesListBlocBuilder({super.key});
+}
+
+class PopularMoviesListBlocBuilder extends MoviesListBlocBuilder<PopularMoviesBloc, PopularMoviesLoaded> {
+  const PopularMoviesListBlocBuilder({super.key});
 }
