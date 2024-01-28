@@ -62,6 +62,27 @@ void main() {
       expect(result.error, error);
     });
   });
-  
+
+  group("Get popular movies from MovieRepositoryImplementation", () {
+    test("Should return a valid movie list if no exception was thrown", () async {
+      // arrange
+      when(remoteDataSource.getPopularMovies()).thenAnswer((_) async => testMovieModels);
+      // act
+      final result = await repository.getPopularMovies();
+      // assert
+      expect(result, const DataSuccess(testMovieModels));
+    });
+
+    test("Should return DataFailure when a DataError exception is thrown by the remote data source", () async {
+      // arrange
+      DataError error = const DataError(message: "Data fetch failed!");
+      when(remoteDataSource.getPopularMovies()).thenThrow(error);
+      // act
+      final result = await repository.getPopularMovies();
+      // assert
+      expect(result, isA<DataFailure>());
+      expect(result.error, error);
+    });
+  });
 
 }

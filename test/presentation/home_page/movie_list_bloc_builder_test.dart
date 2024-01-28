@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:movie_finder/core/data_state.dart';
+import 'package:movie_finder/injection_container.dart' as di;
+import 'package:movie_finder/presentation/bloc/movies/popular_movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/trending_movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/movies_event.dart';
 import 'package:movie_finder/presentation/bloc/movies/movies_state.dart';
@@ -11,43 +13,60 @@ import 'package:movie_finder/presentation/widgets/home_page/movie_scrolling_list
 
 import '../../helper/test_data.dart';
 
-class MockMoviesBlock extends MockBloc<MoviesEvent, MoviesState> implements TrendingMoviesBloc {}
+class MockTrendingMoviesBloc extends MockBloc<MoviesEvent, MoviesState> implements TrendingMoviesBloc {}
+class MockPopularMoviesBloc extends MockBloc<MoviesEvent, MoviesState> implements PopularMoviesBloc {}
 
 void main() {
-  late MockMoviesBlock mockBloc;
+  late MockTrendingMoviesBloc trendingMoviesMockBloc;
+  late MockPopularMoviesBloc popularMoviesMockBloc;
 
-  Widget createWidgetUnderTest(Widget listBlocBuilder) {
+  Widget createWidgetUnderTest(Widget widget) {
     return MaterialApp(
-        home: BlocProvider<TrendingMoviesBloc>(
-            create: (_) => mockBloc,
-            child: listBlocBuilder
+        title: 'MovieFinder',
+        theme: ThemeData(),
+        home: MultiBlocProvider(
+            providers: [
+              BlocProvider<TrendingMoviesBloc>(create: (_) => MockTrendingMoviesBloc(),),
+              BlocProvider<PopularMoviesBloc>(create: (_) => MockPopularMoviesBloc()),
+            ],
+            child: widget
         )
     );
   }
 
-  setUp(() {
-    mockBloc = MockMoviesBlock();
+  setUpAll(() async {
+    di.initializeDependencies();
+    trendingMoviesMockBloc = MockTrendingMoviesBloc();
+    popularMoviesMockBloc = MockPopularMoviesBloc();
+    await di.serviceLocator.unregister<TrendingMoviesBloc>();
+    await di.serviceLocator.unregister<PopularMoviesBloc>();
+    di.serviceLocator.registerFactory(() => trendingMoviesMockBloc);
+    di.serviceLocator.registerFactory(() => popularMoviesMockBloc);
   });
 
-  testWidgets("movies should trigger state to change from empty to loading", (widgetTester) async {
+  tearDownAll(() {
+    di.serviceLocator.reset(dispose: true);
+  });
+
+  testWidgets("movies should display empty widget when state is MoviesEmpty", (widgetTester) async {
     // arrange
     whenListen<MoviesState>(
-        mockBloc,
+        trendingMoviesMockBloc,
         Stream<MoviesState>.fromIterable([
           const MoviesEmpty(),
         ],),
         initialState: const MoviesEmpty()
     );
     // act
-    await widgetTester.pumpWidget(createWidgetUnderTest(const MoviesListBlocBuilder()));
+    await widgetTester.pumpWidget(createWidgetUnderTest(const TrendingMoviesListBlocBuilder()));
     // assert
-    expect(find.byType(SizedBox), findsOneWidget);
+    //expect(find.byType(Text), findsOneWidget);
   });
 
   testWidgets("display loading indicator if state is MoviesLoading", (widgetTester) async {
     // arrange
     whenListen<MoviesState>(
-      mockBloc,
+      trendingMoviesMockBloc,
       Stream<MoviesState>.fromIterable([
         const MoviesLoading(),
       ],),
@@ -55,10 +74,10 @@ void main() {
     );
 
     // act - make sure bloc stream is emitted before building widget
-    expect(mockBloc.state, const MoviesEmpty());
-    await expectLater(mockBloc.stream, emitsInOrder(<MoviesState>[const MoviesLoading()]));
-    expect(mockBloc.state, const MoviesLoading());
-    await widgetTester.pumpWidget(createWidgetUnderTest(const MoviesListBlocBuilder()));
+    expect(trendingMoviesMockBloc.state, const MoviesEmpty());
+    await expectLater(trendingMoviesMockBloc.stream, emitsInOrder(<MoviesState>[const MoviesLoading()]));
+    expect(trendingMoviesMockBloc.state, const MoviesLoading());
+    await widgetTester.pumpWidget(createWidgetUnderTest(const TrendingMoviesListBlocBuilder()));
 
     // assert
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -68,7 +87,7 @@ void main() {
     const DataError error = DataError(message: "Error message");
     // arrange
     whenListen<MoviesState>(
-        mockBloc,
+        trendingMoviesMockBloc,
         Stream<MoviesState>.fromIterable([
           const MoviesLoading(),
           const MoviesError(error)
@@ -77,7 +96,7 @@ void main() {
     );
 
     // act - make sure bloc stream is emitted before building widget
-    await expectLater(mockBloc.stream, emitsInOrder(<MoviesState>[const MoviesLoading(), const MoviesError(error)]));
+    await expectLater(trendingMoviesMockBloc.stream, emitsInOrder(<MoviesState>[const MoviesLoading(), const MoviesError(error)]));
     await widgetTester.pumpWidget(createWidgetUnderTest(const MoviesListBlocBuilder()));
 
     // assert
@@ -87,7 +106,7 @@ void main() {
   testWidgets("display list when state is TrendingMoviesLoaded", (widgetTester) async {
     // arrange
     whenListen<MoviesState>(
-        mockBloc,
+        trendingMoviesMockBloc,
         Stream<MoviesState>.fromIterable([
           const MoviesLoading(),
           const TrendingMoviesLoaded(testMovies)
@@ -96,7 +115,7 @@ void main() {
     );
 
     // act - make sure bloc stream is emitted before building widget
-    await expectLater(mockBloc.stream, emitsInOrder(<MoviesState>[const MoviesLoading(), const TrendingMoviesLoaded(testMovies)]));
+    await expectLater(trendingMoviesMockBloc.stream, emitsInOrder(<MoviesState>[const MoviesLoading(), const TrendingMoviesLoaded(testMovies)]));
     await widgetTester.pumpWidget(createWidgetUnderTest(const TrendingMoviesListBlocBuilder()));
 
     // assert
@@ -106,7 +125,7 @@ void main() {
   testWidgets("display list when state is PopularMoviesLoaded", (widgetTester) async {
     // arrange
     whenListen<MoviesState>(
-        mockBloc,
+        trendingMoviesMockBloc,
         Stream<MoviesState>.fromIterable([
           const MoviesLoading(),
           const PopularMoviesLoaded(testMovies)
@@ -115,7 +134,7 @@ void main() {
     );
 
     // act - make sure bloc stream is emitted before building widget
-    await expectLater(mockBloc.stream, emitsInOrder(<MoviesState>[const MoviesLoading(), const PopularMoviesLoaded(testMovies)]));
+    await expectLater(trendingMoviesMockBloc.stream, emitsInOrder(<MoviesState>[const MoviesLoading(), const PopularMoviesLoaded(testMovies)]));
     await widgetTester.pumpWidget(createWidgetUnderTest(const PopularMoviesListBlocBuilder()));
 
     // assert

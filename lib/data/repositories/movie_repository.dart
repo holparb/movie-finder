@@ -1,7 +1,6 @@
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/data/datasources/remote/movies_data_source.dart';
 import 'package:movie_finder/data/models/movie_model.dart';
-import 'package:movie_finder/domain/entities/movie.dart';
 import 'package:movie_finder/domain/repositories/movie_repository.dart';
 
 class MovieRepositoryImplementation implements MovieRepository {
@@ -32,7 +31,7 @@ class MovieRepositoryImplementation implements MovieRepository {
   }
 
   @override
-  Future<DataState<List<Movie>>> getPopularMovies() async {
+  Future<DataState<List<MovieModel>>> getPopularMovies() async {
     try {
       List<MovieModel> movies = await _remoteDataSource.getPopularMovies();
       return DataSuccess(movies);

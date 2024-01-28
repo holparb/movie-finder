@@ -88,4 +88,36 @@ void main() {
     // assert
     expect(() => call, throwsA(isA<DataError>()));
   });
+
+  group("Fetch popular movies", () {
+    test("Should return a valid MovieModel list after fetching data", () async {
+      // arrange
+      when(mockClient.get(Uri.parse(createUrlString(TmdbApiConfig.popularMoviesEndpoint))))
+          .thenAnswer((_) async => http.Response(fixture("movie_list.json"), 200));
+      // act
+      final result = await moviesDataSource.getPopularMovies();
+      // assert
+      expect(result.length, 3);
+      expect(result, testMovieModels);
+    });
+
+    test("Should catch exception if status code is not 200", () async {
+      // arrange
+      when(mockClient.get(Uri.parse(createUrlString(TmdbApiConfig.popularMoviesEndpoint))))
+          .thenAnswer((_) async => http.Response("Something went wrong!", 404));
+      // act
+      final call = moviesDataSource.getPopularMovies();
+      // assert
+      expect(() => call, throwsA(isA<DataError>()));
+    });
+
+    test("Should catch exception if an exception is thrown during fetch", () async {
+      // arrange
+      when(mockClient.get(Uri.parse(createUrlString(TmdbApiConfig.popularMoviesEndpoint)))).thenThrow(Exception("error message"));
+      // act
+      final call = moviesDataSource.getPopularMovies();
+      // assert
+      expect(() => call, throwsA(isA<DataError>()));
+      });
+    });
 }
