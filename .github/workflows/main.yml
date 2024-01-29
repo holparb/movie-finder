@@ -1,6 +1,10 @@
 name: Flutter Main Workflow
 
-on: [push, workflow_dispatch]
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+
 jobs:
   build:
     runs-on: ubuntu-latest
