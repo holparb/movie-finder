@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/presentation/bloc/movies/popular_movies_bloc.dart';
+import 'package:movie_finder/presentation/bloc/movies/top_rated_movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/trending_movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/movies_event.dart';
 import 'package:movie_finder/presentation/bloc/movies/movies_state.dart';
@@ -14,10 +15,12 @@ import '../../helper/test_data.dart';
 
 class MockTrendingMoviesBloc extends MockBloc<MoviesEvent, MoviesState> implements TrendingMoviesBloc {}
 class MockPopularMoviesBloc extends MockBloc<MoviesEvent, MoviesState> implements PopularMoviesBloc {}
+class MockTopRatedMoviesBloc extends MockBloc<MoviesEvent, MoviesState> implements TopRatedMoviesBloc {}
 
 void main() {
   late MockTrendingMoviesBloc trendingMoviesMockBloc;
   late MockPopularMoviesBloc popularMoviesMockBloc;
+  late MockTopRatedMoviesBloc topRatedMoviesBloc;
 
   Widget createWidgetUnderTest(Widget widget) {
     return MaterialApp(
@@ -27,6 +30,7 @@ void main() {
             providers: [
               BlocProvider<TrendingMoviesBloc>(create: (_) => trendingMoviesMockBloc,),
               BlocProvider<PopularMoviesBloc>(create: (_) => popularMoviesMockBloc),
+              BlocProvider<TopRatedMoviesBloc>(create: (_) => topRatedMoviesBloc),
             ],
             child: widget
         )
@@ -36,6 +40,7 @@ void main() {
   setUp(() async {
     trendingMoviesMockBloc = MockTrendingMoviesBloc();
     popularMoviesMockBloc = MockPopularMoviesBloc();
+    topRatedMoviesBloc = MockTopRatedMoviesBloc();
   });
 
   group("TrendingMoviesListBlocBuilder", () {
@@ -184,6 +189,81 @@ void main() {
       // act - make sure bloc stream is emitted before building widget
       await expectLater(popularMoviesMockBloc.stream, emitsInOrder(<MoviesState>[const MoviesLoading(), const PopularMoviesLoaded(testMovies)]));
       await widgetTester.pumpWidget(createWidgetUnderTest(const PopularMoviesListBlocBuilder()));
+
+      // assert
+      expect(find.byType(MovieScrollingList), findsOneWidget);
+    });
+  });
+
+  group("TopRatedMoviesListBlocBuilder", () {
+    testWidgets("movies should display empty widget when state is MoviesEmpty", (widgetTester) async {
+      // arrange
+      whenListen<MoviesState>(
+          topRatedMoviesBloc,
+          Stream<MoviesState>.fromIterable([
+            const MoviesEmpty(),
+          ],),
+          initialState: const MoviesEmpty()
+      );
+      // act
+      await expectLater(topRatedMoviesBloc.stream, emitsInOrder(<MoviesState>[const MoviesEmpty()]));
+      await widgetTester.pumpWidget(createWidgetUnderTest(const TopRatedMoviesListBlocBuilder()));
+      // assert
+      expect(find.byType(Text), findsOneWidget);
+    });
+
+    testWidgets("display loading indicator if state is MoviesLoading", (widgetTester) async {
+      // arrange
+      whenListen<MoviesState>(
+          topRatedMoviesBloc,
+          Stream<MoviesState>.fromIterable([
+            const MoviesLoading(),
+          ],),
+          initialState: const MoviesEmpty()
+      );
+
+      // act - make sure bloc stream is emitted before building widget
+      await expectLater(topRatedMoviesBloc.stream, emitsInOrder(<MoviesState>[const MoviesLoading()]));
+      await widgetTester.pumpWidget(createWidgetUnderTest(const TopRatedMoviesListBlocBuilder()));
+
+      // assert
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
+
+    testWidgets("display error text when state is MoviesError", (widgetTester) async {
+      const DataError error = DataError(message: "Error message");
+      // arrange
+      whenListen<MoviesState>(
+          topRatedMoviesBloc,
+          Stream<MoviesState>.fromIterable([
+            const MoviesLoading(),
+            const MoviesError(error)
+          ],),
+          initialState: const MoviesEmpty()
+      );
+
+      // act - make sure bloc stream is emitted before building widget
+      await expectLater(topRatedMoviesBloc.stream, emitsInOrder(<MoviesState>[const MoviesLoading(), const MoviesError(error)]));
+      await widgetTester.pumpWidget(createWidgetUnderTest(const TopRatedMoviesListBlocBuilder()));
+
+      // assert
+      expect(find.text("Couldn't load movies, try again!"), findsOneWidget);
+    });
+
+    testWidgets("display list when state is PopularMoviesLoaded", (widgetTester) async {
+      // arrange
+      whenListen<MoviesState>(
+          topRatedMoviesBloc,
+          Stream<MoviesState>.fromIterable([
+            const MoviesLoading(),
+            const TopRatedMoviesLoaded(testMovies)
+          ],),
+          initialState: const MoviesEmpty()
+      );
+
+      // act - make sure bloc stream is emitted before building widget
+      await expectLater(topRatedMoviesBloc.stream, emitsInOrder(<MoviesState>[const MoviesLoading(), const TopRatedMoviesLoaded(testMovies)]));
+      await widgetTester.pumpWidget(createWidgetUnderTest(const TopRatedMoviesListBlocBuilder()));
 
       // assert
       expect(find.byType(MovieScrollingList), findsOneWidget);

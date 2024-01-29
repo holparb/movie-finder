@@ -76,6 +76,23 @@ class MockMovieRepository extends _i1.Mock implements _i3.MovieRepository {
       ) as _i4.Future<_i2.DataState<List<_i5.Movie>>>);
 
   @override
+  _i4.Future<_i2.DataState<List<_i5.Movie>>> getTopRatedMovies() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getTopRatedMovies,
+          [],
+        ),
+        returnValue: _i4.Future<_i2.DataState<List<_i5.Movie>>>.value(
+            _FakeDataState_0<List<_i5.Movie>>(
+          this,
+          Invocation.method(
+            #getTopRatedMovies,
+            [],
+          ),
+        )),
+      ) as _i4.Future<_i2.DataState<List<_i5.Movie>>>);
+
+  @override
   _i4.Future<_i2.DataState<_i5.Movie>> getMovieDetails(int? id) =>
       (super.noSuchMethod(
         Invocation.method(

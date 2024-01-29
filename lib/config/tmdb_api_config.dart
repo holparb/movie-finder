@@ -4,5 +4,6 @@ class TmdbApiConfig {
   static const String imageBaseUrl = "https://image.tmdb.org/t/p/w500";
   static const String popularMoviesEndpoint = "/movie/popular";
   static const String trendingMoviesEndpoint = "/trending/movie/week";
+  static const String topRatedMoviesEndpoint = "/movie/top_rated";
   static const String movieDetailEndpoint = "/movie/";
 }

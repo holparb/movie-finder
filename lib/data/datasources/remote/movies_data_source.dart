@@ -49,6 +49,10 @@ class MoviesDataSource {
     return await getMoviesList(TmdbApiConfig.popularMoviesEndpoint);
   }
 
+  Future<List<MovieModel>> getTopRatedMovies() async {
+    return await getMoviesList(TmdbApiConfig.topRatedMoviesEndpoint);
+  }
+
   Future<MovieModel> getMovieDetails(int id) async {
     final response = await getResponse(_createUrlString("${TmdbApiConfig.movieDetailEndpoint}$id"));
     final jsonMap = json.decode(response.body);

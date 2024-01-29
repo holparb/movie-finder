@@ -34,6 +34,13 @@ class PopularMoviesLoaded extends MoviesState {
   List<Object?> get props => [movies];
 }
 
+class TopRatedMoviesLoaded extends MoviesState {
+  const TopRatedMoviesLoaded(List<Movie> movies) : super(movies: movies);
+
+  @override
+  List<Object?> get props => [movies];
+}
+
 class MoviesError extends MoviesState {
   const MoviesError(DataError error) : super(error: error);
 
