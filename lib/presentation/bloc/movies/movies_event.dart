@@ -9,3 +9,7 @@ class GetTrendingMovies extends MoviesEvent {
 class GetPopularMovies extends MoviesEvent {
   const GetPopularMovies();
 }
+
+class GetTopRatedMovies extends MoviesEvent {
+  const GetTopRatedMovies();
+}

@@ -85,4 +85,25 @@ void main() {
     });
   });
 
+  group("Get top rated movies from MovieRepositoryImplementation", () {
+    test("Should return a valid movie list if no exception was thrown", () async {
+      // arrange
+      when(remoteDataSource.getTopRatedMovies()).thenAnswer((_) async => testMovieModels);
+      // act
+      final result = await repository.getTopRatedMovies();
+      // assert
+      expect(result, const DataSuccess(testMovieModels));
+    });
+
+    test("Should return DataFailure when a DataError exception is thrown by the remote data source", () async {
+      // arrange
+      DataError error = const DataError(message: "Data fetch failed!");
+      when(remoteDataSource.getTopRatedMovies()).thenThrow(error);
+      // act
+      final result = await repository.getTopRatedMovies();
+      // assert
+      expect(result, isA<DataFailure>());
+      expect(result.error, error);
+    });
+  });
 }
