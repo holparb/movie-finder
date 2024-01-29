@@ -1,4 +1,4 @@
-# movie_finder
+# MovieFinder
 
 Discover/search for movies, and add the to your own list (TMDB account required). Uses the TMDB API.
 It's a work in progress, new UI elements and features will be constantly added.

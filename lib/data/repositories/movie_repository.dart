@@ -40,4 +40,15 @@ class MovieRepositoryImplementation implements MovieRepository {
       return DataFailure(error);
     }
   }
+
+  @override
+  Future<DataState<List<MovieModel>>> getTopRatedMovies() async {
+    try {
+      List<MovieModel> movies = await _remoteDataSource.getTopRatedMovies();
+      return DataSuccess(movies);
+    }
+    on DataError catch(error) {
+      return DataFailure(error);
+    }
+  }
 }
