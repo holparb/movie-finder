@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_finder/presentation/bloc/movies/movies_event.dart';
+import 'package:movie_finder/presentation/bloc/movies/movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/popular_movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/trending_movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/movies_state.dart';
@@ -8,7 +8,7 @@ import 'package:movie_finder/presentation/widgets/home_page/movie_scrolling_list
 
 /// Generic class for building movie lists based on bloc state
 /// The type is the loaded movie state type, e.g.: TrendingMoviesLoaded
-class MoviesListBlocBuilder<B extends Bloc<MoviesEvent, MoviesState>, S extends MoviesState> extends StatelessWidget {
+class MoviesListBlocBuilder<B extends MoviesBloc, S extends MoviesState> extends StatelessWidget {
   const MoviesListBlocBuilder({super.key});
 
   @override

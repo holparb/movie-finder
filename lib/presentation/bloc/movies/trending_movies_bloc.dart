@@ -1,14 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/domain/usecases/get_trending_movies.dart';
+import 'package:movie_finder/presentation/bloc/movies/movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/movies_event.dart';
 import 'package:movie_finder/presentation/bloc/movies/movies_state.dart';
 
-class TrendingMoviesBloc extends Bloc<MoviesEvent, MoviesState> {
+class TrendingMoviesBloc extends MoviesBloc {
 
   final GetTrendingMoviesUseCase _getTrendingMoviesUseCase;
 
-  TrendingMoviesBloc(this._getTrendingMoviesUseCase) : super(const MoviesEmpty()) {
+  TrendingMoviesBloc(this._getTrendingMoviesUseCase) : super() {
     on <GetTrendingMovies> (onGetTrendingMovies);
   }
 
