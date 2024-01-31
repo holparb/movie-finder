@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_finder/injection_container.dart';
 import 'package:movie_finder/presentation/bloc/movies/popular_movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/top_rated_movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/trending_movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/movies_event.dart';
+import 'package:movie_finder/presentation/widgets/home_page/bottom_navigation_bar.dart';
 import 'package:movie_finder/presentation/widgets/home_page/movie_list_bloc_builder.dart';
 import 'package:movie_finder/presentation/widgets/home_page/movie_scrolling_list.dart';
 
@@ -18,14 +18,15 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("MovieFinder", style: GoogleFonts.aBeeZee(textStyle: const TextStyle(
+        title: const Text("MovieFinder", style: TextStyle(
+          fontFamily: "BebasNeue",
           color: Colors.red,
-          fontSize: 34,
-        )),),
+          fontSize: 52,
+        )),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0, top: 8.0),
         child: MultiBlocProvider(
           providers: [
             BlocProvider<TopRatedMoviesBloc>(
@@ -50,6 +51,7 @@ class HomePage extends StatelessWidget {
           ),
         )
       ),
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 
