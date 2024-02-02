@@ -1,10 +1,5 @@
-import 'package:equatable/equatable.dart';
+import 'package:movie_finder/core/exceptions/repository_error.dart';
 
-class DataError extends Equatable implements Exception {
-  final String message;
-
-  const DataError({required this.message});
-
-  @override
-  List<Object?> get props => [message];
+class DataError extends RepositoryError {
+  const DataError({required super.message});
 }

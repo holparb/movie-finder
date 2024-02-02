@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:movie_finder/config/tmdb_api_config.dart';
 import 'package:movie_finder/core/exceptions/auth_error.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
+import 'package:movie_finder/core/exceptions/post_error.dart';
 
 abstract class DataSource {
   final http.Client client;
@@ -44,7 +45,7 @@ abstract class DataSource {
       },
     );
     if (response.statusCode != 200) {
-      throw AuthError(response.reasonPhrase ?? "");
+      throw PostError(message: response.reasonPhrase ?? "");
 
     }
     return json.decode(response.body);
