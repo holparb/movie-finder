@@ -3,7 +3,7 @@ import 'package:mockito/annotations.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 import 'package:movie_finder/config/tmdb_api_config.dart';
-import 'package:movie_finder/core/data_state.dart';
+import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/data/datasources/remote/movies_data_source.dart';
 
 import '../../../fixtures/fixture_reader.dart';

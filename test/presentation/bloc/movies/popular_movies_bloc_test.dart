@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:movie_finder/core/data_state.dart';
+import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/domain/usecases/get_popular_movies.dart';
 import 'package:movie_finder/presentation/bloc/movies/popular_movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/movies_event.dart';

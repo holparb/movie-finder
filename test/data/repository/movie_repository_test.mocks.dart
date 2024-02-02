@@ -7,6 +7,7 @@ import 'dart:async' as _i5;
 
 import 'package:http/http.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:mockito/src/dummies.dart' as _i6;
 import 'package:movie_finder/data/datasources/remote/movies_data_source.dart'
     as _i4;
 import 'package:movie_finder/data/models/movie_model.dart' as _i3;
@@ -34,18 +35,8 @@ class _FakeClient_0 extends _i1.SmartFake implements _i2.Client {
         );
 }
 
-class _FakeResponse_1 extends _i1.SmartFake implements _i2.Response {
-  _FakeResponse_1(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeMovieModel_2 extends _i1.SmartFake implements _i3.MovieModel {
-  _FakeMovieModel_2(
+class _FakeMovieModel_1 extends _i1.SmartFake implements _i3.MovieModel {
+  _FakeMovieModel_1(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -70,21 +61,6 @@ class MockMoviesDataSource extends _i1.Mock implements _i4.MoviesDataSource {
           Invocation.getter(#client),
         ),
       ) as _i2.Client);
-
-  @override
-  _i5.Future<_i2.Response> getResponse(String? url) => (super.noSuchMethod(
-        Invocation.method(
-          #getResponse,
-          [url],
-        ),
-        returnValue: _i5.Future<_i2.Response>.value(_FakeResponse_1(
-          this,
-          Invocation.method(
-            #getResponse,
-            [url],
-          ),
-        )),
-      ) as _i5.Future<_i2.Response>);
 
   @override
   _i5.Future<List<_i3.MovieModel>> getMoviesList(String? endpoint) =>
@@ -129,7 +105,7 @@ class MockMoviesDataSource extends _i1.Mock implements _i4.MoviesDataSource {
           #getMovieDetails,
           [id],
         ),
-        returnValue: _i5.Future<_i3.MovieModel>.value(_FakeMovieModel_2(
+        returnValue: _i5.Future<_i3.MovieModel>.value(_FakeMovieModel_1(
           this,
           Invocation.method(
             #getMovieDetails,
@@ -137,4 +113,38 @@ class MockMoviesDataSource extends _i1.Mock implements _i4.MoviesDataSource {
           ),
         )),
       ) as _i5.Future<_i3.MovieModel>);
+
+  @override
+  String createUrlString(String? endpoint) => (super.noSuchMethod(
+        Invocation.method(
+          #createUrlString,
+          [endpoint],
+        ),
+        returnValue: _i6.dummyValue<String>(
+          this,
+          Invocation.method(
+            #createUrlString,
+            [endpoint],
+          ),
+        ),
+      ) as String);
+
+  @override
+  dynamic get(String? url) => super.noSuchMethod(Invocation.method(
+        #get,
+        [url],
+      ));
+
+  @override
+  dynamic post(
+    String? url,
+    Map<dynamic, dynamic>? params,
+  ) =>
+      super.noSuchMethod(Invocation.method(
+        #post,
+        [
+          url,
+          params,
+        ],
+      ));
 }

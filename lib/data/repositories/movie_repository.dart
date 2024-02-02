@@ -1,4 +1,5 @@
 import 'package:movie_finder/core/data_state.dart';
+import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/data/datasources/remote/movies_data_source.dart';
 import 'package:movie_finder/data/models/movie_model.dart';
 import 'package:movie_finder/domain/repositories/movie_repository.dart';

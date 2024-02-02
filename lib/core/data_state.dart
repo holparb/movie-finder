@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:movie_finder/core/exceptions/data_error.dart';
 
 abstract class DataState<T> extends Equatable{
   final T ? data;
@@ -24,11 +25,3 @@ class DataFailure<T> extends DataState<T> {
   List<Object?> get props => [error];
 }
 
-class DataError extends Equatable implements Exception {
-  final String message;
-
-  const DataError({required this.message});
-
-  @override
-  List<Object?> get props => [message];
-}

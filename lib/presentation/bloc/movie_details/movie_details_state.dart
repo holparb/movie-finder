@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:movie_finder/core/data_state.dart';
+import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/domain/entities/movie.dart';
 
 sealed class MovieDetailsState extends Equatable {

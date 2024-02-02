@@ -2,7 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:movie_finder/core/data_state.dart';
+import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/presentation/bloc/movies/popular_movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/top_rated_movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/trending_movies_bloc.dart';

@@ -1,42 +1,15 @@
-import 'dart:convert';
-
 import 'package:movie_finder/config/tmdb_api_config.dart';
-import 'package:movie_finder/core/data_state.dart';
+import 'package:movie_finder/data/datasources/remote/data_source.dart';
 import 'package:movie_finder/data/models/movie_model.dart';
-import 'package:http/http.dart' as http;
 
-class MoviesDataSource {
 
-  final http.Client client;
+class MoviesDataSource extends DataSource {
 
-  MoviesDataSource(this.client);
-
-  /// Creates https://api.themoviedb.org/3/{endpoint} url
-  String _createUrlString(String endpoint) {
-    return "${TmdbApiConfig.baseUrl}$endpoint?api_key=${TmdbApiConfig.apiKey}";
-  }
-
-  /// Calls the given url wraps the response in a [DataSuccess] object if data was successfully fetched
-  ///
-  /// Throws a [DataError] for all error codes.
-  Future<http.Response> getResponse(String url) async {
-    final http.Response response;
-    try {
-      response = await client.get(Uri.parse(url));
-    }
-    on Exception catch (exception) {
-      throw DataError(message: exception.toString());
-    }
-    if (response.statusCode != 200) {
-      throw DataError(message: "Failed to fetch movies: error code ${response.statusCode}");
-    }
-    return response;
-  }
+  MoviesDataSource(super.client);
 
   /// Returns list of movies for the given endpoint
   Future<List<MovieModel>> getMoviesList(String endpoint) async {
-    final response = await getResponse(_createUrlString(endpoint));
-    final data = json.decode(response.body);
+    final data = await get(createUrlString(endpoint));
     final List<dynamic> results = data['results'];
     return results.map((json) => MovieModel.fromJson(json)).toList();
   }
@@ -54,8 +27,7 @@ class MoviesDataSource {
   }
 
   Future<MovieModel> getMovieDetails(int id) async {
-    final response = await getResponse(_createUrlString("${TmdbApiConfig.movieDetailEndpoint}$id"));
-    final jsonMap = json.decode(response.body);
-    return MovieModel.fromJson(jsonMap);
+    final data = await get(createUrlString("${TmdbApiConfig.movieDetailEndpoint}$id"));
+    return MovieModel.fromJson(data);
   }
 }
