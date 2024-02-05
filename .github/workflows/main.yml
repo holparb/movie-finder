@@ -2,6 +2,8 @@ name: Flutter Main Workflow
 
 on:
   push:
+    branches:
+      - main
     paths-ignore:
       - 'README.md'
 
