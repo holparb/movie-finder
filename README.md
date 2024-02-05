@@ -7,7 +7,7 @@ What's next:
 - ~~Connection check~~
 - ~~Popular movies list on home page~~
 - ~~Top rated movies list on home page instead of trending movies~~
-- Bottom nav with Search and my list items
+- ~~Bottom nav with Search and my list items~~
 - Login with TMDB account
 - User favorites list (with remove items option)
 - Add movies to favorite list
