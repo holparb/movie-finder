@@ -37,4 +37,12 @@ flutter:
   assets:
     - assets/images/image_placeholder.png
 
+  fonts:
+    - family: AbeeZee
+      fonts:
+        - asset: fonts/ABeeZee-Regular.ttf
+    - family: BebasNeue
+      fonts:
+        - asset: fonts/BebasNeue-Regular.ttf
+
   uses-material-design: true
