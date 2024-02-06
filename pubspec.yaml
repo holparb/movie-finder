@@ -40,9 +40,9 @@ flutter:
   fonts:
     - family: AbeeZee
       fonts:
-        - asset: fonts/ABeeZee-Regular.ttf
+        - asset: assets/fonts/ABeeZee-Regular.ttf
     - family: BebasNeue
       fonts:
-        - asset: fonts/BebasNeue-Regular.ttf
+        - asset: assets/fonts/BebasNeue-Regular.ttf
 
   uses-material-design: true

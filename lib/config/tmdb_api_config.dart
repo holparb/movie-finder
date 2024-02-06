@@ -4,7 +4,8 @@ class TmdbApiConfig {
   static const String imageBaseUrl = "https://image.tmdb.org/t/p/w500";
 
   static const String getRequestTokenEndpoint = "/authentication/token/new";
-  static const String authenticationEndpoint = "/authenticate/";
+  static const String authenticationEndpoint = "/authentication/token/validate_with_login";
+  static const String createSessionEndpoint = "/authentication/session/new";
 
   static const String popularMoviesEndpoint = "/movie/popular";
   static const String trendingMoviesEndpoint = "/trending/movie/week";

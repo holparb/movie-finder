@@ -6,11 +6,11 @@ class RequestTokenModel extends RequestToken {
   factory RequestTokenModel.fromJson(Map<String, dynamic> json) {
     return RequestTokenModel(
       token: json["request_token"],
-      expiresAt: DateTime.parse(json["expires_at"])
+      expiresAt: json["expires_at"]
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'request_token': token,
+    "request_token": token
   };
 }

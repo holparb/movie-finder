@@ -45,7 +45,7 @@ abstract class DataSource {
       },
     );
     if (response.statusCode != 200) {
-      throw PostError(message: response.reasonPhrase ?? "");
+      throw PostError(message: "${response.statusCode}: ${response.reasonPhrase ?? ""}");
 
     }
     return json.decode(response.body);

@@ -1,10 +1,3 @@
-import 'package:equatable/equatable.dart';
+abstract class AuthRepository {
 
-class AuthError extends Equatable implements Exception {
-  final String message;
-
-  const AuthError(this.message);
-
-  @override
-  List<Object?> get props => [message];
 }
