@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:movie_finder/config/tmdb_api_config.dart';
-import 'package:movie_finder/core/exceptions/auth_error.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/core/exceptions/post_error.dart';
 
@@ -22,6 +22,7 @@ abstract class DataSource {
   dynamic get(String url) async {
     final http.Response response;
     try {
+      log("GET $url");
       response = await client.get(Uri.parse(url));
     }
     on Exception catch (exception) {
@@ -35,18 +36,25 @@ abstract class DataSource {
 
   /// Generic POST call
   ///
-  /// Throws an [AuthError] for all error codes.
+  /// Throws an [PostError] for all error codes.
   dynamic post(String url, Map<dynamic, dynamic>? params) async {
-    final response = await client.post(
-      Uri.parse(url),
-      body: jsonEncode(params),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    );
+    log("POST $url");
+    log("POST body: ${params!.toString()}");
+    final http.Response response;
+    try {
+      response = await client.post(
+        Uri.parse(url),
+        body: jsonEncode(params),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      );
+    }
+    on Exception catch (exception) {
+      throw PostError(message: exception.toString());
+    }
     if (response.statusCode != 200) {
       throw PostError(message: "${response.statusCode}: ${response.reasonPhrase ?? ""}");
-
     }
     return json.decode(response.body);
   }
