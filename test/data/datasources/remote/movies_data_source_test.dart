@@ -8,8 +8,7 @@ import 'package:movie_finder/data/datasources/remote/movies_data_source.dart';
 
 import '../../../fixtures/fixture_reader.dart';
 import '../../../helper/test_data.dart';
-import 'movies_data_source_test.mocks.dart';
-
+import 'data_source_test.mocks.dart';
 @GenerateMocks([http.Client])
 void main() {
 

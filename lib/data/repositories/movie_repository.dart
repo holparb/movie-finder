@@ -4,10 +4,10 @@ import 'package:movie_finder/data/datasources/remote/movies_data_source.dart';
 import 'package:movie_finder/data/models/movie_model.dart';
 import 'package:movie_finder/domain/repositories/movie_repository.dart';
 
-class MovieRepositoryImplementation implements MovieRepository {
+class MovieRepositoryImpl implements MovieRepository {
   final MoviesDataSource _remoteDataSource;
 
-  MovieRepositoryImplementation(this._remoteDataSource);
+  MovieRepositoryImpl(this._remoteDataSource);
 
   @override
   Future<DataState<List<MovieModel>>> getTrendingMovies() async {

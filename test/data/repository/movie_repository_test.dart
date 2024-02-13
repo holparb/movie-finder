@@ -13,11 +13,11 @@ import 'movie_repository_test.mocks.dart';
 void main() {
 
   late MockMoviesDataSource remoteDataSource;
-  late MovieRepositoryImplementation repository;
+  late MovieRepositoryImpl repository;
 
   setUp(() {
     remoteDataSource = MockMoviesDataSource();
-    repository = MovieRepositoryImplementation(remoteDataSource);
+    repository = MovieRepositoryImpl(remoteDataSource);
   });
 
   group("Get trending movies from MovieRepositoryImplementation", () {
