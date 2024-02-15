@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/core/exceptions/repository_error.dart';
 import 'package:movie_finder/domain/entities/movie.dart';
 
