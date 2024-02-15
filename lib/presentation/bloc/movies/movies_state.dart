@@ -1,10 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
+import 'package:movie_finder/core/exceptions/repository_error.dart';
 import 'package:movie_finder/domain/entities/movie.dart';
 
 sealed class MoviesState extends Equatable{
   final List<Movie> ? movies;
-  final DataError ? error;
+  final RepositoryError ? error;
 
   const MoviesState({this.movies, this.error});
 
@@ -42,7 +43,7 @@ class TopRatedMoviesLoaded extends MoviesState {
 }
 
 class MoviesError extends MoviesState {
-  const MoviesError(DataError error) : super(error: error);
+  const MoviesError(RepositoryError error) : super(error: error);
 
   @override
   List<Object?> get props => [error];

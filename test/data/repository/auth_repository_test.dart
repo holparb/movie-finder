@@ -3,6 +3,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
+import 'package:movie_finder/core/exceptions/post_error.dart';
 import 'package:movie_finder/data/datasources/remote/auth_data_source.dart';
 import 'package:movie_finder/data/repositories/auth_repository.dart';
 
@@ -46,6 +47,34 @@ void main() {
       final result = await repository.login(loginRequestBody);
       // assert
       expect(result, isA<DataFailure>());
+      expect(result.error, isA<DataError>());
+      expect(result.error, error);
+    });
+
+    test("Should return DataFailure when a PostError exception is thrown during login validation", () async {
+      // arrange
+      PostError error = const PostError(message: "Post error!");
+      when(remoteDataSource.getRequestToken()).thenAnswer((_) async => testRequestTokenModel);
+      when(remoteDataSource.validateToken(loginRequestBody)).thenThrow(error);
+      // act
+      final result = await repository.login(loginRequestBody);
+      // assert
+      expect(result, isA<DataFailure>());
+      expect(result.error, isA<PostError>());
+      expect(result.error, error);
+    });
+
+    test("Should return DataFailure when a PostError exception is thrown during session creation", () async {
+      // arrange
+      PostError error = const PostError(message: "Post error!");
+      when(remoteDataSource.getRequestToken()).thenAnswer((_) async => testRequestTokenModel);
+      when(remoteDataSource.validateToken(loginRequestBody)).thenAnswer((_) async => testRequestTokenModel);
+      when(remoteDataSource.createSession(testRequestTokenModel)).thenThrow(error);
+      // act
+      final result = await repository.login(loginRequestBody);
+      // assert
+      expect(result, isA<DataFailure>());
+      expect(result.error, isA<PostError>());
       expect(result.error, error);
     });
 
@@ -60,6 +89,7 @@ void main() {
       final result = await repository.login(loginRequestBody);
       // assert
       expect(result, isA<DataFailure>());
+      expect(result.error, isA<DataError>());
       expect(result.error, error);
     });
   });

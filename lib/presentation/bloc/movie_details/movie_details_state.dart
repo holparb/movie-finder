@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
+import 'package:movie_finder/core/exceptions/repository_error.dart';
 import 'package:movie_finder/domain/entities/movie.dart';
 
 sealed class MovieDetailsState extends Equatable {
@@ -24,7 +25,7 @@ class MovieDetailsLoading extends MovieDetailsState {
 
 class MovieDetailsError extends MovieDetailsState {
   // Fallback movie object, this is the one present in a list but lacks certain fields obtained by a details query
-  final DataError error;
+  final RepositoryError error;
 
   const MovieDetailsError(this.error);
 

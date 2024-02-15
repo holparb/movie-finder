@@ -26,7 +26,7 @@ class AuthRepositoryImpl implements AuthRepository {
       return DataFailure(error);
     }
     on PostError catch(error) {
-      return DataFailure(DataError(message: error.message));
+      return DataFailure(PostError(message: error.message));
     }
   }
 
