@@ -3,6 +3,7 @@ import 'package:movie_finder/data/models/request_token_model.dart';
 import 'package:movie_finder/data/models/user_model.dart';
 import 'package:movie_finder/domain/entities/genre.dart';
 import 'package:movie_finder/domain/entities/movie.dart';
+import 'package:movie_finder/domain/entities/user.dart';
 
 /// Helper file containing test data of models and entities used in tests
 
@@ -34,3 +35,4 @@ RequestTokenModel testRequestTokenModel = RequestTokenModel(token: "5e29eca2e02b
 const String testSessionId = "acf5454hg7676gf3334";
 
 UserModel testUserModel = UserModel(id: 123, username: "test_user", sessionId: "acf5454hg7676gf3334");
+User testUser = User(id: 123, username: "test_user", sessionId: "acf5454hg7676gf3334");

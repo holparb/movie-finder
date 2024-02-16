@@ -4,7 +4,6 @@ import 'package:movie_finder/domain/entities/user.dart';
 import 'package:movie_finder/domain/repositories/auth_repository.dart';
 
 class LoginUsecase implements UseCase<DataState<User>, LoginParams> {
-
   final AuthRepository authRepository;
 
   LoginUsecase(this.authRepository);
@@ -13,14 +12,13 @@ class LoginUsecase implements UseCase<DataState<User>, LoginParams> {
   Future<DataState<User>> call({LoginParams? params}) async {
     return await authRepository.login(params!.toJson());
   }
-
 }
 
 class LoginParams {
   final String username;
   final String password;
 
-  LoginParams({required this.username, required this.password});
+  const LoginParams({required this.username, required this.password});
 
   Map<String, String> toJson() => {
     "username": username,
