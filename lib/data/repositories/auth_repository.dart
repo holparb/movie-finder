@@ -5,6 +5,7 @@ import 'package:movie_finder/data/datasources/remote/auth_data_source.dart';
 import 'package:movie_finder/data/models/request_token_model.dart';
 import 'package:movie_finder/data/models/user_model.dart';
 import 'package:movie_finder/domain/repositories/auth_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
 
@@ -20,6 +21,8 @@ class AuthRepositoryImpl implements AuthRepository {
       requestToken = await authDataSource.validateToken(loginRequestBody);
       final sessionId = await authDataSource.createSession(requestToken);
       UserModel user = await authDataSource.getUserAccountDetails(sessionId);
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString("sessionId", sessionId);
       return DataSuccess(user);
     }
     on DataError catch(error) {
