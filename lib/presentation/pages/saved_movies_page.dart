@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_finder/presentation/bloc/auth/auth_event.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_state.dart';
 import 'package:movie_finder/presentation/bloc/auth/login_bloc.dart';
 import 'package:movie_finder/presentation/widgets/saved_movies_list/not_logged_in_screen.dart';

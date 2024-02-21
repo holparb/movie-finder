@@ -46,7 +46,7 @@ class _LoginDialogState extends State<LoginDialog> {
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16.0)
+                            borderRadius: BorderRadius.circular(26.0)
                         )
                     ),
                     onPressed: () => onLoginButtonPressed(context),
@@ -65,21 +65,31 @@ class _LoginDialogState extends State<LoginDialog> {
                       ),
                     )
                 ),
-                const SizedBox(height: 16,),
                 BlocBuilder<LoginBloc, AuthState>(
                     builder: (context, state) {
                       if(state is LoginError) {
                         return Center(
-                          child: Text("Login failed, try again!", style: TextStyle(color: Theme.of(context).colorScheme.error),),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 8,),
+                              Text("Login failed, try again!", style: TextStyle(color: Theme.of(context).colorScheme.error),),
+                            ],
+                          )
                         );
                       }
-                      return const SizedBox();
+                      return const SizedBox(height: 8,);
                     },
                     buildWhen: (previousState, currentState) {
                       return true;
                       return (previousState is LoggingIn && currentState is LoginError)
                       || (previousState is LoginError && currentState is LoggingIn);
                     },
+                ),
+                MaterialButton(
+                  highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    onPressed: () => onLoginCancel(context),
+                    child: Text("Cancel", style: TextStyle(fontSize: 16),)
                 )
               ],
             ),
@@ -87,6 +97,11 @@ class _LoginDialogState extends State<LoginDialog> {
         ),
       ),
     );
+  }
+
+  void onLoginCancel(BuildContext context) {
+    BlocProvider.of<LoginBloc>(context).add(const InitAuthState());
+    Navigator.pop(context);
   }
 
   void onLoginButtonPressed(BuildContext context) {
