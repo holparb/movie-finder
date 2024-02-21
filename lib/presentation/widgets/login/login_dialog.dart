@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_finder/domain/usecases/login.dart';
+import 'package:movie_finder/presentation/bloc/auth/auth_event.dart';
+import 'package:movie_finder/presentation/bloc/auth/auth_state.dart';
+import 'package:movie_finder/presentation/bloc/auth/login_bloc.dart';
 import 'package:movie_finder/presentation/widgets/login/login_text_form_field.dart';
 
 class LoginDialog extends StatefulWidget {
@@ -14,6 +19,7 @@ class _LoginDialogState extends State<LoginDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      contentPadding: EdgeInsets.zero,
       content: Container(
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.outlineVariant,
@@ -43,14 +49,37 @@ class _LoginDialogState extends State<LoginDialog> {
                             borderRadius: BorderRadius.circular(16.0)
                         )
                     ),
-                    onPressed: onLoginButtonPressed,
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        "Login",
-                        style: TextStyle(fontFamily: "AbeeZee", fontWeight: FontWeight.bold, fontSize: 16),
+                    onPressed: () => onLoginButtonPressed(context),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: BlocBuilder<LoginBloc, AuthState>(
+                          builder: (context, state) {
+                            if(state is LoggingIn) {
+                              return const CircularProgressIndicator();
+                            }
+                            return const Text(
+                              "Login",
+                              style: TextStyle(fontFamily: "AbeeZee", fontWeight: FontWeight.bold, fontSize: 16),
+                            );
+                          },
                       ),
                     )
+                ),
+                const SizedBox(height: 16,),
+                BlocBuilder<LoginBloc, AuthState>(
+                    builder: (context, state) {
+                      if(state is LoginError) {
+                        return Center(
+                          child: Text("Login failed, try again!", style: TextStyle(color: Theme.of(context).colorScheme.error),),
+                        );
+                      }
+                      return const SizedBox();
+                    },
+                    buildWhen: (previousState, currentState) {
+                      return true;
+                      return (previousState is LoggingIn && currentState is LoginError)
+                      || (previousState is LoginError && currentState is LoggingIn);
+                    },
                 )
               ],
             ),
@@ -60,9 +89,10 @@ class _LoginDialogState extends State<LoginDialog> {
     );
   }
 
-  void onLoginButtonPressed() {
+  void onLoginButtonPressed(BuildContext context) {
     if(_formKey.currentState!.validate()) {
-
+      BlocProvider.of<LoginBloc>(context).add(const InitAuthState());
+      BlocProvider.of<LoginBloc>(context).add(LogIn(loginParams: LoginParams(username: "asd", password: "rofl")));
     }
   }
 }

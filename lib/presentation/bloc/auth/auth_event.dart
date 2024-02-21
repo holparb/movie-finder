@@ -12,3 +12,7 @@ class LogIn extends AuthEvent {
   final LoginParams loginParams;
   const LogIn({required this.loginParams});
 }
+
+class InitAuthState extends AuthEvent {
+  const InitAuthState();
+}

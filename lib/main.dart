@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_finder/presentation/bloc/auth/login_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movie_details/movie_details_bloc.dart';
 import 'package:movie_finder/router/app_router.dart';
 import 'package:movie_finder/config/app_theme.dart';
@@ -17,14 +18,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<MovieDetailsBloc>(
-      create: (_) => serviceLocator<MovieDetailsBloc>(),
-      child: MaterialApp.router(
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider<MovieDetailsBloc>(create: (_) => serviceLocator<MovieDetailsBloc>()),
+          BlocProvider<LoginBloc>(create: (_) => serviceLocator<LoginBloc>())
+        ],
+        child: MaterialApp.router(
           title: 'MovieFinder',
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: ThemeMode.dark,
-          routerConfig: _appRouter.config())
+          routerConfig: _appRouter.config()
+        )
     );
   }
 }

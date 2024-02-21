@@ -9,6 +9,7 @@ class LoginBloc extends Bloc<AuthEvent, AuthState> {
 
   LoginBloc(this._loginUsecase) : super(const NotLoggedIn()) {
     on <LogIn> (onLogin);
+    on <InitAuthState> (onInitAuthState);
   }
 
   onLogin(LogIn event, Emitter<AuthState> emit) async {
@@ -22,5 +23,9 @@ class LoginBloc extends Bloc<AuthEvent, AuthState> {
     if(dataState is DataSuccess) {
       emit(const LoggedIn());
     }
+  }
+
+  onInitAuthState(InitAuthState event, Emitter<AuthState> emit) {
+    emit(const NotLoggedIn());
   }
 }
