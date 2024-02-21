@@ -16,6 +16,9 @@ class LoginDialog extends StatefulWidget {
 class _LoginDialogState extends State<LoginDialog> {
   final _formKey = GlobalKey<FormState>();
 
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -39,9 +42,9 @@ class _LoginDialogState extends State<LoginDialog> {
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontFamily: "AbeeZee"),
                 ),
                 const SizedBox(height: 24,),
-                const LoginTextFormField(hintText: "Username", validatorErrorMessage: "Please enter username!"),
+                LoginTextFormField(controller: usernameController, hintText: "Username", validatorErrorMessage: "Please enter username!"),
                 const SizedBox(height: 16,),
-                const LoginTextFormField(hintText: "Password", validatorErrorMessage: "Please enter password!"),
+                LoginTextFormField(controller: passwordController, hintText: "Password", validatorErrorMessage: "Please enter password!"),
                 const SizedBox(height: 16,),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -80,16 +83,16 @@ class _LoginDialogState extends State<LoginDialog> {
                       return const SizedBox(height: 8,);
                     },
                     buildWhen: (previousState, currentState) {
-                      return true;
                       return (previousState is LoggingIn && currentState is LoginError)
-                      || (previousState is LoginError && currentState is LoggingIn);
+                      || (previousState is LoginError && currentState is LoggingIn)
+                      || (previousState is LoginError && currentState is NotLoggedIn);
                     },
                 ),
                 MaterialButton(
                   highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onPressed: () => onLoginCancel(context),
-                    child: Text("Cancel", style: TextStyle(fontSize: 16),)
+                    child: const Text("Cancel", style: TextStyle(fontSize: 16),)
                 )
               ],
             ),
@@ -97,6 +100,14 @@ class _LoginDialogState extends State<LoginDialog> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   void onLoginCancel(BuildContext context) {
@@ -107,7 +118,7 @@ class _LoginDialogState extends State<LoginDialog> {
   void onLoginButtonPressed(BuildContext context) {
     if(_formKey.currentState!.validate()) {
       BlocProvider.of<LoginBloc>(context).add(const InitAuthState());
-      BlocProvider.of<LoginBloc>(context).add(LogIn(loginParams: LoginParams(username: "asd", password: "rofl")));
+      BlocProvider.of<LoginBloc>(context).add(LogIn(loginParams: LoginParams(username: usernameController.text, password: passwordController.text)));
     }
   }
 }
