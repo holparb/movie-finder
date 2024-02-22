@@ -6,12 +6,38 @@ class NotLoggedInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          const Text("Log in with your TMDB account to see and manage your saved movies"),
-          ElevatedButton(onPressed: () => onLoginPressed(context), child: const Text("Login"))
-        ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Not logged in into TMDB",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 32,),
+            Text(
+              "Log into your TMDB account to view your watchlist",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 32,),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0)
+                    ),
+                  backgroundColor: Theme.of(context).colorScheme.outlineVariant,
+                  padding: const EdgeInsets.all(16.0)
+                ),
+                onPressed: () => onLoginPressed(context),
+                child: Text("Log in to TMDB", style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold))
+            )
+          ],
+        ),
       ),
     );
   }

@@ -37,6 +37,11 @@ flutter:
 
   assets:
     - assets/images/image_placeholder.png
+    - assets/images/tmdb_logo.png
+    - assets/images/1.5x/tmdb_logo.png
+    - assets/images/2.0x/tmdb_logo.png
+    - assets/images/3.0x/tmdb_logo.png
+    - assets/images/4.0x/tmdb_logo.png
 
   fonts:
     - family: AbeeZee

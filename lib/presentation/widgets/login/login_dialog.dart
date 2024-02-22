@@ -36,11 +36,7 @@ class _LoginDialogState extends State<LoginDialog> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  "Login with TDMB",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontFamily: "AbeeZee"),
-                ),
+                const Image(image: AssetImage("assets/images/tmdb_logo.png")),
                 const SizedBox(height: 24,),
                 LoginTextFormField(controller: usernameController, hintText: "Username", validatorErrorMessage: "Please enter username!"),
                 const SizedBox(height: 16,),
@@ -89,7 +85,7 @@ class _LoginDialogState extends State<LoginDialog> {
                     },
                 ),
                 MaterialButton(
-                  highlightColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onPressed: () => onLoginCancel(context),
                     child: const Text("Cancel", style: TextStyle(fontSize: 16),)
