@@ -54,9 +54,9 @@ class _MainPageState extends State<MainPage> {
               label: "Home",
             ),
             NavigationDestination(
-              selectedIcon: Icon(Icons.bookmark, color: iconColor,),
-              icon: Icon(Icons.bookmark_border, color: iconColor,),
-              label: "My list",
+              selectedIcon: Icon(Icons.movie, color: iconColor,),
+              icon: Icon(Icons.movie_outlined, color: iconColor,),
+              label: "Watchlist",
             ),
           ],
           onDestinationSelected: (int index) {
