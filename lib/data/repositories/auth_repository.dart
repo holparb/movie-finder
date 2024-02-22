@@ -22,7 +22,10 @@ class AuthRepositoryImpl implements AuthRepository {
       final sessionId = await authDataSource.createSession(requestToken);
       UserModel user = await authDataSource.getUserAccountDetails(sessionId);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
+      // Generally it is not a good idea to store user and session data
+      // in shared prefs for security reasons but for now it will be done this way to speed up practice
       await prefs.setString("sessionId", sessionId);
+      await prefs.setString("userId", user.id as String);
       return DataSuccess(user);
     }
     on DataError catch(error) {
