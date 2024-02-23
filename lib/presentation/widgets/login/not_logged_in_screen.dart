@@ -33,16 +33,14 @@ class NotLoggedInScreen extends StatelessWidget {
                   backgroundColor: Theme.of(context).colorScheme.outlineVariant,
                   padding: const EdgeInsets.all(16.0)
                 ),
-                onPressed: () => onLoginPressed(context),
+                onPressed: () {
+                  showDialog(context: context, builder: (context) => const LoginDialog(), barrierDismissible: false);
+                },
                 child: Text("Log in to TMDB", style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold))
             )
           ],
         ),
       ),
     );
-  }
-
-  void onLoginPressed(BuildContext context) {
-    showDialog(context: context, builder: (context) => const LoginDialog(), barrierDismissible: false);
   }
 }
