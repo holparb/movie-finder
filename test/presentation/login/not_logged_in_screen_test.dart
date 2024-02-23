@@ -11,20 +11,11 @@ import 'package:movie_finder/presentation/widgets/login/not_logged_in_screen.dar
 class MockLoginBloc extends MockBloc<AuthEvent, AuthState> implements LoginBloc {}
 
 void main() {
-  late MockLoginBloc loginBloc;
-
-  setUp(() async {
-    loginBloc = MockLoginBloc();
-  });
-
   Widget createWidgetUnderTest(Widget widget) {
-    return BlocProvider<LoginBloc>(
-        create: (_) => loginBloc,
-        child: MaterialApp(
-            title: "MovieFinder",
-            theme: ThemeData(),
-            home: widget
-        ),
+    return MaterialApp(
+        title: "MovieFinder",
+        theme: ThemeData(),
+        home: widget
     );
   }
 
@@ -67,6 +58,7 @@ void main() {
 
   testWidgets("Should execute showDialog and display LoginDialog when button is tapped", (widgetTester) async {
     // arrange
+    MockLoginBloc loginBloc = MockLoginBloc();
     whenListen<AuthState>(
         loginBloc,
         Stream<AuthState>.fromIterable([
@@ -76,7 +68,16 @@ void main() {
     );
     // act
     await expectLater(loginBloc.stream, emitsInOrder(<AuthState>[const NotLoggedIn()]));
-    await widgetTester.pumpWidget(createWidgetUnderTest(const NotLoggedInScreen()));
+    await widgetTester.pumpWidget(
+        BlocProvider<LoginBloc>(
+          create: (_) => loginBloc,
+          child: MaterialApp(
+              title: "MovieFinder",
+              theme: ThemeData(),
+              home: const NotLoggedInScreen()
+          ),
+        )
+    );
     await widgetTester.tap(find.byType(ElevatedButton));
     await widgetTester.pump();
     // assert
