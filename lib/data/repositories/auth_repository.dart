@@ -1,6 +1,6 @@
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
-import 'package:movie_finder/core/exceptions/post_error.dart';
+import 'package:movie_finder/core/exceptions/http_error.dart';
 import 'package:movie_finder/data/datasources/remote/auth_data_source.dart';
 import 'package:movie_finder/data/models/request_token_model.dart';
 import 'package:movie_finder/data/models/user_model.dart';
@@ -31,8 +31,8 @@ class AuthRepositoryImpl implements AuthRepository {
     on DataError catch(error) {
       return DataFailure(error);
     }
-    on PostError catch(error) {
-      return DataFailure(PostError(message: error.message));
+    on HttpError catch(error) {
+      return DataFailure(HttpError(message: error.message));
     }
   }
 
