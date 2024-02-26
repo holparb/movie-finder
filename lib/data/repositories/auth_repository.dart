@@ -1,6 +1,7 @@
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/core/exceptions/http_error.dart';
+import 'package:movie_finder/core/exceptions/repository_error.dart';
 import 'package:movie_finder/data/datasources/remote/auth_data_source.dart';
 import 'package:movie_finder/data/models/request_token_model.dart';
 import 'package:movie_finder/data/models/user_model.dart';
@@ -38,8 +39,17 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<DataState<void>> logout() async {
-    // TODO: implement logout
-    throw UnimplementedError();
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final sessionId = prefs.getString("sessionId");
+      if(sessionId == null) {
+        return const DataFailure(DataError(message: "Session id could not be read from local storage"));
+      }
+      final success = await authDataSource.deleteSession({"session_id": sessionId});
+      return success ? const DataSuccess(null) : const DataFailure(HttpError(message: "Session delete was unsuccessful!"));
+    }
+    on HttpError catch(error) {
+      return DataFailure(HttpError(message: error.message));
+    }
   }
-
 }

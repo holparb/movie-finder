@@ -6,6 +6,7 @@ import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/core/exceptions/http_error.dart';
 import 'package:movie_finder/data/datasources/remote/auth_data_source.dart';
 import 'package:movie_finder/data/repositories/auth_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helper/test_data.dart';
 import 'auth_repository_test.mocks.dart';
@@ -51,7 +52,7 @@ void main() {
       expect(result.error, error);
     });
 
-    test("Should return DataFailure when a PostError exception is thrown during login validation", () async {
+    test("Should return DataFailure when an HttpError exception is thrown during login validation", () async {
       // arrange
       HttpError error = const HttpError(message: "Post error!");
       when(remoteDataSource.getRequestToken()).thenAnswer((_) async => testRequestTokenModel);
@@ -64,7 +65,7 @@ void main() {
       expect(result.error, error);
     });
 
-    test("Should return DataFailure when a PostError exception is thrown during session creation", () async {
+    test("Should return DataFailure when an HttpError exception is thrown during session creation", () async {
       // arrange
       HttpError error = const HttpError(message: "Post error!");
       when(remoteDataSource.getRequestToken()).thenAnswer((_) async => testRequestTokenModel);
@@ -90,6 +91,69 @@ void main() {
       // assert
       expect(result, isA<DataFailure>());
       expect(result.error, isA<DataError>());
+      expect(result.error, error);
+    });
+  });
+
+  group("Logout", () {
+    test("Should return DataSuccess when logout returns true", () async {
+      final logoutBody = {
+        "session_id": testSessionId
+      };
+      // arrange
+      final Map<String, Object> values = <String, Object>{"sessionId": testSessionId};
+      SharedPreferences.setMockInitialValues(values);
+      when(remoteDataSource.deleteSession(logoutBody)).thenAnswer((_) async => true);
+      // act
+      final result = await repository.logout();
+      // assert
+      expect(result, const DataSuccess<void>(null));
+    });
+
+    test("Should return DataFailure when sessionId is not stored in local storage", () async {
+      final logoutBody = {
+        "session_id": testSessionId
+      };
+      // arrange
+      final Map<String, Object> values = <String, Object>{"dummy": 1};
+      SharedPreferences.setMockInitialValues(values);
+      when(remoteDataSource.deleteSession(logoutBody)).thenAnswer((_) async => true);
+      // act
+      final result = await repository.logout();
+      // assert
+      expect(result, isA<DataFailure>());
+      expect(result.error, isA<DataError>());
+    });
+
+    test("Should return DataFailure when data source returns false", () async {
+      final logoutBody = {
+        "session_id": testSessionId
+      };
+      // arrange
+      final Map<String, Object> values = <String, Object>{"sessionId": testSessionId};
+      SharedPreferences.setMockInitialValues(values);
+      when(remoteDataSource.deleteSession(logoutBody)).thenAnswer((_) async => false);
+      // act
+      final result = await repository.logout();
+      // assert
+      expect(result, isA<DataFailure>());
+      expect(result.error, isA<HttpError>());
+    });
+
+    test("Should return DataFailure when data source throws HttpError", () async {
+      final logoutBody = {
+        "session_id": testSessionId
+      };
+      const error = HttpError(message: "error message");
+      // arrange
+      final Map<String, Object> values = <String, Object>{"sessionId": testSessionId};
+      SharedPreferences.setMockInitialValues(values);
+      when(remoteDataSource.deleteSession(logoutBody)).thenThrow(error);
+      // act
+      final result = await repository.logout();
+      // assert
+      expect(result, isA<DataFailure>());
+      expect(result.error, isA<HttpError>());
       expect(result.error, error);
     });
   });
