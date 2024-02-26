@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 import 'package:movie_finder/config/tmdb_api_config.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
-import 'package:movie_finder/core/exceptions/post_error.dart';
+import 'package:movie_finder/core/exceptions/http_error.dart';
 import 'package:movie_finder/data/datasources/remote/auth_data_source.dart';
 
 import '../../../fixtures/fixture_reader.dart';
@@ -90,7 +91,7 @@ void main() {
       // act
       final call = authDataSource.validateToken(loginRequestBody);
       // assert
-      expect(() => call, throwsA(isA<PostError>()));
+      expect(() => call, throwsA(isA<HttpError>()));
     });
 
     test("Should catch exception if an exception is thrown during fetch", () async {
@@ -105,7 +106,7 @@ void main() {
       // act
       final call = authDataSource.validateToken(loginRequestBody);
       // assert
-      expect(() => call, throwsA(isA<PostError>()));
+      expect(() => call, throwsA(isA<HttpError>()));
     });
   });
 
@@ -137,7 +138,7 @@ void main() {
       // act
       final call = authDataSource.createSession(testRequestTokenModel);
       // assert
-      expect(() => call, throwsA(isA<PostError>()));
+      expect(() => call, throwsA(isA<HttpError>()));
     });
 
     test("Should catch exception if an exception is thrown during fetch", () async {
@@ -152,7 +153,7 @@ void main() {
       // act
       final call = authDataSource.createSession(testRequestTokenModel);
       // assert
-      expect(() => call, throwsA(isA<PostError>()));
+      expect(() => call, throwsA(isA<HttpError>()));
       });
     });
 
@@ -186,6 +187,80 @@ void main() {
       final call = authDataSource.getUserAccountDetails(testSessionId);
       // assert
       expect(() => call, throwsA(isA<DataError>()));
+    });
+  });
+
+  group("Delete session", () {
+    test("Should successfully delete session", () async {
+      final sessionIdBody = {
+        "session_id": testSessionId
+      };
+      // arrange
+      when(mockClient.delete(
+          Uri.parse(createUrlString(TmdbApiConfig.deleteSession)),
+          body: jsonEncode(sessionIdBody),
+          headers: {
+            "Content-Type": "application/json",
+          })
+      ).thenAnswer((_) async => http.Response('{"success": true}', 200));
+      // act
+      final result = await authDataSource.deleteSession(sessionIdBody);
+      // assert
+      expect(result, true);
+    });
+
+    test("Should return false in case if delete was unsuccessful", () async {
+      final sessionIdBody = {
+        "session_id": testSessionId
+      };
+      // arrange
+      when(mockClient.delete(
+          Uri.parse(createUrlString(TmdbApiConfig.deleteSession)),
+          body: jsonEncode(sessionIdBody),
+          headers: {
+            "Content-Type": "application/json",
+          })
+      ).thenAnswer((_) async => http.Response('{"success": false}', 200));
+      // act
+      final result = await authDataSource.deleteSession(sessionIdBody);
+      // assert
+      expect(result, false);
+    });
+
+    test("Should throw exception if an error code other than 200 was returned", () async {
+      final sessionIdBody = {
+        "session_id": testSessionId
+      };
+      // arrange
+      when(mockClient.delete(
+          Uri.parse(createUrlString(TmdbApiConfig.deleteSession)),
+          body: jsonEncode(sessionIdBody),
+          headers: {
+            "Content-Type": "application/json",
+          })
+      ).thenAnswer((_) async => http.Response("Something went wrong!", 404));
+      // act
+      final call = authDataSource.deleteSession(sessionIdBody);
+      // assert
+      expect(() => call, throwsA(isA<HttpError>()));
+    });
+
+    test("Should catch exception in case if an exception was thrown during delete", () async {
+      final sessionIdBody = {
+        "session_id": testSessionId
+      };
+      // arrange
+      when(mockClient.delete(
+          Uri.parse(createUrlString(TmdbApiConfig.deleteSession)),
+          body: jsonEncode(sessionIdBody),
+          headers: {
+            "Content-Type": "application/json",
+          })
+      ).thenThrow(Exception("exception!"));
+      // act
+      final call = authDataSource.deleteSession(sessionIdBody);
+      // assert
+      expect(() => call, throwsA(isA<HttpError>()));
     });
   });
 }

@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:movie_finder/config/tmdb_api_config.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
-import 'package:movie_finder/core/exceptions/post_error.dart';
+import 'package:movie_finder/core/exceptions/http_error.dart';
 
 abstract class DataSource {
   final http.Client client;
@@ -36,25 +36,50 @@ abstract class DataSource {
 
   /// Generic POST call
   ///
-  /// Throws an [PostError] for all error codes.
-  dynamic post(String url, Map<dynamic, dynamic>? params) async {
+  /// Throws an [HttpError] for all error codes.
+  dynamic post(String url, Map<dynamic, dynamic>? body) async {
     log("POST $url");
-    log("POST body: ${params!.toString()}");
+    log("POST body: ${body!.toString()}");
     final http.Response response;
     try {
       response = await client.post(
         Uri.parse(url),
-        body: jsonEncode(params),
+        body: jsonEncode(body),
         headers: {
           "Content-Type": "application/json",
         },
       );
     }
     on Exception catch (exception) {
-      throw PostError(message: exception.toString());
+      throw HttpError(message: exception.toString());
     }
     if (response.statusCode != 200) {
-      throw PostError(message: "${response.statusCode}: ${response.reasonPhrase ?? ""}");
+      throw HttpError(message: "${response.statusCode}: ${response.reasonPhrase ?? ""}");
+    }
+    return json.decode(response.body);
+  }
+
+  /// Generic DELETE call
+  ///
+  /// Throws an [HttpError] for all error codes.
+  dynamic delete(String url, Map<dynamic, dynamic>? body) async {
+    log("DELETE $url");
+    log("DELETE body: ${body!.toString()}");
+    final http.Response response;
+    try {
+      response = await client.delete(
+        Uri.parse(url),
+        body: jsonEncode(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      );
+    }
+    on Exception catch (exception) {
+      throw HttpError(message: exception.toString());
+    }
+    if (response.statusCode != 200) {
+      throw HttpError(message: "${response.statusCode}: ${response.reasonPhrase ?? ""}");
     }
     return json.decode(response.body);
   }

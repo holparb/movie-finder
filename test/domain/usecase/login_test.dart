@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
-import 'package:movie_finder/core/exceptions/post_error.dart';
+import 'package:movie_finder/core/exceptions/http_error.dart';
 import 'package:movie_finder/domain/usecases/login.dart';
 
 import '../../helper/test_data.dart';
@@ -43,13 +43,13 @@ void main() {
 
   test("Should return DataFailure if a PostError was thrown during login", () async {
     // arrange
-    PostError error = const PostError(message: "post error!");
+    HttpError error = const HttpError(message: "post error!");
     when(mockAuthRepository.login(loginParams.toJson())).thenAnswer((_) async => DataFailure(error));
     // act
     final result = await usecase(params: loginParams);
     // assert
     expect(result, isA<DataFailure>());
-    expect(result.error, isA<PostError>());
+    expect(result.error, isA<HttpError>());
     expect(result.error, error);
   });
 }

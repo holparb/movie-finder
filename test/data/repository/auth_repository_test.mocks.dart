@@ -141,6 +141,16 @@ class MockAuthDataSource extends _i1.Mock implements _i5.AuthDataSource {
       ) as _i6.Future<_i4.UserModel>);
 
   @override
+  _i6.Future<bool> deleteSession(Map<String, String>? requestBody) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteSession,
+          [requestBody],
+        ),
+        returnValue: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
+
+  @override
   String createUrlString(String? endpoint) => (super.noSuchMethod(
         Invocation.method(
           #createUrlString,
@@ -164,13 +174,26 @@ class MockAuthDataSource extends _i1.Mock implements _i5.AuthDataSource {
   @override
   dynamic post(
     String? url,
-    Map<dynamic, dynamic>? params,
+    Map<dynamic, dynamic>? body,
   ) =>
       super.noSuchMethod(Invocation.method(
         #post,
         [
           url,
-          params,
+          body,
+        ],
+      ));
+
+  @override
+  dynamic delete(
+    String? url,
+    Map<dynamic, dynamic>? body,
+  ) =>
+      super.noSuchMethod(Invocation.method(
+        #delete,
+        [
+          url,
+          body,
         ],
       ));
 }

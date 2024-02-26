@@ -138,13 +138,26 @@ class MockMoviesDataSource extends _i1.Mock implements _i4.MoviesDataSource {
   @override
   dynamic post(
     String? url,
-    Map<dynamic, dynamic>? params,
+    Map<dynamic, dynamic>? body,
   ) =>
       super.noSuchMethod(Invocation.method(
         #post,
         [
           url,
-          params,
+          body,
+        ],
+      ));
+
+  @override
+  dynamic delete(
+    String? url,
+    Map<dynamic, dynamic>? body,
+  ) =>
+      super.noSuchMethod(Invocation.method(
+        #delete,
+        [
+          url,
+          body,
         ],
       ));
 }

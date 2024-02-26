@@ -6,6 +6,7 @@ class TmdbApiConfig {
   static const String getRequestTokenEndpoint = "/authentication/token/new";
   static const String authenticationEndpoint = "/authentication/token/validate_with_login";
   static const String createSessionEndpoint = "/authentication/session/new";
+  static const String deleteSession = "/authentication/session";
 
   static const String popularMoviesEndpoint = "/movie/popular";
   static const String trendingMoviesEndpoint = "/trending/movie/week";
