@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_event.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_state.dart';
-import 'package:movie_finder/presentation/bloc/auth/login_bloc.dart';
+import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
 import 'package:movie_finder/presentation/widgets/login/login_dialog.dart';
 import 'package:movie_finder/presentation/widgets/login/login_dialog_error_message.dart';
 import 'package:movie_finder/presentation/widgets/login/login_text_form_field.dart';
 
-class MockLoginBloc extends MockBloc<AuthEvent, AuthState> implements LoginBloc {}
+class MockLoginBloc extends MockBloc<AuthEvent, AuthState> implements AuthBloc {}
 
 void main() {
   late MockLoginBloc loginBloc;
@@ -22,7 +22,7 @@ void main() {
     return MaterialApp(
       title: 'MovieFinder',
       theme: ThemeData(),
-      home: BlocProvider<LoginBloc>(
+      home: BlocProvider<AuthBloc>(
           create: (_) => loginBloc,
           child: widget
       )
@@ -50,7 +50,7 @@ void main() {
     expect(find.byType(LoginDialogErrorMessage), findsOneWidget);
     expect(find.byType(ElevatedButton), findsOneWidget);
     expect(find.byType(MaterialButton), findsOneWidget);
-    expect(find.byType(BlocBuilder<LoginBloc, AuthState>), findsNWidgets(2));
+    expect(find.byType(BlocBuilder<AuthBloc, AuthState>), findsNWidgets(2));
   });
 
   testWidgets("Login button should display \"Login\" text when state is NotLoggedIn", (widgetTester) async {

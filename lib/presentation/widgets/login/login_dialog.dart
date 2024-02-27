@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_finder/domain/usecases/login.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_event.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_state.dart';
-import 'package:movie_finder/presentation/bloc/auth/login_bloc.dart';
+import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
 import 'package:movie_finder/presentation/widgets/login/login_dialog_error_message.dart';
 import 'package:movie_finder/presentation/widgets/login/login_text_form_field.dart';
 
@@ -52,7 +52,7 @@ class _LoginDialogState extends State<LoginDialog> {
                     onPressed: () => onLoginButtonPressed(context),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: BlocBuilder<LoginBloc, AuthState>(
+                      child: BlocBuilder<AuthBloc, AuthState>(
                           builder: (context, state) {
                             if(state is LoggingIn) {
                               return const CircularProgressIndicator();
@@ -89,14 +89,14 @@ class _LoginDialogState extends State<LoginDialog> {
   }
 
   void onLoginCancel(BuildContext context) {
-    BlocProvider.of<LoginBloc>(context).add(const InitAuthState());
+    BlocProvider.of<AuthBloc>(context).add(const InitAuthState());
     Navigator.pop(context);
   }
 
   void onLoginButtonPressed(BuildContext context) {
     if(_formKey.currentState!.validate()) {
-      BlocProvider.of<LoginBloc>(context).add(const InitAuthState());
-      BlocProvider.of<LoginBloc>(context).add(LogIn(loginParams: LoginParams(username: usernameController.text, password: passwordController.text)));
+      BlocProvider.of<AuthBloc>(context).add(const InitAuthState());
+      BlocProvider.of<AuthBloc>(context).add(LogIn(loginParams: LoginParams(username: usernameController.text, password: passwordController.text)));
     }
   }
 }

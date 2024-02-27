@@ -16,3 +16,7 @@ class LogIn extends AuthEvent {
 class InitAuthState extends AuthEvent {
   const InitAuthState();
 }
+
+class LogOut extends AuthEvent {
+  const LogOut();
+}

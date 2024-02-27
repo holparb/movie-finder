@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_event.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_state.dart';
-import 'package:movie_finder/presentation/bloc/auth/login_bloc.dart';
+import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
 import 'package:movie_finder/presentation/pages/saved_movies_page.dart';
 import 'package:movie_finder/presentation/widgets/login/not_logged_in_screen.dart';
 import 'package:movie_finder/presentation/widgets/saved_movies_list/saved_movies_list.dart';
 
-class MockLoginBloc extends MockBloc<AuthEvent, AuthState> implements LoginBloc {}
+class MockLoginBloc extends MockBloc<AuthEvent, AuthState> implements AuthBloc {}
 
 void main() {
   late MockLoginBloc loginBloc;
@@ -22,7 +22,7 @@ void main() {
     return MaterialApp(
         title: 'MovieFinder',
         theme: ThemeData(),
-        home: BlocProvider<LoginBloc>(
+        home: BlocProvider<AuthBloc>(
             create: (_) => loginBloc,
             child: widget
         )

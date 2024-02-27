@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_event.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_state.dart';
-import 'package:movie_finder/presentation/bloc/auth/login_bloc.dart';
+import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
 import 'package:movie_finder/presentation/widgets/login/login_dialog_error_message.dart';
 
-class MockLoginBloc extends MockBloc<AuthEvent, AuthState> implements LoginBloc {}
+class MockLoginBloc extends MockBloc<AuthEvent, AuthState> implements AuthBloc {}
 
 void main() {
   late MockLoginBloc loginBloc;
@@ -20,7 +20,7 @@ void main() {
     return MaterialApp(
         title: 'MovieFinder',
         theme: ThemeData(),
-        home: BlocProvider<LoginBloc>(
+        home: BlocProvider<AuthBloc>(
             create: (_) => loginBloc,
             child: widget
         )
@@ -67,12 +67,12 @@ void main() {
         Stream<AuthState>.fromIterable([
           const NotLoggedIn(),
           const LoggingIn(),
-          const LoginError("Login error!")
+          const AuthError("Login error!")
         ],),
         initialState: const NotLoggedIn()
     );
     // act
-    await expectLater(loginBloc.stream, emitsInOrder(<AuthState>[const NotLoggedIn(), const LoggingIn(), const LoginError("Login error!")]));
+    await expectLater(loginBloc.stream, emitsInOrder(<AuthState>[const NotLoggedIn(), const LoggingIn(), const AuthError("Login error!")]));
     await widgetTester.pumpWidget(createWidgetUnderTest(const LoginDialogErrorMessage()));
     // assert
     expect(find.byType(Center), findsOneWidget);

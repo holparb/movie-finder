@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_state.dart';
-import 'package:movie_finder/presentation/bloc/auth/login_bloc.dart';
+import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
 import 'package:movie_finder/presentation/widgets/login/not_logged_in_screen.dart';
 import 'package:movie_finder/presentation/widgets/saved_movies_list/saved_movies_list.dart';
 
@@ -10,7 +10,7 @@ class SavedMoviesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginBloc, AuthState>(
+    return BlocConsumer<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is LoggedIn) {
           return const SavedMoviesList();

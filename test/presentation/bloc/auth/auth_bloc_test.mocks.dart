@@ -10,6 +10,7 @@ import 'package:movie_finder/core/data_state.dart' as _i3;
 import 'package:movie_finder/domain/entities/user.dart' as _i6;
 import 'package:movie_finder/domain/repositories/auth_repository.dart' as _i2;
 import 'package:movie_finder/domain/usecases/login.dart' as _i4;
+import 'package:movie_finder/domain/usecases/logout.dart' as _i7;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -80,4 +81,40 @@ class MockLoginUsecase extends _i1.Mock implements _i4.LoginUsecase {
           ),
         )),
       ) as _i5.Future<_i3.DataState<_i6.User>>);
+}
+
+/// A class which mocks [LogoutUsecase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLogoutUsecase extends _i1.Mock implements _i7.LogoutUsecase {
+  MockLogoutUsecase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.AuthRepository get authRepository => (super.noSuchMethod(
+        Invocation.getter(#authRepository),
+        returnValue: _FakeAuthRepository_0(
+          this,
+          Invocation.getter(#authRepository),
+        ),
+      ) as _i2.AuthRepository);
+
+  @override
+  _i5.Future<_i3.DataState<void>> call({dynamic params}) => (super.noSuchMethod(
+        Invocation.method(
+          #call,
+          [],
+          {#params: params},
+        ),
+        returnValue:
+            _i5.Future<_i3.DataState<void>>.value(_FakeDataState_1<void>(
+          this,
+          Invocation.method(
+            #call,
+            [],
+            {#params: params},
+          ),
+        )),
+      ) as _i5.Future<_i3.DataState<void>>);
 }

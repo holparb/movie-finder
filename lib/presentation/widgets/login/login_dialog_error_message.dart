@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_state.dart';
-import 'package:movie_finder/presentation/bloc/auth/login_bloc.dart';
+import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
 
 class LoginDialogErrorMessage extends StatelessWidget {
   const LoginDialogErrorMessage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, AuthState>(
+    return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if(state is LoginError) {
+        if(state is AuthError) {
           return Center(
               child: Column(
                 children: [
@@ -23,9 +23,9 @@ class LoginDialogErrorMessage extends StatelessWidget {
         return const SizedBox(height: 8,);
       },
       buildWhen: (previousState, currentState) {
-        return (previousState is LoggingIn && currentState is LoginError)
-            || (previousState is LoginError && currentState is LoggingIn)
-            || (previousState is LoginError && currentState is NotLoggedIn);
+        return (previousState is LoggingIn && currentState is AuthError)
+            || (previousState is AuthError && currentState is LoggingIn)
+            || (previousState is AuthError && currentState is NotLoggedIn);
       },
     );
   }

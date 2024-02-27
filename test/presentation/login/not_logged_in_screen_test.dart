@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_event.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_state.dart';
-import 'package:movie_finder/presentation/bloc/auth/login_bloc.dart';
+import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
 import 'package:movie_finder/presentation/widgets/login/login_dialog.dart';
 import 'package:movie_finder/presentation/widgets/login/not_logged_in_screen.dart';
 
-class MockLoginBloc extends MockBloc<AuthEvent, AuthState> implements LoginBloc {}
+class MockLoginBloc extends MockBloc<AuthEvent, AuthState> implements AuthBloc {}
 
 void main() {
   Widget createWidgetUnderTest(Widget widget) {
@@ -69,7 +69,7 @@ void main() {
     // act
     await expectLater(loginBloc.stream, emitsInOrder(<AuthState>[const NotLoggedIn()]));
     await widgetTester.pumpWidget(
-        BlocProvider<LoginBloc>(
+        BlocProvider<AuthBloc>(
           create: (_) => loginBloc,
           child: MaterialApp(
               title: "MovieFinder",
