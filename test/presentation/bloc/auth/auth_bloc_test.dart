@@ -79,17 +79,18 @@ void main() {
     );
 
     HttpError error = const HttpError(message: "Logout failed!");
-    blocTest<AuthBloc, AuthState>("Should not set state to NotLoggedIn if DataFailure is returned from logoutUsecase",
+    blocTest<AuthBloc, AuthState>("Should set state to AuthErrorLogout  if DataFailure is returned from logoutUsecase",
         build: () {
           when(loginUsecase(params: loginParams)).thenAnswer((_) async => DataSuccess(testUser));
-          when(logoutUsecase()).thenThrow(error);
+          when(logoutUsecase()).thenAnswer((_) async => DataFailure(error));
           return authBloc;
         },
-        act: (bloc) => bloc.add(LogIn(loginParams: loginParams)),
+        act: (bloc) { bloc.add(LogIn(loginParams: loginParams)); bloc.add(const LogOut());},
         wait: const Duration(seconds: 1),
         expect: () => [
           const LoggingIn(),
           const LoggedIn(),
+          AuthError(error.message)
         ]
     );
   });
