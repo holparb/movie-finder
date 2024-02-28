@@ -24,8 +24,10 @@ class AuthRepositoryImpl implements AuthRepository {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       // Generally it is not a good idea to store user and session data
       // in shared prefs for security reasons but for now it will be done this way to speed up practice
+      // This local storage handling should be moved a dedicated local data source in the future
       await prefs.setString("sessionId", sessionId);
       await prefs.setString("userId", user.id as String);
+      await prefs.setString("userName", user.username);
       return DataSuccess(user);
     }
     on DataError catch(error) {
@@ -45,7 +47,13 @@ class AuthRepositoryImpl implements AuthRepository {
         return const DataFailure(DataError(message: "Session id could not be read from local storage"));
       }
       final success = await authDataSource.deleteSession({"session_id": sessionId});
-      return success ? const DataSuccess(null) : const DataFailure(HttpError(message: "Session delete was unsuccessful!"));
+      if(!success) {
+        return const DataFailure(HttpError(message: "Session delete was unsuccessful!"));
+      }
+      prefs.remove("sessionId");
+      prefs.remove("userId");
+      prefs.remove("userName");
+      return const DataSuccess(null);
     }
     on HttpError catch(error) {
       return DataFailure(HttpError(message: error.message));
