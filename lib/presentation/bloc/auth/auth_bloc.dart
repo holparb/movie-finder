@@ -24,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
 
     if(dataState is DataSuccess) {
-      emit(const LoggedIn());
+      emit(LoggedIn(dataState.data!.username));
     }
   }
 

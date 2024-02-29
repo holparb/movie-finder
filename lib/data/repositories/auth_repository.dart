@@ -26,7 +26,7 @@ class AuthRepositoryImpl implements AuthRepository {
       // in shared prefs for security reasons but for now it will be done this way to speed up practice
       // This local storage handling should be moved a dedicated local data source in the future
       await prefs.setString("sessionId", sessionId);
-      await prefs.setString("userId", user.id as String);
+      await prefs.setString("userId", user.id.toString());
       await prefs.setString("userName", user.username);
       return DataSuccess(user);
     }

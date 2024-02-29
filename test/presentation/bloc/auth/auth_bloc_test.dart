@@ -42,7 +42,7 @@ void main() {
         wait: const Duration(seconds: 1),
         expect: () => [
           const LoggingIn(),
-          const LoggedIn()
+          LoggedIn(testUser.username)
         ]
     );
 
@@ -73,7 +73,7 @@ void main() {
         wait: const Duration(seconds: 1),
         expect: () => [
           const LoggingIn(),
-          const LoggedIn(),
+          LoggedIn(testUser.username),
           const NotLoggedIn()
         ]
     );
@@ -89,7 +89,7 @@ void main() {
         wait: const Duration(seconds: 1),
         expect: () => [
           const LoggingIn(),
-          const LoggedIn(),
+          LoggedIn(testUser.username),
           AuthError(error.message)
         ]
     );

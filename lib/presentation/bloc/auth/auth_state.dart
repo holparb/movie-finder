@@ -19,10 +19,11 @@ class LoggingIn extends AuthState {
 }
 
 class LoggedIn extends AuthState {
-  const LoggedIn();
+  final String username;
+  const LoggedIn(this.username);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [username];
 }
 
 class AuthError extends AuthState {

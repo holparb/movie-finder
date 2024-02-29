@@ -7,7 +7,7 @@ import 'package:movie_finder/presentation/bloc/auth/auth_state.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
 import 'package:movie_finder/presentation/pages/saved_movies_page.dart';
 import 'package:movie_finder/presentation/widgets/login/not_logged_in_screen.dart';
-import 'package:movie_finder/presentation/widgets/saved_movies_list/saved_movies_list.dart';
+import 'package:movie_finder/presentation/widgets/saved_movies_list/saved_movies.dart';
 
 class MockLoginBloc extends MockBloc<AuthEvent, AuthState> implements AuthBloc {}
 
@@ -36,15 +36,15 @@ void main() {
         Stream<AuthState>.fromIterable([
           const NotLoggedIn(),
           const LoggingIn(),
-          const LoggedIn()
+          const LoggedIn("username")
         ],),
         initialState: const NotLoggedIn()
     );
     // act
-    await expectLater(loginBloc.stream, emitsInOrder(<AuthState>[const NotLoggedIn(), const LoggingIn(), const LoggedIn()]));
+    await expectLater(loginBloc.stream, emitsInOrder(<AuthState>[const NotLoggedIn(), const LoggingIn(), const LoggedIn("username")]));
     await widgetTester.pumpWidget(createWidgetUnderTest(const SavedMoviesPage()));
     // assert
-    expect(find.byType(SavedMoviesList), findsOneWidget);
+    expect(find.byType(SavedMovies), findsOneWidget);
   });
 
   testWidgets("Should display NotLoggedInScreen widget when logged in", (widgetTester) async {
