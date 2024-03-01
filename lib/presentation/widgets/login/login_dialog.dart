@@ -17,8 +17,15 @@ class LoginDialog extends StatefulWidget {
 class _LoginDialogState extends State<LoginDialog> {
   final _formKey = GlobalKey<FormState>();
 
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    username = "";
+    password = "";
+  }
+
+  late String username;
+  late String password;
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +46,9 @@ class _LoginDialogState extends State<LoginDialog> {
               children: [
                 const Image(image: AssetImage("assets/images/tmdb_logo.png")),
                 const SizedBox(height: 24,),
-                LoginTextFormField(controller: usernameController, hintText: "Username", validatorErrorMessage: "Please enter username!"),
+                LoginTextFormField(onChange: onUserNameChange, hintText: "Username", validatorErrorMessage: "Please enter username!"),
                 const SizedBox(height: 16,),
-                LoginTextFormField(controller: passwordController, hintText: "Password", validatorErrorMessage: "Please enter password!"),
+                LoginTextFormField(onChange: onPasswordChange, hintText: "Password", validatorErrorMessage: "Please enter password!", hideText: true,),
                 const SizedBox(height: 16,),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -80,23 +87,27 @@ class _LoginDialogState extends State<LoginDialog> {
     );
   }
 
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    usernameController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
   void onLoginCancel(BuildContext context) {
     BlocProvider.of<AuthBloc>(context).add(const InitAuthState());
     Navigator.pop(context);
   }
 
+  void onUserNameChange(String text) {
+    setState(() {
+      username = text;
+    });
+  }
+
+  void onPasswordChange(String text) {
+    setState(() {
+      password = text;
+    });
+  }
+
   void onLoginButtonPressed(BuildContext context) {
     if(_formKey.currentState!.validate()) {
       BlocProvider.of<AuthBloc>(context).add(const InitAuthState());
-      BlocProvider.of<AuthBloc>(context).add(LogIn(loginParams: LoginParams(username: usernameController.text, password: passwordController.text)));
+      BlocProvider.of<AuthBloc>(context).add(LogIn(loginParams: LoginParams(username: username, password: password)));
     }
   }
 }

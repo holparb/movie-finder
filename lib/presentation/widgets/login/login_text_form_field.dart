@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
 class LoginTextFormField extends StatelessWidget {
-  const LoginTextFormField({super.key, required this.controller, required this.hintText, required this.validatorErrorMessage});
+  const LoginTextFormField({super.key, required this.onChange, required this.hintText, required this.validatorErrorMessage, this.hideText = false});
 
-  final TextEditingController controller;
+  final Function(String) onChange;
   final String hintText;
   final String validatorErrorMessage;
+  final bool hideText;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: hideText,
+      onChanged: onChange,
       style: TextStyle(fontFamily: "AbeeZee", color: Theme.of(context).colorScheme.onSurfaceVariant),
       decoration: InputDecoration(
         hintText: hintText,
