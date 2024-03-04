@@ -1,17 +1,18 @@
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/core/exceptions/http_error.dart';
+import 'package:movie_finder/data/datasources/local/local_user_data_source.dart';
 import 'package:movie_finder/data/datasources/remote/auth_data_source.dart';
 import 'package:movie_finder/data/models/request_token_model.dart';
 import 'package:movie_finder/data/models/user_model.dart';
 import 'package:movie_finder/domain/repositories/auth_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
 
   final AuthDataSource authDataSource;
+  final LocalUserDataSource userDataSource;
 
-  const AuthRepositoryImpl(this.authDataSource);
+  const AuthRepositoryImpl(this.authDataSource, this.userDataSource);
 
   @override
   Future<DataState<UserModel>> login(Map<String, String> loginRequestBody) async {
@@ -21,13 +22,9 @@ class AuthRepositoryImpl implements AuthRepository {
       requestToken = await authDataSource.validateToken(loginRequestBody);
       final sessionId = await authDataSource.createSession(requestToken);
       UserModel user = await authDataSource.getUserAccountDetails(sessionId);
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
       // Generally it is not a good idea to store user and session data
       // in shared prefs for security reasons but for now it will be done this way to speed up practice
-      // This local storage handling should be moved a dedicated local data source in the future
-      await prefs.setString("sessionId", sessionId);
-      await prefs.setString("userId", user.id.toString());
-      await prefs.setString("userName", user.username);
+      await userDataSource.writeUserData(sessionId, user);
       return DataSuccess(user);
     }
     on DataError catch(error) {
@@ -41,8 +38,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<DataState<void>> logout() async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final sessionId = prefs.getString("sessionId");
+      final sessionId = await userDataSource.readSessionId();
       if(sessionId == null) {
         return const DataFailure(DataError(message: "Session id could not be read from local storage"));
       }
@@ -50,9 +46,7 @@ class AuthRepositoryImpl implements AuthRepository {
       if(!success) {
         return const DataFailure(HttpError(message: "Session delete was unsuccessful!"));
       }
-      prefs.remove("sessionId");
-      prefs.remove("userId");
-      prefs.remove("userName");
+      await userDataSource.deleteUserData();
       return const DataSuccess(null);
     }
     on HttpError catch(error) {

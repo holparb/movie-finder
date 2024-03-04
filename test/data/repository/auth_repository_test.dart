@@ -4,6 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/core/exceptions/http_error.dart';
+import 'package:movie_finder/data/datasources/local/local_user_data_source.dart';
 import 'package:movie_finder/data/datasources/remote/auth_data_source.dart';
 import 'package:movie_finder/data/repositories/auth_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,15 +12,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../helper/test_data.dart';
 import 'auth_repository_test.mocks.dart';
 
-@GenerateMocks([AuthDataSource])
+@GenerateMocks([AuthDataSource, LocalUserDataSource])
 void main() {
 
   late MockAuthDataSource remoteDataSource;
+  late MockLocalUserDataSource userDataSource;
   late AuthRepositoryImpl repository;
 
   setUp(() {
     remoteDataSource = MockAuthDataSource();
-    repository = AuthRepositoryImpl(remoteDataSource);
+    userDataSource = MockLocalUserDataSource();
+    repository = AuthRepositoryImpl(remoteDataSource, userDataSource);
   });
 
   Map<String, String> loginRequestBody = {

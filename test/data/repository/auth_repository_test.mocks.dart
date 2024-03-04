@@ -8,6 +8,8 @@ import 'dart:async' as _i6;
 import 'package:http/http.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i7;
+import 'package:movie_finder/data/datasources/local/local_user_data_source.dart'
+    as _i8;
 import 'package:movie_finder/data/datasources/remote/auth_data_source.dart'
     as _i5;
 import 'package:movie_finder/data/models/request_token_model.dart' as _i3;
@@ -196,4 +198,50 @@ class MockAuthDataSource extends _i1.Mock implements _i5.AuthDataSource {
           body,
         ],
       ));
+}
+
+/// A class which mocks [LocalUserDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLocalUserDataSource extends _i1.Mock
+    implements _i8.LocalUserDataSource {
+  MockLocalUserDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Future<void> writeUserData(
+    String? sessionId,
+    _i4.UserModel? user,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #writeUserData,
+          [
+            sessionId,
+            user,
+          ],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> deleteUserData() => (super.noSuchMethod(
+        Invocation.method(
+          #deleteUserData,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<String?> readSessionId() => (super.noSuchMethod(
+        Invocation.method(
+          #readSessionId,
+          [],
+        ),
+        returnValue: _i6.Future<String?>.value(),
+      ) as _i6.Future<String?>);
 }
