@@ -1,5 +1,5 @@
 import 'package:movie_finder/config/tmdb_api_config.dart';
-import 'package:movie_finder/data/datasources/remote/data_source.dart';
+import 'package:movie_finder/data/datasources/remote/remote_data_source.dart';
 import 'package:movie_finder/data/models/movie_model.dart';
 
 class MoviesDataSource extends DataSource {

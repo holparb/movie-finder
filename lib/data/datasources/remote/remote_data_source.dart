@@ -11,7 +11,7 @@ abstract class DataSource {
 
   DataSource(this.client);
 
-  /// Creates https://api.themoviedb.org/3/{endpoint} url
+  /// Creates https://api.themoviedb.org/3/{endpoint} url with API key added as parameter
   String createUrlString(String endpoint) {
     return "${TmdbApiConfig.baseUrl}$endpoint?api_key=${TmdbApiConfig.apiKey}";
   }
