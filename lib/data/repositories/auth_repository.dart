@@ -53,4 +53,12 @@ class AuthRepositoryImpl implements AuthRepository {
       return DataFailure(HttpError(message: error.message));
     }
   }
+
+  @override
+  Future<bool> isUserLoggedIn() async {
+    final sessionId = await userDataSource.readSessionId();
+    // User is logged in if a non empty session id is stored in shared prefs
+    return sessionId != null ? true : false;
+  }
+
 }

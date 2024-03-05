@@ -160,4 +160,24 @@ void main() {
       expect(result.error, error);
     });
   });
+
+  group("User logged in status", () {
+    test("Should return true if data source readSessionId returns sessionId", () async {
+      // arrange
+      when(userDataSource.readSessionId()).thenAnswer((_) async => testSessionId);
+      // act
+      final isUserLoggedIn = await repository.isUserLoggedIn();
+      // assert
+      expect(isUserLoggedIn, true);
+    });
+
+    test("Should return false if data source readSessionId returns null", () async {
+      // arrange
+      when(userDataSource.readSessionId()).thenAnswer((_) async => null);
+      // act
+      final isUserLoggedIn = await repository.isUserLoggedIn();
+      // assert
+      expect(isUserLoggedIn, false);
+    });
+  });
 }
