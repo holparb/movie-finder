@@ -244,4 +244,13 @@ class MockLocalUserDataSource extends _i1.Mock
         ),
         returnValue: _i6.Future<String?>.value(),
       ) as _i6.Future<String?>);
+
+  @override
+  _i6.Future<String?> readUsername() => (super.noSuchMethod(
+        Invocation.method(
+          #readUsername,
+          [],
+        ),
+        returnValue: _i6.Future<String?>.value(),
+      ) as _i6.Future<String?>);
 }

@@ -155,11 +155,11 @@ class MockAuthRepository extends _i1.Mock implements _i6.AuthRepository {
       ) as _i4.Future<_i2.DataState<void>>);
 
   @override
-  _i4.Future<bool> isUserLoggedIn() => (super.noSuchMethod(
+  _i4.Future<String?> isUserLoggedIn() => (super.noSuchMethod(
         Invocation.method(
           #isUserLoggedIn,
           [],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i4.Future<String?>.value(),
+      ) as _i4.Future<String?>);
 }

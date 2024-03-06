@@ -10,6 +10,7 @@ import 'package:movie_finder/domain/repositories/movie_repository.dart';
 import 'package:movie_finder/domain/usecases/get_movie_details.dart';
 import 'package:movie_finder/domain/usecases/get_popular_movies.dart';
 import 'package:movie_finder/domain/usecases/get_top_rated_movies.dart';
+import 'package:movie_finder/domain/usecases/is_user_logged_in.dart';
 import 'package:movie_finder/domain/usecases/login.dart';
 import 'package:movie_finder/domain/usecases/logout.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
@@ -44,10 +45,11 @@ Future<void> initializeDependencies() async {
   serviceLocator.registerSingleton<GetPopularMoviesUseCase>(GetPopularMoviesUseCase(serviceLocator()));
   serviceLocator.registerSingleton<LoginUsecase>(LoginUsecase(serviceLocator()));
   serviceLocator.registerSingleton<LogoutUsecase>(LogoutUsecase(serviceLocator()));
+  serviceLocator.registerSingleton<IsUserLoggedInUseCase>(IsUserLoggedInUseCase(serviceLocator()));
 
   // blocs
   serviceLocator.registerFactory<TopRatedMoviesBloc>(() => TopRatedMoviesBloc(serviceLocator()));
   serviceLocator.registerFactory<PopularMoviesBloc>(() => PopularMoviesBloc(serviceLocator()));
   serviceLocator.registerFactory<MovieDetailsBloc>(() => MovieDetailsBloc(serviceLocator()));
-  serviceLocator.registerFactory<AuthBloc>(() => AuthBloc(serviceLocator(), serviceLocator()));
+  serviceLocator.registerFactory<AuthBloc>(() => AuthBloc(serviceLocator(), serviceLocator(), serviceLocator()));
 }

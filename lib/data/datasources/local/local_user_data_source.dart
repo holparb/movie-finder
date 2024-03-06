@@ -21,9 +21,17 @@ class LocalUserDataSource {
     return;
   }
 
-  Future<String?> readSessionId() async {
+  Future<String?> _readString(String key) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final sessionId = prefs.getString("sessionId");
-    return (sessionId != null && sessionId.isNotEmpty) ? sessionId : null;
+    final stringValue = prefs.getString(key);
+    return (stringValue != null && stringValue.isNotEmpty) ? stringValue : null;
+  }
+
+  Future<String?> readSessionId() async {
+    return await _readString("sessionId");
+  }
+
+  Future<String?> readUsername() async {
+    return await _readString("username");
   }
 }

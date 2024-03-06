@@ -14,21 +14,22 @@ void main() {
     usecase = IsUserLoggedInUseCase(mockAuthRepository);
   });
 
-  test("Should return true if user is logged in", () async  {
+  test("Should return username if user is logged in", () async  {
     // arrange
-    when(mockAuthRepository.isUserLoggedIn()).thenAnswer((_) async => true);
+    String username = "username";
+    when(mockAuthRepository.isUserLoggedIn()).thenAnswer((_) async => username);
     // act
     final result = await usecase();
     // assert
-    expect(result, true);
+    expect(result, username);
   });
 
-  test("Should return false if user is not logged in", () async {
+  test("Should return null if user is not logged in", () async {
     // arrange
-    when(mockAuthRepository.isUserLoggedIn()).thenAnswer((_) async => false);
+    when(mockAuthRepository.isUserLoggedIn()).thenAnswer((_) async => null);
     // act
     final result = await usecase();
     // assert
-    expect(result, false);
+    expect(result, null);
   });
 }

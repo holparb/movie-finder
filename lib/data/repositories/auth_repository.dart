@@ -55,10 +55,13 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<bool> isUserLoggedIn() async {
+  Future<String?> isUserLoggedIn() async {
     final sessionId = await userDataSource.readSessionId();
     // User is logged in if a non empty session id is stored in shared prefs
-    return sessionId != null ? true : false;
+    if(sessionId == null) {
+      return null;
+    }
+    return await userDataSource.readUsername();
   }
 
 }

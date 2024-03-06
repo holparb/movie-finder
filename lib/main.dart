@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           BlocProvider<AuthBloc>(create: (_) => serviceLocator<AuthBloc>())
         ],
         child: MaterialApp.router(
-          title: 'MovieFinder',
+          title: "MovieFinder",
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: ThemeMode.dark,
