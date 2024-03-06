@@ -1,5 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:movie_finder/data/models/user_model.dart';
+import 'package:movie_finder/core/constants.dart' as constants;
 
 class LocalUserDataSource {
 
@@ -7,17 +8,17 @@ class LocalUserDataSource {
 
   Future<void> writeUserData(String sessionId, UserModel user) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString("sessionId", sessionId);
-    await prefs.setInt("userId", user.id);
-    await prefs.setString("userName", user.username);
+    await prefs.setString(constants.sessionId, sessionId);
+    await prefs.setInt(constants.userId, user.id);
+    await prefs.setString(constants.username, user.username);
     return;
   }
 
   Future<void> deleteUserData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove("sessionId");
-    await prefs.remove("userId");
-    await prefs.remove("userName");
+    await prefs.remove(constants.sessionId);
+    await prefs.remove(constants.userId);
+    await prefs.remove(constants.username);
     return;
   }
 
@@ -28,10 +29,10 @@ class LocalUserDataSource {
   }
 
   Future<String?> readSessionId() async {
-    return await _readString("sessionId");
+    return await _readString(constants.sessionId);
   }
 
   Future<String?> readUsername() async {
-    return await _readString("username");
+    return await _readString(constants.username);
   }
 }
