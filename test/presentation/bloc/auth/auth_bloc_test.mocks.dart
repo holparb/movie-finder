@@ -9,6 +9,7 @@ import 'package:mockito/mockito.dart' as _i1;
 import 'package:movie_finder/core/data_state.dart' as _i3;
 import 'package:movie_finder/domain/entities/user.dart' as _i6;
 import 'package:movie_finder/domain/repositories/auth_repository.dart' as _i2;
+import 'package:movie_finder/domain/usecases/is_user_logged_in.dart' as _i8;
 import 'package:movie_finder/domain/usecases/login.dart' as _i4;
 import 'package:movie_finder/domain/usecases/logout.dart' as _i7;
 
@@ -117,4 +118,33 @@ class MockLogoutUsecase extends _i1.Mock implements _i7.LogoutUsecase {
           ),
         )),
       ) as _i5.Future<_i3.DataState<void>>);
+}
+
+/// A class which mocks [IsUserLoggedInUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockIsUserLoggedInUseCase extends _i1.Mock
+    implements _i8.IsUserLoggedInUseCase {
+  MockIsUserLoggedInUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.AuthRepository get authRepository => (super.noSuchMethod(
+        Invocation.getter(#authRepository),
+        returnValue: _FakeAuthRepository_0(
+          this,
+          Invocation.getter(#authRepository),
+        ),
+      ) as _i2.AuthRepository);
+
+  @override
+  _i5.Future<String?> call({dynamic params}) => (super.noSuchMethod(
+        Invocation.method(
+          #call,
+          [],
+          {#params: params},
+        ),
+        returnValue: _i5.Future<String?>.value(),
+      ) as _i5.Future<String?>);
 }

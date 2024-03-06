@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/core/exceptions/http_error.dart';
+import 'package:movie_finder/domain/usecases/is_user_logged_in.dart';
 import 'package:movie_finder/domain/usecases/login.dart';
 import 'package:movie_finder/domain/usecases/logout.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_event.dart';
@@ -14,17 +15,19 @@ import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
 import '../../../helper/test_data.dart';
 import 'auth_bloc_test.mocks.dart';
 
-@GenerateMocks([LoginUsecase, LogoutUsecase])
+@GenerateMocks([LoginUsecase, LogoutUsecase, IsUserLoggedInUseCase])
 void main() {
 
   late MockLoginUsecase loginUsecase;
   late MockLogoutUsecase logoutUsecase;
+  late IsUserLoggedInUseCase userLoggedInUseCase;
   late AuthBloc authBloc;
 
   setUp(() {
     loginUsecase = MockLoginUsecase();
     logoutUsecase = MockLogoutUsecase();
-    authBloc = AuthBloc(loginUsecase, logoutUsecase);
+    userLoggedInUseCase = MockIsUserLoggedInUseCase();
+    authBloc = AuthBloc(loginUsecase, logoutUsecase, userLoggedInUseCase);
   });
 
   test("Initial state should be NotLoggedIn", () {
@@ -91,6 +94,31 @@ void main() {
           const LoggingIn(),
           LoggedIn(testUser.username),
           AuthError(error.message)
+        ]
+    );
+  });
+
+  group("User logged in status check", () {
+    const String username = "username";
+    blocTest<AuthBloc, AuthState>("Should set state to LoggenIn if non null is returned from usecase",
+      build: () {
+        when(userLoggedInUseCase()).thenAnswer((_) async => username);
+        return authBloc;
+      },
+      act: (bloc) { bloc.add(const CheckUserLoginStatus()); },
+      expect: () => [
+        const LoggedIn(username)
+      ]
+    );
+
+    blocTest<AuthBloc, AuthState>("Should set state to NotLoggedIn if null is returned from usecase",
+        build: () {
+          when(userLoggedInUseCase()).thenAnswer((_) async => null);
+          return authBloc;
+        },
+        act: (bloc) { bloc.add(const CheckUserLoginStatus()); },
+        expect: () => [
+          const NotLoggedIn()
         ]
     );
   });
