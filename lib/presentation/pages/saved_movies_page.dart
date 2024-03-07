@@ -13,11 +13,19 @@ class SavedMoviesPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: BlocConsumer<AuthBloc, AuthState>(
+        buildWhen: (previousState, currentState) {
+          return previousState != currentState && (currentState is LoggedIn || currentState is NotLoggedIn);
+        },
         builder: (context, state) {
           if (state is LoggedIn) {
             return SavedMovies(username: state.username);
           }
-          return const NotLoggedInScreen();
+          else {
+            return const NotLoggedInScreen();
+          }
+        },
+        listenWhen: (previousState, currentState) {
+          return previousState is LoggingIn && currentState is LoggedIn;
         },
         listener: (context, state) {
           if (state is LoggedIn) {

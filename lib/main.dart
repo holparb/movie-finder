@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
+import 'package:movie_finder/presentation/bloc/auth/auth_event.dart';
 import 'package:movie_finder/presentation/bloc/movie_details/movie_details_bloc.dart';
 import 'package:movie_finder/router/app_router.dart';
 import 'package:movie_finder/config/app_theme.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider<MovieDetailsBloc>(create: (_) => serviceLocator<MovieDetailsBloc>()),
-          BlocProvider<AuthBloc>(create: (_) => serviceLocator<AuthBloc>())
+          BlocProvider<AuthBloc>(create: (_) => serviceLocator<AuthBloc>()..add(const CheckUserLoginStatus()))
         ],
         child: MaterialApp.router(
           title: "MovieFinder",
