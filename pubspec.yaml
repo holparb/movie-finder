@@ -1,5 +1,5 @@
 name: movie_finder
-description: "A new Flutter project."
+description: "Find movies based on popularity or ratings and add them to a watch list. Watch list requires TMDB account."
 
 publish_to: 'none'
 
@@ -21,6 +21,7 @@ dependencies:
   cached_network_image: ^3.3.1
   equatable: ^2.0.5
   auto_route: ^7.8.4
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
@@ -36,13 +37,18 @@ flutter:
 
   assets:
     - assets/images/image_placeholder.png
+    - assets/images/tmdb_logo.png
+    - assets/images/1.5x/tmdb_logo.png
+    - assets/images/2.0x/tmdb_logo.png
+    - assets/images/3.0x/tmdb_logo.png
+    - assets/images/4.0x/tmdb_logo.png
 
   fonts:
     - family: AbeeZee
       fonts:
-        - asset: fonts/ABeeZee-Regular.ttf
+        - asset: assets/fonts/ABeeZee-Regular.ttf
     - family: BebasNeue
       fonts:
-        - asset: fonts/BebasNeue-Regular.ttf
+        - asset: assets/fonts/BebasNeue-Regular.ttf
 
   uses-material-design: true

@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:movie_finder/core/data_state.dart';
+import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/data/datasources/remote/movies_data_source.dart';
 import 'package:movie_finder/data/repositories/movie_repository.dart';
 
@@ -12,11 +13,11 @@ import 'movie_repository_test.mocks.dart';
 void main() {
 
   late MockMoviesDataSource remoteDataSource;
-  late MovieRepositoryImplementation repository;
+  late MovieRepositoryImpl repository;
 
   setUp(() {
     remoteDataSource = MockMoviesDataSource();
-    repository = MovieRepositoryImplementation(remoteDataSource);
+    repository = MovieRepositoryImpl(remoteDataSource);
   });
 
   group("Get trending movies from MovieRepositoryImplementation", () {

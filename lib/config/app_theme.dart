@@ -36,7 +36,7 @@ const lightColorScheme = ColorScheme(
 
 const darkColorScheme = ColorScheme(
   brightness: Brightness.dark,
-  primary: Color(0xFFE3B5FF),
+  primary: Color(0xFFEFFFFF),
   onPrimary: Color(0xFF4E0079),
   primaryContainer: Color(0xFF6E00AA),
   onPrimaryContainer: Color(0xFFF3DAFF),
@@ -81,5 +81,9 @@ final darkTheme = ThemeData(
   colorScheme: darkColorScheme,
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(elevation: MaterialStateProperty.all(0)),
+  ),
+  textSelectionTheme: const TextSelectionThemeData(
+    cursorColor: Color(0xFFCDC3CE),
+    selectionColor: Color(0xFFCDC3CE)
   ),
 );

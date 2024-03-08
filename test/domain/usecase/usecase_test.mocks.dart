@@ -8,6 +8,8 @@ import 'dart:async' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:movie_finder/core/data_state.dart' as _i2;
 import 'package:movie_finder/domain/entities/movie.dart' as _i5;
+import 'package:movie_finder/domain/entities/user.dart' as _i7;
+import 'package:movie_finder/domain/repositories/auth_repository.dart' as _i6;
 import 'package:movie_finder/domain/repositories/movie_repository.dart' as _i3;
 
 // ignore_for_file: type=lint
@@ -108,4 +110,56 @@ class MockMovieRepository extends _i1.Mock implements _i3.MovieRepository {
           ),
         )),
       ) as _i4.Future<_i2.DataState<_i5.Movie>>);
+}
+
+/// A class which mocks [AuthRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAuthRepository extends _i1.Mock implements _i6.AuthRepository {
+  MockAuthRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Future<_i2.DataState<_i7.User>> login(
+          Map<String, String>? loginRequest) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #login,
+          [loginRequest],
+        ),
+        returnValue: _i4.Future<_i2.DataState<_i7.User>>.value(
+            _FakeDataState_0<_i7.User>(
+          this,
+          Invocation.method(
+            #login,
+            [loginRequest],
+          ),
+        )),
+      ) as _i4.Future<_i2.DataState<_i7.User>>);
+
+  @override
+  _i4.Future<_i2.DataState<void>> logout() => (super.noSuchMethod(
+        Invocation.method(
+          #logout,
+          [],
+        ),
+        returnValue:
+            _i4.Future<_i2.DataState<void>>.value(_FakeDataState_0<void>(
+          this,
+          Invocation.method(
+            #logout,
+            [],
+          ),
+        )),
+      ) as _i4.Future<_i2.DataState<void>>);
+
+  @override
+  _i4.Future<String?> isUserLoggedIn() => (super.noSuchMethod(
+        Invocation.method(
+          #isUserLoggedIn,
+          [],
+        ),
+        returnValue: _i4.Future<String?>.value(),
+      ) as _i4.Future<String?>);
 }

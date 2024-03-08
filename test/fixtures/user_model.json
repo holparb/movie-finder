@@ -1,0 +1,16 @@
+{
+  "avatar": {
+    "gravatar": {
+      "hash": "00000000000000000"
+    },
+    "tmdb": {
+      "avatar_path": null
+    }
+  },
+  "id": 123,
+  "iso_639_1": "en",
+  "iso_3166_1": "US",
+  "name": "Test User",
+  "include_adult": true,
+  "username": "test_user"
+}

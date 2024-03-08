@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_finder/presentation/pages/home_page.dart';
-import 'package:movie_finder/presentation/pages/saved_movies_list.dart';
+import 'package:movie_finder/presentation/pages/saved_movies_page.dart';
 import 'package:movie_finder/presentation/pages/search_page.dart';
 
 @RoutePage()
@@ -54,9 +54,9 @@ class _MainPageState extends State<MainPage> {
               label: "Home",
             ),
             NavigationDestination(
-              selectedIcon: Icon(Icons.bookmark, color: iconColor,),
-              icon: Icon(Icons.bookmark_border, color: iconColor,),
-              label: "My list",
+              selectedIcon: Icon(Icons.movie, color: iconColor,),
+              icon: Icon(Icons.movie_outlined, color: iconColor,),
+              label: "Watchlist",
             ),
           ],
           onDestinationSelected: (int index) {
