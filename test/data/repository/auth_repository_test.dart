@@ -104,8 +104,7 @@ void main() {
         "session_id": testSessionId
       };
       // arrange
-      final Map<String, Object> values = <String, Object>{"sessionId": testSessionId};
-      SharedPreferences.setMockInitialValues(values);
+      when(userDataSource.readSessionId()).thenAnswer((_) async => testSessionId);
       when(remoteDataSource.deleteSession(logoutBody)).thenAnswer((_) async => true);
       // act
       final result = await repository.logout();
@@ -118,8 +117,7 @@ void main() {
         "session_id": testSessionId
       };
       // arrange
-      final Map<String, Object> values = <String, Object>{"dummy": 1};
-      SharedPreferences.setMockInitialValues(values);
+      when(userDataSource.readSessionId()).thenAnswer((_) async => null);
       when(remoteDataSource.deleteSession(logoutBody)).thenAnswer((_) async => true);
       // act
       final result = await repository.logout();
@@ -133,8 +131,7 @@ void main() {
         "session_id": testSessionId
       };
       // arrange
-      final Map<String, Object> values = <String, Object>{"sessionId": testSessionId};
-      SharedPreferences.setMockInitialValues(values);
+      when(userDataSource.readSessionId()).thenAnswer((_) async => testSessionId);
       when(remoteDataSource.deleteSession(logoutBody)).thenAnswer((_) async => false);
       // act
       final result = await repository.logout();
@@ -149,8 +146,7 @@ void main() {
       };
       const error = HttpError(message: "error message");
       // arrange
-      final Map<String, Object> values = <String, Object>{"sessionId": testSessionId};
-      SharedPreferences.setMockInitialValues(values);
+      when(userDataSource.readSessionId()).thenAnswer((_) async => testSessionId);
       when(remoteDataSource.deleteSession(logoutBody)).thenThrow(error);
       // act
       final result = await repository.logout();
@@ -162,22 +158,34 @@ void main() {
   });
 
   group("User logged in status", () {
-    test("Should return true if data source readSessionId returns sessionId", () async {
+    test("Should return username if data source readSessionId returns sessionId", () async {
       // arrange
+      const String username = "username";
       when(userDataSource.readSessionId()).thenAnswer((_) async => testSessionId);
+      when(userDataSource.readUsername()).thenAnswer((_) async => username);
       // act
-      final isUserLoggedIn = await repository.isUserLoggedIn();
+      final result = await repository.isUserLoggedIn();
       // assert
-      expect(isUserLoggedIn, true);
+      expect(result, username);
     });
 
     test("Should return false if data source readSessionId returns null", () async {
       // arrange
       when(userDataSource.readSessionId()).thenAnswer((_) async => null);
       // act
-      final isUserLoggedIn = await repository.isUserLoggedIn();
+      final username = await repository.isUserLoggedIn();
       // assert
-      expect(isUserLoggedIn, false);
+      expect(username, null);
+    });
+
+    test("Should return null if data source readUsername returns null", () async {
+      // arrange
+      when(userDataSource.readSessionId()).thenAnswer((_) async => testSessionId);
+      when(userDataSource.readUsername()).thenAnswer((_) async => null);
+      // act
+      final username = await repository.isUserLoggedIn();
+      // assert
+      expect(username, null);
     });
   });
 }

@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:movie_finder/data/datasources/local/local_user_data_source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:movie_finder/core/constants.dart' as constants;
+
 
 import '../../../helper/test_data.dart';
 
@@ -19,9 +21,9 @@ void main() {
     // act
     await userDataSource.writeUserData(testSessionId, testUserModel);
     // assert
-    expect(prefs.getString("sessionId"), testSessionId);
-    expect(prefs.getInt("userId"), testUserModel.id);
-    expect(prefs.getString("userName"), testUserModel.username);
+    expect(prefs.getString(constants.sessionId), testSessionId);
+    expect(prefs.getInt(constants.userId), testUserModel.id);
+    expect(prefs.getString(constants.username), testUserModel.username);
   });
 
   test("Deleting user data", () async {
@@ -35,9 +37,9 @@ void main() {
     // act
     await userDataSource.deleteUserData();
     // assert
-    expect(prefs.getString("sessionId"), null);
-    expect(prefs.getInt("userId"), null);
-    expect(prefs.getString("userName"), null);
+    expect(prefs.getString(constants.sessionId), null);
+    expect(prefs.getInt(constants.userId), null);
+    expect(prefs.getString(constants.username), null);
   });
 
   test("Read sessionId when sessionId exists in local storage", () async {
