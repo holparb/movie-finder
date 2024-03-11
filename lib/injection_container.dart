@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:movie_finder/core/network_info.dart';
+import 'package:movie_finder/core/utils/network_info.dart';
 import 'package:movie_finder/data/datasources/local/local_user_data_source.dart';
 import 'package:movie_finder/data/datasources/remote/auth_data_source.dart';
 import 'package:movie_finder/data/datasources/remote/movies_data_source.dart';

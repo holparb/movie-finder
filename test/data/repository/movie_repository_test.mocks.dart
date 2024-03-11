@@ -63,16 +63,6 @@ class MockMoviesDataSource extends _i1.Mock implements _i4.MoviesDataSource {
       ) as _i2.Client);
 
   @override
-  _i5.Future<List<_i3.MovieModel>> getMoviesList(String? endpoint) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getMoviesList,
-          [endpoint],
-        ),
-        returnValue: _i5.Future<List<_i3.MovieModel>>.value(<_i3.MovieModel>[]),
-      ) as _i5.Future<List<_i3.MovieModel>>);
-
-  @override
   _i5.Future<List<_i3.MovieModel>> getTrendingMovies() => (super.noSuchMethod(
         Invocation.method(
           #getTrendingMovies,
@@ -113,6 +103,16 @@ class MockMoviesDataSource extends _i1.Mock implements _i4.MoviesDataSource {
           ),
         )),
       ) as _i5.Future<_i3.MovieModel>);
+
+  @override
+  _i5.Future<List<_i3.MovieModel>> getWatchList(String? userId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getWatchList,
+          [userId],
+        ),
+        returnValue: _i5.Future<List<_i3.MovieModel>>.value(<_i3.MovieModel>[]),
+      ) as _i5.Future<List<_i3.MovieModel>>);
 
   @override
   String createUrlString(String? endpoint) => (super.noSuchMethod(
