@@ -36,7 +36,7 @@ Future<void> initializeDependencies() async {
   serviceLocator.registerSingleton<LocalUserDataSource>(const LocalUserDataSource());
 
   // repositories
-  serviceLocator.registerSingleton<MovieRepository>(MovieRepositoryImpl(serviceLocator()));
+  serviceLocator.registerSingleton<MovieRepository>(MovieRepositoryImpl(serviceLocator(), serviceLocator()));
   serviceLocator.registerSingleton<AuthRepository>(AuthRepositoryImpl(serviceLocator(), serviceLocator()));
 
   // usecases

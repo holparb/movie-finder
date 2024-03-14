@@ -3,21 +3,24 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
+import 'package:movie_finder/data/datasources/local/local_user_data_source.dart';
 import 'package:movie_finder/data/datasources/remote/movies_data_source.dart';
 import 'package:movie_finder/data/repositories/movie_repository.dart';
 
 import '../../helper/test_data.dart';
 import 'movie_repository_test.mocks.dart';
 
-@GenerateMocks([MoviesDataSource])
+@GenerateMocks([MoviesDataSource, LocalUserDataSource])
 void main() {
 
   late MockMoviesDataSource remoteDataSource;
+  late MockLocalUserDataSource userDataSource;
   late MovieRepositoryImpl repository;
 
   setUp(() {
     remoteDataSource = MockMoviesDataSource();
-    repository = MovieRepositoryImpl(remoteDataSource);
+    userDataSource = MockLocalUserDataSource();
+    repository = MovieRepositoryImpl(remoteDataSource, userDataSource);
   });
 
   group("Get trending movies from MovieRepositoryImplementation", () {
@@ -102,6 +105,58 @@ void main() {
       when(remoteDataSource.getTopRatedMovies()).thenThrow(error);
       // act
       final result = await repository.getTopRatedMovies();
+      // assert
+      expect(result, isA<DataFailure>());
+      expect(result.error, error);
+    });
+  });
+
+  group("Get watchlist", () {
+    test("Should return a valid movie list if no exception was thrown", () async {
+      // arrange
+      when(userDataSource.readSessionId()).thenAnswer((_) async => testSessionId);
+      when(userDataSource.readUserId()).thenAnswer((_) async => testUserModel.id.toString());
+      when(remoteDataSource.getWatchList(testUserModel.id.toString(), testSessionId)).thenAnswer((_) async => testMovieModels);
+      // act
+      final result = await repository.getWatchlist();
+      // assert
+      expect(result, const DataSuccess(testMovieModels));
+    });
+
+    test("Should return DataFailure when userId could not be read", () async {
+      // arrange
+      DataError error = const DataError(message: "Local user data could not be read!");
+      when(userDataSource.readSessionId()).thenAnswer((_) async => testSessionId);
+      when(userDataSource.readUserId()).thenAnswer((_) async => null);
+      when(remoteDataSource.getWatchList(testUserModel.id.toString(), testSessionId)).thenAnswer((_) async => testMovieModels);
+      // act
+      final result = await repository.getWatchlist();
+      // assert
+      expect(result, isA<DataFailure>());
+      expect(result.error, error);
+    });
+
+    test("Should return DataFailure when sessionId could not be read", () async {
+      // arrange
+      DataError error = const DataError(message: "Local user data could not be read!");
+      when(userDataSource.readSessionId()).thenAnswer((_) async => null);
+      when(userDataSource.readUserId()).thenAnswer((_) async => testUserModel.id.toString());
+      when(remoteDataSource.getWatchList(testUserModel.id.toString(), testSessionId)).thenAnswer((_) async => testMovieModels);
+      // act
+      final result = await repository.getWatchlist();
+      // assert
+      expect(result, isA<DataFailure>());
+      expect(result.error, error);
+    });
+
+    test("Should return DataFailure when a DataError exception is thrown by the remote data source", () async {
+      // arrange
+      DataError error = const DataError(message: "Data fetch failed!");
+      when(userDataSource.readSessionId()).thenAnswer((_) async => testSessionId);
+      when(userDataSource.readUserId()).thenAnswer((_) async => testUserModel.id.toString());
+      when(remoteDataSource.getWatchList(testUserModel.id.toString(), testSessionId)).thenThrow(error);
+      // act
+      final result = await repository.getWatchlist();
       // assert
       expect(result, isA<DataFailure>());
       expect(result.error, error);

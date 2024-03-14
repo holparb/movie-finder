@@ -8,9 +8,12 @@ import 'dart:async' as _i5;
 import 'package:http/http.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i6;
+import 'package:movie_finder/data/datasources/local/local_user_data_source.dart'
+    as _i7;
 import 'package:movie_finder/data/datasources/remote/movies_data_source.dart'
     as _i4;
 import 'package:movie_finder/data/models/movie_model.dart' as _i3;
+import 'package:movie_finder/data/models/user_model.dart' as _i8;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -172,4 +175,68 @@ class MockMoviesDataSource extends _i1.Mock implements _i4.MoviesDataSource {
           body,
         ],
       ));
+}
+
+/// A class which mocks [LocalUserDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLocalUserDataSource extends _i1.Mock
+    implements _i7.LocalUserDataSource {
+  MockLocalUserDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.Future<void> writeUserData(
+    String? sessionId,
+    _i8.UserModel? user,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #writeUserData,
+          [
+            sessionId,
+            user,
+          ],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> deleteUserData() => (super.noSuchMethod(
+        Invocation.method(
+          #deleteUserData,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<String?> readSessionId() => (super.noSuchMethod(
+        Invocation.method(
+          #readSessionId,
+          [],
+        ),
+        returnValue: _i5.Future<String?>.value(),
+      ) as _i5.Future<String?>);
+
+  @override
+  _i5.Future<String?> readUsername() => (super.noSuchMethod(
+        Invocation.method(
+          #readUsername,
+          [],
+        ),
+        returnValue: _i5.Future<String?>.value(),
+      ) as _i5.Future<String?>);
+
+  @override
+  _i5.Future<String?> readUserId() => (super.noSuchMethod(
+        Invocation.method(
+          #readUserId,
+          [],
+        ),
+        returnValue: _i5.Future<String?>.value(),
+      ) as _i5.Future<String?>);
 }

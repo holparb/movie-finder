@@ -35,4 +35,8 @@ class LocalUserDataSource {
   Future<String?> readUsername() async {
     return await _readString(constants.username);
   }
+
+  Future<String?> readUserId() async {
+    return await _readString(constants.userId);
+  }
 }
