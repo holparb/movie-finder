@@ -153,16 +153,22 @@ class MockAuthDataSource extends _i1.Mock implements _i5.AuthDataSource {
       ) as _i6.Future<bool>);
 
   @override
-  String createUrlString(String? endpoint) => (super.noSuchMethod(
+  String createUrlString(
+    String? endpoint, {
+    Map<String, String>? queryParameters,
+  }) =>
+      (super.noSuchMethod(
         Invocation.method(
           #createUrlString,
           [endpoint],
+          {#queryParameters: queryParameters},
         ),
         returnValue: _i7.dummyValue<String>(
           this,
           Invocation.method(
             #createUrlString,
             [endpoint],
+            {#queryParameters: queryParameters},
           ),
         ),
       ) as String);

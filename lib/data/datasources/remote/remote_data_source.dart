@@ -6,14 +6,26 @@ import 'package:movie_finder/config/tmdb_api_config.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/core/exceptions/http_error.dart';
 
-abstract class DataSource {
+abstract class RemoteDataSource {
   final http.Client client;
 
-  DataSource(this.client);
+  RemoteDataSource(this.client);
 
   /// Creates https://api.themoviedb.org/3/{endpoint} url with API key added as parameter
-  String createUrlString(String endpoint) {
-    return "${TmdbApiConfig.baseUrl}$endpoint?api_key=${TmdbApiConfig.apiKey}";
+  /// and optional additional query parameters
+  String createUrlString(String endpoint, {Map<String, String>? queryParameters}) {
+    String urlString = "${TmdbApiConfig.baseUrl}$endpoint?api_key=${TmdbApiConfig.apiKey}";
+    if(queryParameters != null && queryParameters.isNotEmpty) {
+      urlString = "$urlString${_createQueryParametersString(queryParameters)}";
+    }
+    return urlString;
+  }
+  String _createQueryParametersString(Map<String, String> parameters) {
+    String parameterString = "";
+    parameters.forEach((key, value) {
+      parameterString = "$parameterString&$key=$value";
+    });
+    return parameterString;
   }
 
   /// Generic GET call
@@ -26,9 +38,11 @@ abstract class DataSource {
       response = await client.get(Uri.parse(url));
     }
     on Exception catch (exception) {
+      log(exception.toString());
       throw DataError(message: exception.toString());
     }
     if (response.statusCode != 200) {
+      log("${response.statusCode}: ${response.reasonPhrase}");
       throw DataError(message: response.reasonPhrase ?? "");
     }
     return json.decode(response.body);

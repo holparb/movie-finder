@@ -105,26 +105,38 @@ class MockMoviesDataSource extends _i1.Mock implements _i4.MoviesDataSource {
       ) as _i5.Future<_i3.MovieModel>);
 
   @override
-  _i5.Future<List<_i3.MovieModel>> getWatchList(String? userId) =>
+  _i5.Future<List<_i3.MovieModel>> getWatchList(
+    String? userId,
+    String? sessionId,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #getWatchList,
-          [userId],
+          [
+            userId,
+            sessionId,
+          ],
         ),
         returnValue: _i5.Future<List<_i3.MovieModel>>.value(<_i3.MovieModel>[]),
       ) as _i5.Future<List<_i3.MovieModel>>);
 
   @override
-  String createUrlString(String? endpoint) => (super.noSuchMethod(
+  String createUrlString(
+    String? endpoint, {
+    Map<String, String>? queryParameters,
+  }) =>
+      (super.noSuchMethod(
         Invocation.method(
           #createUrlString,
           [endpoint],
+          {#queryParameters: queryParameters},
         ),
         returnValue: _i6.dummyValue<String>(
           this,
           Invocation.method(
             #createUrlString,
             [endpoint],
+            {#queryParameters: queryParameters},
           ),
         ),
       ) as String);
