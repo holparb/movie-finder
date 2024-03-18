@@ -20,25 +20,23 @@ class MoviesLoading extends MoviesState {
   const MoviesLoading();
 }
 
-class TrendingMoviesLoaded extends MoviesState {
-  const TrendingMoviesLoaded(List<Movie> movies) : super(movies: movies);
+class MoviesLoaded extends MoviesState {
+  const MoviesLoaded(List<Movie> movies) : super(movies: movies);
 
   @override
   List<Object?> get props => [movies];
 }
 
-class PopularMoviesLoaded extends MoviesState {
-  const PopularMoviesLoaded(List<Movie> movies) : super(movies: movies);
-
-  @override
-  List<Object?> get props => [movies];
+class TrendingMoviesLoaded extends MoviesLoaded {
+  const TrendingMoviesLoaded(super.movies);
 }
 
-class TopRatedMoviesLoaded extends MoviesState {
-  const TopRatedMoviesLoaded(List<Movie> movies) : super(movies: movies);
+class PopularMoviesLoaded extends MoviesLoaded {
+  const PopularMoviesLoaded(super.movies);
+}
 
-  @override
-  List<Object?> get props => [movies];
+class TopRatedMoviesLoaded extends MoviesLoaded {
+  const TopRatedMoviesLoaded(super.movies);
 }
 
 class MoviesError extends MoviesState {
@@ -46,4 +44,8 @@ class MoviesError extends MoviesState {
 
   @override
   List<Object?> get props => [error];
+}
+
+class WatchlistLoaded extends MoviesLoaded {
+  const WatchlistLoaded(super.movies);
 }

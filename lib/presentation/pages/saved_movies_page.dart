@@ -18,7 +18,7 @@ class SavedMoviesPage extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is LoggedIn) {
-            return SavedMovies(username: state.username);
+            return SavedMovies(username: state.username,watchlist: [],);
           }
           else {
             return const NotLoggedInScreen();

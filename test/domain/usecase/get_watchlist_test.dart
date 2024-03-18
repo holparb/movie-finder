@@ -8,12 +8,12 @@ import '../../helper/test_data.dart';
 import 'usecase_test.mocks.dart';
 
 void main() {
-  late GetWatchListUseCase usecase;
+  late GetWatchlistUseCase usecase;
   late MockMovieRepository mockMovieRepository;
 
   setUp(() {
     mockMovieRepository = MockMovieRepository();
-    usecase = GetWatchListUseCase(mockMovieRepository);
+    usecase = GetWatchlistUseCase(mockMovieRepository);
   });
 
   test("Should get watchlist from the repository", () async  {
