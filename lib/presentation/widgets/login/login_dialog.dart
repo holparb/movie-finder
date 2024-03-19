@@ -59,7 +59,15 @@ class _LoginDialogState extends State<LoginDialog> {
                     onPressed: () => onLoginButtonPressed(context),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: BlocBuilder<AuthBloc, AuthState>(
+                      child: BlocConsumer<AuthBloc, AuthState>(
+                          listenWhen: (previousState, currentState) {
+                            return currentState != previousState;
+                          },
+                          listener: (context, state) {
+                            if(state is LoggedIn) {
+                              Navigator.of(context).pop();
+                            }
+                          },
                           builder: (context, state) {
                             if(state is LoggingIn) {
                               return const CircularProgressIndicator();
