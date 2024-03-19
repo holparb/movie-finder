@@ -9,7 +9,7 @@ class LocalUserDataSource {
   Future<void> writeUserData(String sessionId, UserModel user) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(constants.sessionId, sessionId);
-    await prefs.setInt(constants.userId, user.id);
+    await prefs.setString(constants.userId, user.id.toString());
     await prefs.setString(constants.username, user.username);
     return;
   }
