@@ -12,9 +12,9 @@ class SavedMoviesList extends StatelessWidget {
     return GridView.builder(
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 200,
-          mainAxisExtent: 250,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16
+          mainAxisExtent: 310,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8
         ),
         itemCount: movies.length,
         itemBuilder: (context, index) {
