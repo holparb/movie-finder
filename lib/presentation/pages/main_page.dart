@@ -27,11 +27,14 @@ class _MainPageState extends State<MainPage> {
         )),
         centerTitle: true,
       ),
-      body:  <Widget>[
-        const SearchPage(),
-        const HomePage(),
-        const SavedMoviesPage()
-      ][currentPageIndex],
+      body:  IndexedStack(
+        index: currentPageIndex,
+        children: const <Widget>[
+          SearchPage(),
+          HomePage(),
+          SavedMoviesPage()
+        ],
+      ),
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
           labelTextStyle: MaterialStateProperty.resolveWith<TextStyle>(
