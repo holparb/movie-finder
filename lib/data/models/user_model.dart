@@ -1,7 +1,7 @@
 import 'package:movie_finder/domain/entities/user.dart';
 
 class UserModel extends User {
-  UserModel({required super.id, required super.username, required super.sessionId});
+  const UserModel({required super.id, required super.username, required super.sessionId});
 
   factory UserModel.fromJson(Map<String, dynamic> json, String sessionId) {
     return UserModel(

@@ -14,7 +14,7 @@ void main() {
   late MockMovieRepository mockMovieRepository;
 
   Movie testMovieDetail = Movie(id: 1, title: "Movie", overview: "overview", posterPath: "posterPath",
-      voteAverage: 1.0, backdropPath: "backdropPath", genreIds: [],
+      voteAverage: 1.0, backdropPath: "backdropPath", genreIds: const [],
       genres: const [Genre(id: 1, name: "name"), Genre(id: 2, name: "name2")], releaseDate: DateTime.parse("1997-07-12"), runtime: 157);
 
   setUp(() {
