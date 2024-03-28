@@ -16,8 +16,8 @@ class MovieListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: 170,
-        height: 200,
+        width: 150,
+        height: 180,
         child: GestureDetector(
           onTap: () {
             context.pushRoute(MovieDetailsRoute(movie: movie));
@@ -35,13 +35,6 @@ class MovieListItem extends StatelessWidget {
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                   fit: BoxFit.fill,
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Flexible(child: Text(movie.title, style: Theme.of(context).textTheme.bodyLarge, textAlign: TextAlign.center,))
-                ],
               )
             ],
           ),
