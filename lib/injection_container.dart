@@ -1,11 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:movie_finder/core/utils/network_info.dart';
 import 'package:movie_finder/data/datasources/local/local_user_data_source.dart';
-import 'package:movie_finder/data/datasources/remote/auth_data_source.dart';
+import 'package:movie_finder/data/datasources/remote/user_data_source.dart';
 import 'package:movie_finder/data/datasources/remote/movies_data_source.dart';
-import 'package:movie_finder/data/repositories/auth_repository.dart';
+import 'package:movie_finder/data/repositories/user_repository.dart';
 import 'package:movie_finder/data/repositories/movie_repository.dart';
-import 'package:movie_finder/domain/repositories/auth_repository.dart';
+import 'package:movie_finder/domain/repositories/user_repository.dart';
 import 'package:movie_finder/domain/repositories/movie_repository.dart';
 import 'package:movie_finder/domain/usecases/get_movie_details.dart';
 import 'package:movie_finder/domain/usecases/get_popular_movies.dart';
@@ -34,12 +34,12 @@ Future<void> initializeDependencies() async {
 
   // data sources
   serviceLocator.registerSingleton<MoviesDataSource>(MoviesDataSource(serviceLocator()));
-  serviceLocator.registerSingleton<AuthDataSource>(AuthDataSource(serviceLocator()));
+  serviceLocator.registerSingleton<UserDataSource>(UserDataSource(serviceLocator()));
   serviceLocator.registerSingleton<LocalUserDataSource>(const LocalUserDataSource());
 
   // repositories
-  serviceLocator.registerSingleton<MovieRepository>(MovieRepositoryImpl(serviceLocator(), serviceLocator()));
-  serviceLocator.registerSingleton<AuthRepository>(AuthRepositoryImpl(serviceLocator(), serviceLocator()));
+  serviceLocator.registerSingleton<MovieRepository>(MovieRepositoryImpl(serviceLocator()));
+  serviceLocator.registerSingleton<UserRepository>(UserRepositoryImpl(serviceLocator(), serviceLocator()));
 
   // usecases
   serviceLocator.registerSingleton<GetTopRatedMoviesUseCase>(GetTopRatedMoviesUseCase(serviceLocator()));

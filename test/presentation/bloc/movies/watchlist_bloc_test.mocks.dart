@@ -3,13 +3,12 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
+import 'dart:async' as _i4;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:movie_finder/core/data_state.dart' as _i3;
-import 'package:movie_finder/domain/entities/movie.dart' as _i6;
-import 'package:movie_finder/domain/repositories/movie_repository.dart' as _i2;
-import 'package:movie_finder/domain/usecases/get_watchlist.dart' as _i4;
+import 'package:movie_finder/core/data_state.dart' as _i2;
+import 'package:movie_finder/domain/entities/movie.dart' as _i5;
+import 'package:movie_finder/domain/usecases/get_watchlist.dart' as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -24,19 +23,8 @@ import 'package:movie_finder/domain/usecases/get_watchlist.dart' as _i4;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeMovieRepository_0 extends _i1.SmartFake
-    implements _i2.MovieRepository {
-  _FakeMovieRepository_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeDataState_1<T> extends _i1.SmartFake implements _i3.DataState<T> {
-  _FakeDataState_1(
+class _FakeDataState_0<T> extends _i1.SmartFake implements _i2.DataState<T> {
+  _FakeDataState_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -49,30 +37,21 @@ class _FakeDataState_1<T> extends _i1.SmartFake implements _i3.DataState<T> {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockGetWatchlistUseCase extends _i1.Mock
-    implements _i4.GetWatchlistUseCase {
+    implements _i3.GetWatchlistUseCase {
   MockGetWatchlistUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.MovieRepository get repository => (super.noSuchMethod(
-        Invocation.getter(#repository),
-        returnValue: _FakeMovieRepository_0(
-          this,
-          Invocation.getter(#repository),
-        ),
-      ) as _i2.MovieRepository);
-
-  @override
-  _i5.Future<_i3.DataState<List<_i6.Movie>>> call({dynamic params}) =>
+  _i4.Future<_i2.DataState<List<_i5.Movie>>> call({dynamic params}) =>
       (super.noSuchMethod(
         Invocation.method(
           #call,
           [],
           {#params: params},
         ),
-        returnValue: _i5.Future<_i3.DataState<List<_i6.Movie>>>.value(
-            _FakeDataState_1<List<_i6.Movie>>(
+        returnValue: _i4.Future<_i2.DataState<List<_i5.Movie>>>.value(
+            _FakeDataState_0<List<_i5.Movie>>(
           this,
           Invocation.method(
             #call,
@@ -80,5 +59,5 @@ class MockGetWatchlistUseCase extends _i1.Mock
             {#params: params},
           ),
         )),
-      ) as _i5.Future<_i3.DataState<List<_i6.Movie>>>);
+      ) as _i4.Future<_i2.DataState<List<_i5.Movie>>>);
 }

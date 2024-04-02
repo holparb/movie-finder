@@ -9,7 +9,7 @@ import 'package:movie_finder/core/exceptions/http_error.dart';
 abstract class RemoteDataSource {
   final http.Client client;
 
-  RemoteDataSource(this.client);
+  const RemoteDataSource(this.client);
 
   /// Creates https://api.themoviedb.org/3/{endpoint} url with API key added as parameter
   /// and optional additional query parameters

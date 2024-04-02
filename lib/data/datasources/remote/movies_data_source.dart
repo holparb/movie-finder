@@ -6,7 +6,6 @@ import 'package:movie_finder/data/models/movie_model.dart';
 class MoviesDataSource extends RemoteDataSource {
 
   MoviesDataSource(super.client);
-
   /// Returns list of movies for the given endpoint
   Future<List<MovieModel>> _getMoviesList(String endpoint, {Map<String, String>? queryParameters}) async {
     final data = await get(createUrlString(endpoint, queryParameters: queryParameters));
@@ -29,12 +28,5 @@ class MoviesDataSource extends RemoteDataSource {
   Future<MovieModel> getMovieDetails(int id) async {
     final data = await get(createUrlString(formatString(TmdbApiConfig.movieDetailEndpoint, [id.toString()])));
     return MovieModel.fromJson(data);
-  }
-
-  Future<List<MovieModel>> getWatchList(String userId, String sessionId) async {
-    return await _getMoviesList(
-        formatString(TmdbApiConfig.watchListEndpoint, [userId]),
-        queryParameters: {"session_id": sessionId}
-    );
   }
 }

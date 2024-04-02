@@ -5,23 +5,24 @@ import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/core/exceptions/http_error.dart';
 import 'package:movie_finder/data/datasources/local/local_user_data_source.dart';
-import 'package:movie_finder/data/datasources/remote/auth_data_source.dart';
-import 'package:movie_finder/data/repositories/auth_repository.dart';
+import 'package:movie_finder/data/datasources/remote/user_data_source.dart';
+import 'package:movie_finder/data/repositories/user_repository.dart';
 
 import '../../helper/test_data.dart';
-import 'auth_repository_test.mocks.dart';
+import 'user_repository_test.mocks.dart';
 
-@GenerateMocks([AuthDataSource, LocalUserDataSource])
+@GenerateMocks([UserDataSource, LocalUserDataSource])
 void main() {
 
-  late MockAuthDataSource remoteDataSource;
+  late MockUserDataSource remoteDataSource;
   late MockLocalUserDataSource userDataSource;
-  late AuthRepositoryImpl repository;
+  late UserRepositoryImpl repository;
 
   setUp(() {
-    remoteDataSource = MockAuthDataSource();
+    remoteDataSource = MockUserDataSource();
     userDataSource = MockLocalUserDataSource();
-    repository = AuthRepositoryImpl(remoteDataSource, userDataSource);
+
+    repository = UserRepositoryImpl(remoteDataSource, userDataSource);
   });
 
   Map<String, String> loginRequestBody = {
@@ -185,6 +186,58 @@ void main() {
       final username = await repository.isUserLoggedIn();
       // assert
       expect(username, null);
+    });
+  });
+
+  group("Get watchlist", () {
+    test("Should return a valid movie list if no exception was thrown", () async {
+      // arrange
+      when(userDataSource.readSessionId()).thenAnswer((_) async => testSessionId);
+      when(userDataSource.readUserId()).thenAnswer((_) async => testUserModel.id.toString());
+      when(remoteDataSource.getWatchList(testUserModel.id.toString(), testSessionId)).thenAnswer((_) async => testMovieModels);
+      // act
+      final result = await repository.getWatchlist();
+      // assert
+      expect(result, const DataSuccess(testMovieModels));
+    });
+
+    test("Should return DataFailure when userId could not be read", () async {
+      // arrange
+      DataError error = const DataError(message: "Local user data could not be read!");
+      when(userDataSource.readSessionId()).thenAnswer((_) async => testSessionId);
+      when(userDataSource.readUserId()).thenAnswer((_) async => null);
+      when(remoteDataSource.getWatchList(testUserModel.id.toString(), testSessionId)).thenAnswer((_) async => testMovieModels);
+      // act
+      final result = await repository.getWatchlist();
+      // assert
+      expect(result, isA<DataFailure>());
+      expect(result.error, error);
+    });
+
+    test("Should return DataFailure when sessionId could not be read", () async {
+      // arrange
+      DataError error = const DataError(message: "Local user data could not be read!");
+      when(userDataSource.readSessionId()).thenAnswer((_) async => null);
+      when(userDataSource.readUserId()).thenAnswer((_) async => testUserModel.id.toString());
+      when(remoteDataSource.getWatchList(testUserModel.id.toString(), testSessionId)).thenAnswer((_) async => testMovieModels);
+      // act
+      final result = await repository.getWatchlist();
+      // assert
+      expect(result, isA<DataFailure>());
+      expect(result.error, error);
+    });
+
+    test("Should return DataFailure when a DataError exception is thrown by the remote data source", () async {
+      // arrange
+      DataError error = const DataError(message: "Data fetch failed!");
+      when(userDataSource.readSessionId()).thenAnswer((_) async => testSessionId);
+      when(userDataSource.readUserId()).thenAnswer((_) async => testUserModel.id.toString());
+      when(remoteDataSource.getWatchList(testUserModel.id.toString(), testSessionId)).thenThrow(error);
+      // act
+      final result = await repository.getWatchlist();
+      // assert
+      expect(result, isA<DataFailure>());
+      expect(result.error, error);
     });
   });
 }

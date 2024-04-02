@@ -108,22 +108,6 @@ class MockMoviesDataSource extends _i1.Mock implements _i4.MoviesDataSource {
       ) as _i5.Future<_i3.MovieModel>);
 
   @override
-  _i5.Future<List<_i3.MovieModel>> getWatchList(
-    String? userId,
-    String? sessionId,
-  ) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getWatchList,
-          [
-            userId,
-            sessionId,
-          ],
-        ),
-        returnValue: _i5.Future<List<_i3.MovieModel>>.value(<_i3.MovieModel>[]),
-      ) as _i5.Future<List<_i3.MovieModel>>);
-
-  @override
   String createUrlString(
     String? endpoint, {
     Map<String, String>? queryParameters,
@@ -239,4 +223,15 @@ class MockLocalUserDataSource extends _i1.Mock
         ),
         returnValue: _i5.Future<String?>.value(),
       ) as _i5.Future<String?>);
+
+  @override
+  _i5.Future<void> writeWatchlistIds(List<_i3.MovieModel>? watchList) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #writeWatchlistIds,
+          [watchList],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 }

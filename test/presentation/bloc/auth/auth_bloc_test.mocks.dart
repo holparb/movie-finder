@@ -3,15 +3,14 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
+import 'dart:async' as _i4;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:movie_finder/core/data_state.dart' as _i3;
-import 'package:movie_finder/domain/entities/user.dart' as _i6;
-import 'package:movie_finder/domain/repositories/auth_repository.dart' as _i2;
-import 'package:movie_finder/domain/usecases/is_user_logged_in.dart' as _i8;
-import 'package:movie_finder/domain/usecases/login.dart' as _i4;
-import 'package:movie_finder/domain/usecases/logout.dart' as _i7;
+import 'package:movie_finder/core/data_state.dart' as _i2;
+import 'package:movie_finder/domain/entities/user.dart' as _i5;
+import 'package:movie_finder/domain/usecases/is_user_logged_in.dart' as _i7;
+import 'package:movie_finder/domain/usecases/login.dart' as _i3;
+import 'package:movie_finder/domain/usecases/logout.dart' as _i6;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -26,19 +25,8 @@ import 'package:movie_finder/domain/usecases/logout.dart' as _i7;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeAuthRepository_0 extends _i1.SmartFake
-    implements _i2.AuthRepository {
-  _FakeAuthRepository_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeDataState_1<T> extends _i1.SmartFake implements _i3.DataState<T> {
-  _FakeDataState_1(
+class _FakeDataState_0<T> extends _i1.SmartFake implements _i2.DataState<T> {
+  _FakeDataState_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -50,30 +38,21 @@ class _FakeDataState_1<T> extends _i1.SmartFake implements _i3.DataState<T> {
 /// A class which mocks [LoginUsecase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLoginUsecase extends _i1.Mock implements _i4.LoginUsecase {
+class MockLoginUsecase extends _i1.Mock implements _i3.LoginUsecase {
   MockLoginUsecase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.AuthRepository get authRepository => (super.noSuchMethod(
-        Invocation.getter(#authRepository),
-        returnValue: _FakeAuthRepository_0(
-          this,
-          Invocation.getter(#authRepository),
-        ),
-      ) as _i2.AuthRepository);
-
-  @override
-  _i5.Future<_i3.DataState<_i6.User>> call({_i4.LoginParams? params}) =>
+  _i4.Future<_i2.DataState<_i5.User>> call({_i3.LoginParams? params}) =>
       (super.noSuchMethod(
         Invocation.method(
           #call,
           [],
           {#params: params},
         ),
-        returnValue: _i5.Future<_i3.DataState<_i6.User>>.value(
-            _FakeDataState_1<_i6.User>(
+        returnValue: _i4.Future<_i2.DataState<_i5.User>>.value(
+            _FakeDataState_0<_i5.User>(
           this,
           Invocation.method(
             #call,
@@ -81,35 +60,26 @@ class MockLoginUsecase extends _i1.Mock implements _i4.LoginUsecase {
             {#params: params},
           ),
         )),
-      ) as _i5.Future<_i3.DataState<_i6.User>>);
+      ) as _i4.Future<_i2.DataState<_i5.User>>);
 }
 
 /// A class which mocks [LogoutUsecase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLogoutUsecase extends _i1.Mock implements _i7.LogoutUsecase {
+class MockLogoutUsecase extends _i1.Mock implements _i6.LogoutUsecase {
   MockLogoutUsecase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.AuthRepository get authRepository => (super.noSuchMethod(
-        Invocation.getter(#authRepository),
-        returnValue: _FakeAuthRepository_0(
-          this,
-          Invocation.getter(#authRepository),
-        ),
-      ) as _i2.AuthRepository);
-
-  @override
-  _i5.Future<_i3.DataState<void>> call({dynamic params}) => (super.noSuchMethod(
+  _i4.Future<_i2.DataState<void>> call({dynamic params}) => (super.noSuchMethod(
         Invocation.method(
           #call,
           [],
           {#params: params},
         ),
         returnValue:
-            _i5.Future<_i3.DataState<void>>.value(_FakeDataState_1<void>(
+            _i4.Future<_i2.DataState<void>>.value(_FakeDataState_0<void>(
           this,
           Invocation.method(
             #call,
@@ -117,34 +87,25 @@ class MockLogoutUsecase extends _i1.Mock implements _i7.LogoutUsecase {
             {#params: params},
           ),
         )),
-      ) as _i5.Future<_i3.DataState<void>>);
+      ) as _i4.Future<_i2.DataState<void>>);
 }
 
 /// A class which mocks [IsUserLoggedInUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockIsUserLoggedInUseCase extends _i1.Mock
-    implements _i8.IsUserLoggedInUseCase {
+    implements _i7.IsUserLoggedInUseCase {
   MockIsUserLoggedInUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.AuthRepository get authRepository => (super.noSuchMethod(
-        Invocation.getter(#authRepository),
-        returnValue: _FakeAuthRepository_0(
-          this,
-          Invocation.getter(#authRepository),
-        ),
-      ) as _i2.AuthRepository);
-
-  @override
-  _i5.Future<String?> call({dynamic params}) => (super.noSuchMethod(
+  _i4.Future<String?> call({dynamic params}) => (super.noSuchMethod(
         Invocation.method(
           #call,
           [],
           {#params: params},
         ),
-        returnValue: _i5.Future<String?>.value(),
-      ) as _i5.Future<String?>);
+        returnValue: _i4.Future<String?>.value(),
+      ) as _i4.Future<String?>);
 }

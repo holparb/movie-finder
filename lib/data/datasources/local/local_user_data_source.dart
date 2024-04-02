@@ -1,3 +1,4 @@
+import 'package:movie_finder/data/models/movie_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:movie_finder/data/models/user_model.dart';
 import 'package:movie_finder/core/constants.dart' as constants;
@@ -38,5 +39,15 @@ class LocalUserDataSource {
 
   Future<String?> readUserId() async {
     return await _readString(constants.userId);
+  }
+
+  Future<void> writeWatchlistIds(List<MovieModel> watchList) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(constants.watchlistIds, _createWatchlistIdsMap(watchList));
+    return;
+  }
+
+  List<String> _createWatchlistIdsMap(List<MovieModel> watchList) {
+    return watchList.map((movie) => movie.id.toString()).toList(growable: false);
   }
 }

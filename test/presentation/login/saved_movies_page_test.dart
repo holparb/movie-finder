@@ -5,26 +5,35 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_event.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_state.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
+import 'package:movie_finder/presentation/bloc/movies/movies_event.dart';
+import 'package:movie_finder/presentation/bloc/movies/movies_state.dart';
+import 'package:movie_finder/presentation/bloc/movies/watchlist_bloc.dart';
 import 'package:movie_finder/presentation/pages/saved_movies_page.dart';
 import 'package:movie_finder/presentation/widgets/login/not_logged_in_screen.dart';
 import 'package:movie_finder/presentation/widgets/saved_movies_list/saved_movies.dart';
 
 class MockLoginBloc extends MockBloc<AuthEvent, AuthState> implements AuthBloc {}
+class MockWatchListBloc extends MockBloc<MoviesEvent, MoviesState> implements WatchlistBloc {}
 
 void main() {
   late MockLoginBloc loginBloc;
+  late MockWatchListBloc watchlistBloc;
 
   setUp(() async {
     loginBloc = MockLoginBloc();
+    watchlistBloc = MockWatchListBloc();
   });
 
   Widget createWidgetUnderTest(Widget widget) {
     return MaterialApp(
         title: 'MovieFinder',
         theme: ThemeData(),
-        home: BlocProvider<AuthBloc>(
-            create: (_) => loginBloc,
-            child: widget
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider<AuthBloc>(create: (_) => loginBloc),
+            BlocProvider<WatchlistBloc>(create: (_) => watchlistBloc)
+          ],
+          child: widget,
         )
     );
   }
