@@ -287,13 +287,22 @@ class MockLocalUserDataSource extends _i1.Mock
       ) as _i6.Future<String?>);
 
   @override
-  _i6.Future<void> writeWatchlistIds(List<_i8.MovieModel>? watchList) =>
+  _i6.Future<void> writeWatchlistIds(List<_i8.MovieModel>? watchlist) =>
       (super.noSuchMethod(
         Invocation.method(
           #writeWatchlistIds,
-          [watchList],
+          [watchlist],
         ),
         returnValue: _i6.Future<void>.value(),
         returnValueForMissingStub: _i6.Future<void>.value(),
       ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<List<String>?> readWatchlistIds() => (super.noSuchMethod(
+        Invocation.method(
+          #readWatchlistIds,
+          [],
+        ),
+        returnValue: _i6.Future<List<String>?>.value(),
+      ) as _i6.Future<List<String>?>);
 }

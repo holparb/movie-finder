@@ -50,4 +50,9 @@ class LocalUserDataSource {
   List<String> _createWatchlistIdsMap(List<MovieModel> watchlist) {
     return watchlist.map((movie) => movie.id.toString()).toList(growable: false);
   }
+
+  Future<List<String>?> readWatchlistIds() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(constants.watchlistIds);
+  }
 }

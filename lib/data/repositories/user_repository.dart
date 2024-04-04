@@ -81,4 +81,15 @@ class UserRepositoryImpl implements UserRepository {
       return DataFailure(error);
     }
   }
+
+  @override
+  Future<bool> isMovieOnWatchlist(int movieId) async {
+    final watchlistIds = await localUserDataSource.readWatchlistIds();
+    if(watchlistIds == null) {
+      return false;
+    }
+    return watchlistIds.contains(movieId.toString());
+  }
+
+
 }

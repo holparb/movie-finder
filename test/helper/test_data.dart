@@ -13,6 +13,8 @@ MovieModel(id: 2, title: "title2", overview: "overview", posterPath: "posterPath
 MovieModel(id: 3, title: "title3", overview: "overview", posterPath: "posterPath", voteAverage: 1.0, backdropPath: "backdropPath", genreIds: [10, 20], genres: [], releaseDate: null, runtime: null)
 ];
 
+const List<String> testWatchlistIds = ["1", "5", "6"];
+
 const List<Movie> testMovies = [
   MovieModel(id: 1, title: "title", overview: "overview", posterPath: "posterPath", voteAverage: 1.0, backdropPath: "backdropPath", genreIds: [10, 20], genres: [], releaseDate: null, runtime: null),
   MovieModel(id: 2, title: "title2", overview: "overview", posterPath: "posterPath", voteAverage: 1.0, backdropPath: "backdropPath", genreIds: [10, 20], genres: [], releaseDate: null, runtime: null),

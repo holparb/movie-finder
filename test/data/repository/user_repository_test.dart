@@ -240,4 +240,33 @@ void main() {
       expect(result.error, error);
     });
   });
+
+  group("Is movie a watchlist", () {
+    test("Should return true if a movieId is part of the stored watchlist ids", () async {
+      // arrange
+      when(userDataSource.readWatchlistIds()).thenAnswer((_) async => testWatchlistIds);
+      // act
+      final result = await repository.isMovieOnWatchlist(1);
+      // assert
+      expect(result, true);
+    });
+
+    test("Should return false if a movieId is not part of the stored watchlist ids", () async {
+      // arrange
+      when(userDataSource.readWatchlistIds()).thenAnswer((_) async => testWatchlistIds);
+      // act
+      final result = await repository.isMovieOnWatchlist(2);
+      // assert
+      expect(result, false);
+    });
+
+    test("Should return false if null is returned by readWatchlistIds()", () async {
+      // arrange
+      when(userDataSource.readWatchlistIds()).thenAnswer((_) async => null);
+      // act
+      final result = await repository.isMovieOnWatchlist(2);
+      // assert
+      expect(result, false);
+    });
+  });
 }

@@ -7,4 +7,5 @@ abstract class UserRepository {
   Future<DataState<void>> logout();
   Future<String?> isUserLoggedIn();
   Future<DataState<List<Movie>>> getWatchlist();
+  Future<bool> isMovieOnWatchlist(int movieId);
 }
