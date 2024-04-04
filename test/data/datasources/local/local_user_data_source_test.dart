@@ -42,6 +42,16 @@ void main() {
       expect(prefs.getString(constants.userId), null);
       expect(prefs.getString(constants.username), null);
     });
+
+    test("Writing watchlist ids", () async {
+      // arrange
+      SharedPreferences.setMockInitialValues({});
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      // act
+      await userDataSource.writeWatchlistIds(testMovieModels);
+      //assert
+      expect(prefs.getStringList(constants.watchlistIds), testMovieModels.map((movie) => movie.id.toString()).toList(growable: false));
+    });
   });
 
   group("Read sessionId", () {
@@ -142,5 +152,4 @@ void main() {
       expect(username, null);
     });
   });
-
 }
