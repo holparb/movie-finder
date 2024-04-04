@@ -73,9 +73,9 @@ class UserRepositoryImpl implements UserRepository {
       return const DataFailure(DataError(message: "Local user data could not be read!"));
     }
     try {
-      List<MovieModel> movies = await userDataSource.getWatchList(userId, sessionId);
-
-      return DataSuccess(movies);
+      List<MovieModel> watchlist = await userDataSource.getWatchList(userId, sessionId);
+      await localUserDataSource.writeWatchlistIds(watchlist);
+      return DataSuccess(watchlist);
     }
     on DataError catch(error) {
       return DataFailure(error);
