@@ -3,7 +3,6 @@ import 'package:movie_finder/data/datasources/local/local_user_data_source.dart'
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:movie_finder/core/constants.dart' as constants;
 
-
 import '../../../helper/test_data.dart';
 
 void main() {
@@ -41,16 +40,6 @@ void main() {
       expect(prefs.getString(constants.sessionId), null);
       expect(prefs.getString(constants.userId), null);
       expect(prefs.getString(constants.username), null);
-    });
-
-    test("Writing watchlist ids", () async {
-      // arrange
-      SharedPreferences.setMockInitialValues({});
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      // act
-      await userDataSource.writeWatchlistIds(testMovieModels);
-      //assert
-      expect(prefs.getStringList(constants.watchlistIds), testMovieModels.map((movie) => movie.id.toString()).toList(growable: false));
     });
   });
 

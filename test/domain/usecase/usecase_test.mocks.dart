@@ -110,6 +110,32 @@ class MockMovieRepository extends _i1.Mock implements _i3.MovieRepository {
           ),
         )),
       ) as _i4.Future<_i2.DataState<_i5.Movie>>);
+
+  @override
+  _i4.Future<_i2.DataState<List<_i5.Movie>>> getWatchlist() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getWatchlist,
+          [],
+        ),
+        returnValue: _i4.Future<_i2.DataState<List<_i5.Movie>>>.value(
+            _FakeDataState_0<List<_i5.Movie>>(
+          this,
+          Invocation.method(
+            #getWatchlist,
+            [],
+          ),
+        )),
+      ) as _i4.Future<_i2.DataState<List<_i5.Movie>>>);
+
+  @override
+  _i4.Future<bool> isMovieOnWatchlist(int? movieId) => (super.noSuchMethod(
+        Invocation.method(
+          #isMovieOnWatchlist,
+          [movieId],
+        ),
+        returnValue: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 }
 
 /// A class which mocks [UserRepository].
@@ -162,30 +188,4 @@ class MockUserRepository extends _i1.Mock implements _i6.UserRepository {
         ),
         returnValue: _i4.Future<String?>.value(),
       ) as _i4.Future<String?>);
-
-  @override
-  _i4.Future<_i2.DataState<List<_i5.Movie>>> getWatchlist() =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getWatchlist,
-          [],
-        ),
-        returnValue: _i4.Future<_i2.DataState<List<_i5.Movie>>>.value(
-            _FakeDataState_0<List<_i5.Movie>>(
-          this,
-          Invocation.method(
-            #getWatchlist,
-            [],
-          ),
-        )),
-      ) as _i4.Future<_i2.DataState<List<_i5.Movie>>>);
-
-  @override
-  _i4.Future<bool> isMovieOnWatchlist(int? movieId) => (super.noSuchMethod(
-        Invocation.method(
-          #isMovieOnWatchlist,
-          [movieId],
-        ),
-        returnValue: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
 }

@@ -3,7 +3,6 @@ import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/core/exceptions/http_error.dart';
 import 'package:movie_finder/data/datasources/local/local_user_data_source.dart';
 import 'package:movie_finder/data/datasources/remote/user_data_source.dart';
-import 'package:movie_finder/data/models/movie_model.dart';
 import 'package:movie_finder/data/models/request_token_model.dart';
 import 'package:movie_finder/data/models/user_model.dart';
 import 'package:movie_finder/domain/repositories/user_repository.dart';
@@ -64,32 +63,4 @@ class UserRepositoryImpl implements UserRepository {
     }
     return await localUserDataSource.readUsername();
   }
-
-  @override
-  Future<DataState<List<MovieModel>>> getWatchlist() async {
-    final userId = await localUserDataSource.readUserId();
-    final sessionId = await localUserDataSource.readSessionId();
-    if(userId == null || sessionId == null) {
-      return const DataFailure(DataError(message: "Local user data could not be read!"));
-    }
-    try {
-      List<MovieModel> watchlist = await userDataSource.getWatchList(userId, sessionId);
-      await localUserDataSource.writeWatchlistIds(watchlist);
-      return DataSuccess(watchlist);
-    }
-    on DataError catch(error) {
-      return DataFailure(error);
-    }
-  }
-
-  @override
-  Future<bool> isMovieOnWatchlist(int movieId) async {
-    final watchlistIds = await localUserDataSource.readWatchlistIds();
-    if(watchlistIds == null) {
-      return false;
-    }
-    return watchlistIds.contains(movieId.toString());
-  }
-
-
 }

@@ -46,11 +46,4 @@ class UserDataSource extends RemoteDataSource {
     log(response.toString());
     return response["success"] ? true : false;
   }
-
-  Future<List<MovieModel>> getWatchList(String userId, String sessionId) async {
-    return await _getMoviesList(
-        formatString(TmdbApiConfig.watchListEndpoint, [userId]),
-        queryParameters: {"session_id": sessionId}
-    );
-  }
 }

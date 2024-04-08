@@ -7,10 +7,10 @@ import 'usecase_test.mocks.dart';
 
 void main() {
   late IsMovieOnWatchListUseCase usecase;
-  late MockUserRepository mockRepository;
+  late MockMovieRepository mockRepository;
 
   setUp(() {
-    mockRepository = MockUserRepository();
+    mockRepository = MockMovieRepository();
     usecase = IsMovieOnWatchListUseCase(mockRepository);
   });
 

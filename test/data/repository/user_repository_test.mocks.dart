@@ -9,10 +9,9 @@ import 'package:http/http.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i7;
 import 'package:movie_finder/data/datasources/local/local_user_data_source.dart'
-    as _i9;
+    as _i8;
 import 'package:movie_finder/data/datasources/remote/user_data_source.dart'
     as _i5;
-import 'package:movie_finder/data/models/movie_model.dart' as _i8;
 import 'package:movie_finder/data/models/request_token_model.dart' as _i3;
 import 'package:movie_finder/data/models/user_model.dart' as _i4;
 
@@ -154,22 +153,6 @@ class MockUserDataSource extends _i1.Mock implements _i5.UserDataSource {
       ) as _i6.Future<bool>);
 
   @override
-  _i6.Future<List<_i8.MovieModel>> getWatchList(
-    String? userId,
-    String? sessionId,
-  ) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getWatchList,
-          [
-            userId,
-            sessionId,
-          ],
-        ),
-        returnValue: _i6.Future<List<_i8.MovieModel>>.value(<_i8.MovieModel>[]),
-      ) as _i6.Future<List<_i8.MovieModel>>);
-
-  @override
   String createUrlString(
     String? endpoint, {
     Map<String, String>? queryParameters,
@@ -227,7 +210,7 @@ class MockUserDataSource extends _i1.Mock implements _i5.UserDataSource {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockLocalUserDataSource extends _i1.Mock
-    implements _i9.LocalUserDataSource {
+    implements _i8.LocalUserDataSource {
   MockLocalUserDataSource() {
     _i1.throwOnMissingStub(this);
   }
@@ -285,24 +268,4 @@ class MockLocalUserDataSource extends _i1.Mock
         ),
         returnValue: _i6.Future<String?>.value(),
       ) as _i6.Future<String?>);
-
-  @override
-  _i6.Future<void> writeWatchlistIds(List<_i8.MovieModel>? watchlist) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #writeWatchlistIds,
-          [watchlist],
-        ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
-
-  @override
-  _i6.Future<List<String>?> readWatchlistIds() => (super.noSuchMethod(
-        Invocation.method(
-          #readWatchlistIds,
-          [],
-        ),
-        returnValue: _i6.Future<List<String>?>.value(),
-      ) as _i6.Future<List<String>?>);
 }

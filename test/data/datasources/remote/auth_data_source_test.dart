@@ -263,38 +263,4 @@ void main() {
       expect(() => call, throwsA(isA<HttpError>()));
     });
   });
-
-  group("Fetch watchlist", () {
-    const String userId = "123";
-    final String watchlistUrlString = "${createUrlString(formatString(TmdbApiConfig.watchListEndpoint, [userId]))}&session_id=$testSessionId";
-    test("Should return a valid MovieModel list after fetching data", () async {
-      // arrange
-      when(mockClient.get(Uri.parse(watchlistUrlString)))
-          .thenAnswer((_) async => http.Response(fixture("movie_list.json"), 200));
-      // act
-      final result = await userDataSource.getWatchList(userId, testSessionId);
-      // assert
-      expect(result.length, 3);
-      expect(result, testMovieModels);
-    });
-
-    test("Should return DataError if status code is not 200", () async {
-      // arrange
-      when(mockClient.get(Uri.parse(watchlistUrlString)))
-          .thenAnswer((_) async => http.Response("Something went wrong!", 404));
-      // act
-      final call = userDataSource.getWatchList(userId, testSessionId);
-      // assert
-      expect(() => call, throwsA(isA<DataError>()));
-    });
-
-    test("Should return DataError if an exception is thrown during fetch", () async {
-      // arrange
-      when(mockClient.get(Uri.parse(watchlistUrlString))).thenThrow(Exception("error message"));
-      // act
-      final call = userDataSource.getWatchList(userId, testSessionId);
-      // assert
-      expect(() => call, throwsA(isA<DataError>()));
-    });
-  });
 }

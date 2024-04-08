@@ -1,5 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
+import 'package:movie_finder/presentation/bloc/auth/auth_state.dart';
+import 'package:movie_finder/presentation/bloc/movies/movies_event.dart';
+import 'package:movie_finder/presentation/bloc/movies/watchlist_bloc.dart';
 import 'package:movie_finder/presentation/pages/home_page.dart';
 import 'package:movie_finder/presentation/pages/saved_movies_page.dart';
 import 'package:movie_finder/presentation/pages/search_page.dart';
@@ -27,13 +32,24 @@ class _MainPageState extends State<MainPage> {
         )),
         centerTitle: true,
       ),
-      body:  IndexedStack(
-        index: currentPageIndex,
-        children: const <Widget>[
-          SearchPage(),
-          HomePage(),
-          SavedMoviesPage()
-        ],
+      body:  BlocListener<AuthBloc, AuthState>(
+        listenWhen: (previousState, currentState) {
+          return (previousState is LoggingIn && currentState is LoggedIn) ||
+              (previousState is NotLoggedIn && currentState is LoggedIn);
+        },
+        listener: (context, state) {
+          if (state is LoggedIn) {
+            BlocProvider.of<WatchlistBloc>(context).add(const GetWatchlist());
+          }
+        },
+        child: IndexedStack(
+          index: currentPageIndex,
+          children: const <Widget>[
+            SearchPage(),
+            HomePage(),
+            SavedMoviesPage()
+          ],
+        ),
       ),
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(

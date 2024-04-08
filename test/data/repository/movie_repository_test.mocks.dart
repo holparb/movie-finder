@@ -8,6 +8,8 @@ import 'dart:async' as _i5;
 import 'package:http/http.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i6;
+import 'package:movie_finder/data/datasources/local/local_movies_datasource.dart'
+    as _i9;
 import 'package:movie_finder/data/datasources/local/local_user_data_source.dart'
     as _i7;
 import 'package:movie_finder/data/datasources/remote/movies_data_source.dart'
@@ -106,6 +108,22 @@ class MockMoviesDataSource extends _i1.Mock implements _i4.MoviesDataSource {
           ),
         )),
       ) as _i5.Future<_i3.MovieModel>);
+
+  @override
+  _i5.Future<List<_i3.MovieModel>> getWatchList(
+    String? userId,
+    String? sessionId,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getWatchList,
+          [
+            userId,
+            sessionId,
+          ],
+        ),
+        returnValue: _i5.Future<List<_i3.MovieModel>>.value(<_i3.MovieModel>[]),
+      ) as _i5.Future<List<_i3.MovieModel>>);
 
   @override
   String createUrlString(
@@ -223,6 +241,16 @@ class MockLocalUserDataSource extends _i1.Mock
         ),
         returnValue: _i5.Future<String?>.value(),
       ) as _i5.Future<String?>);
+}
+
+/// A class which mocks [LocalMoviesDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLocalMoviesDataSource extends _i1.Mock
+    implements _i9.LocalMoviesDataSource {
+  MockLocalMoviesDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
 
   @override
   _i5.Future<void> writeWatchlistIds(List<_i3.MovieModel>? watchlist) =>

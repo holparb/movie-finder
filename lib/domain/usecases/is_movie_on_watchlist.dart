@@ -1,8 +1,8 @@
 import 'package:movie_finder/core/usecase.dart';
-import 'package:movie_finder/domain/repositories/user_repository.dart';
+import 'package:movie_finder/domain/repositories/movie_repository.dart';
 
 class IsMovieOnWatchListUseCase implements UseCase<bool, int> {
-  final UserRepository _userRepository;
+  final MovieRepository _userRepository;
 
   IsMovieOnWatchListUseCase(this._userRepository);
 

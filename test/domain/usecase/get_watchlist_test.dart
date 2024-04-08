@@ -9,16 +9,16 @@ import 'usecase_test.mocks.dart';
 
 void main() {
   late GetWatchlistUseCase usecase;
-  late MockUserRepository userRepository;
+  late MockMovieRepository mockRepository;
 
   setUp(() {
-    userRepository = MockUserRepository();
-    usecase = GetWatchlistUseCase(userRepository);
+    mockRepository = MockMovieRepository();
+    usecase = GetWatchlistUseCase(mockRepository);
   });
 
   test("Should get watchlist from the repository", () async  {
     // arrange
-    when(userRepository.getWatchlist()).thenAnswer((_) async => const DataSuccess(testMovies));
+    when(mockRepository.getWatchlist()).thenAnswer((_) async => const DataSuccess(testMovies));
     // act
     final result = await usecase();
     // assert
@@ -28,7 +28,7 @@ void main() {
   test("Should return DataFailure if there was an error while getting the data", () async {
     // arrange
     DataError error = const DataError(message: "data error!");
-    when(userRepository.getWatchlist()).thenAnswer((_) async => DataFailure(error));
+    when(mockRepository.getWatchlist()).thenAnswer((_) async => DataFailure(error));
     // act
     final result = await usecase();
     // assert

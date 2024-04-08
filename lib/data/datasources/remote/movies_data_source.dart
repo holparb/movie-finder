@@ -29,4 +29,11 @@ class MoviesDataSource extends RemoteDataSource {
     final data = await get(createUrlString(formatString(TmdbApiConfig.movieDetailEndpoint, [id.toString()])));
     return MovieModel.fromJson(data);
   }
+
+  Future<List<MovieModel>> getWatchList(String userId, String sessionId) async {
+    return await _getMoviesList(
+        formatString(TmdbApiConfig.watchListEndpoint, [userId]),
+        queryParameters: {"session_id": sessionId}
+    );
+  }
 }
