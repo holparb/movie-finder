@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:movie_finder/domain/entities/genre.dart';
 
-class Movie extends Equatable{
+class Movie extends Equatable {
   final int id;
   final String title;
   final String overview;

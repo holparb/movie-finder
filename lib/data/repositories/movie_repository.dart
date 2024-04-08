@@ -3,6 +3,7 @@ import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/data/datasources/local/local_movies_datasource.dart';
 import 'package:movie_finder/data/datasources/local/local_user_data_source.dart';
 import 'package:movie_finder/data/datasources/remote/movies_data_source.dart';
+import 'package:movie_finder/data/models/movie_detail_model.dart';
 import 'package:movie_finder/data/models/movie_model.dart';
 import 'package:movie_finder/domain/repositories/movie_repository.dart';
 
@@ -25,10 +26,11 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<DataState<MovieModel>> getMovieDetails(int id) async {
+  Future<DataState<MovieDetailModel>> getMovieDetails(int id) async {
     try {
       MovieModel movie = await _remoteDataSource.getMovieDetails(id);
-      return DataSuccess(movie);
+      bool onWatchlist = await isMovieOnWatchlist(id);
+      return DataSuccess(MovieDetailModel.fromMovieModel(movie, onWatchlist));
     }
     on DataError catch(error) {
       return DataFailure(error);
@@ -74,10 +76,9 @@ class MovieRepositoryImpl implements MovieRepository {
     }
   }
 
-  @override
   Future<bool> isMovieOnWatchlist(int movieId) async {
     final watchlistIds = await _localMoviesDataSource.readWatchlistIds();
-    if(watchlistIds == null) {
+    if(watchlistIds == null || watchlistIds.isEmpty) {
       return false;
     }
     return watchlistIds.contains(movieId.toString());
