@@ -53,6 +53,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
     else {
       emit(const NotLoggedIn());
-    };
+    }
   }
 }

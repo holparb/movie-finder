@@ -6,7 +6,6 @@ import 'package:mockito/mockito.dart';
 import 'package:movie_finder/config/tmdb_api_config.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/core/exceptions/http_error.dart';
-import 'package:movie_finder/core/utils/format_string.dart';
 import 'package:movie_finder/data/datasources/remote/user_data_source.dart';
 
 import '../../../fixtures/fixture_reader.dart';

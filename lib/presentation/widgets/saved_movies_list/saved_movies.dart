@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_finder/injection_container.dart';
 import 'package:movie_finder/presentation/bloc/movies/movies_state.dart';
 import 'package:movie_finder/presentation/bloc/movies/watchlist_bloc.dart';
 import 'package:movie_finder/presentation/widgets/saved_movies_list/empty_list.dart';
