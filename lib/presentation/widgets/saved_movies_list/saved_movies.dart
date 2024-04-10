@@ -35,7 +35,7 @@ class SavedMovies extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Icon(Icons.error_outline),
-                        Text("Couldn't load watchlist, try again!")
+                        Text("Couldn't load watchlist, try again!", textAlign: TextAlign.center,)
                       ],
                     ),
                   );
