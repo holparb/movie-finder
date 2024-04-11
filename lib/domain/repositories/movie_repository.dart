@@ -7,4 +7,5 @@ abstract class MovieRepository {
   Future<DataState<List<Movie>>> getTopRatedMovies();
   Future<DataState<Movie>> getMovieDetails(int id);
   Future<DataState<List<Movie>>> getWatchlist();
+  Future<bool> isMovieOnWatchlist(int id);
 }
