@@ -129,10 +129,10 @@ class MockMovieRepository extends _i1.Mock implements _i3.MovieRepository {
       ) as _i4.Future<_i2.DataState<List<_i5.Movie>>>);
 
   @override
-  _i4.Future<bool> isMovieOnWatchlist(int? movieId) => (super.noSuchMethod(
+  _i4.Future<bool> isMovieOnWatchlist(int? id) => (super.noSuchMethod(
         Invocation.method(
           #isMovieOnWatchlist,
-          [movieId],
+          [id],
         ),
         returnValue: _i4.Future<bool>.value(false),
       ) as _i4.Future<bool>);

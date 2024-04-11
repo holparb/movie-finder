@@ -23,10 +23,21 @@ class MovieDetailsBody extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
               ),
+            ),
+            MaterialButton(
+              onPressed: onWatchlistButtonPressed,
+              child: Row(
+                children: [
+                ],
+              ),
             )
           ],
         ),
       ),
     );
+  }
+
+  void onWatchlistButtonPressed() {
+
   }
 }

@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:movie_finder/core/exceptions/repository_error.dart';
 import 'package:movie_finder/domain/entities/movie.dart';
 
-sealed class MoviesState extends Equatable{
+sealed class MoviesState extends Equatable {
   final List<Movie> ? movies;
   final RepositoryError ? error;
 
@@ -44,8 +44,4 @@ class MoviesError extends MoviesState {
 
   @override
   List<Object?> get props => [error];
-}
-
-class WatchlistLoaded extends MoviesLoaded {
-  const WatchlistLoaded(super.movies);
 }

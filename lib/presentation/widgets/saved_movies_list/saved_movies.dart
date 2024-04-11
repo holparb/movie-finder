@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_finder/presentation/bloc/movies/movies_state.dart';
-import 'package:movie_finder/presentation/bloc/movies/watchlist_bloc.dart';
+import 'package:movie_finder/presentation/bloc/watchlist/watchlist_bloc.dart';
+import 'package:movie_finder/presentation/bloc/watchlist/watchlist_state.dart';
 import 'package:movie_finder/presentation/widgets/saved_movies_list/empty_list.dart';
 import 'package:movie_finder/presentation/widgets/saved_movies_list/saved_movies_header.dart';
 import 'package:movie_finder/presentation/widgets/saved_movies_list/saved_movies_list.dart';
@@ -18,17 +18,17 @@ class SavedMovies extends StatelessWidget {
         SavedMoviesHeader(username: username),
         const SizedBox(height: 16),
         Expanded(
-            child: BlocBuilder<WatchlistBloc, MoviesState>(
+            child: BlocBuilder<WatchlistBloc, WatchlistState>(
               buildWhen: (previousState, currentState) {
                 return currentState != previousState;
               },
               builder: (context, state) {
-                if(state is MoviesLoading) {
+                if(state is WatchlistLoading) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
-                if(state is MoviesError) {
+                if(state is WatchlistError) {
                   return const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -41,7 +41,7 @@ class SavedMovies extends StatelessWidget {
                   );
                 }
                 if(state is WatchlistLoaded) {
-                  return SavedMoviesList(movies: state.movies!);
+                  return SavedMoviesList(movies: state.watchlist);
                 }
 
                 return const EmptyList();

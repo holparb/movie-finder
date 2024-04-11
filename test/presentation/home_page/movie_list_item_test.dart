@@ -12,7 +12,8 @@ void main() {
 
     SizedBox container = widgetTester.firstWidget(find.byType(SizedBox));
     expect(container, isNotNull);
-    expect(container.width, equals(170.0));
+    expect(container.width, equals(150.0));
+    expect(container.height, equals(180.0));
   });
 
   testWidgets("renders all necessary widgets inside outer container", (widgetTester) async {
