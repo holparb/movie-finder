@@ -17,13 +17,11 @@ import 'watchlist_bloc_test.mocks.dart';
 void main() {
 
   late MockGetWatchlistUseCase mockGetWatchlistUseCase;
-  late MockIsMovieOnWatchlistUseCase mockIsMovieOnWatchlistUseCase;
   late WatchlistBloc bloc;
 
   setUp(() {
     mockGetWatchlistUseCase = MockGetWatchlistUseCase();
-    mockIsMovieOnWatchlistUseCase = MockIsMovieOnWatchlistUseCase();
-    bloc = WatchlistBloc(mockGetWatchlistUseCase, mockIsMovieOnWatchlistUseCase);
+    bloc = WatchlistBloc(mockGetWatchlistUseCase);
   });
 
   test("Initial state should be WatchlistEmpty", () {
@@ -54,33 +52,6 @@ void main() {
         expect: () => [
           const WatchlistLoading(),
           WatchlistError(error)
-        ]
-    );
-  });
-
-  group("IsMovieOnWatchlist", () {
-    const int id = 1;
-    blocTest<WatchlistBloc, WatchlistState>("Should return true if true is returned from mockIsMovieOnWatchlistUseCase",
-        build: () {
-          when(mockIsMovieOnWatchlistUseCase(params: id)).thenAnswer((_) async => true);
-          return bloc;
-        },
-        act: (bloc) => bloc.add(const IsMovieOnWatchlist(id)),
-        wait: const Duration(seconds: 1),
-        expect: () => [
-          const IsMovieOnWatchlistResult(true)
-        ]
-    );
-
-    blocTest<WatchlistBloc, WatchlistState>("Should return false if false is returned from mockIsMovieOnWatchlistUseCase",
-        build: () {
-          when(mockIsMovieOnWatchlistUseCase(params: id)).thenAnswer((_) async => false);
-          return bloc;
-        },
-        act: (bloc) => bloc.add(const IsMovieOnWatchlist(id)),
-        wait: const Duration(seconds: 1),
-        expect: () => [
-          const IsMovieOnWatchlistResult(true)
         ]
     );
   });

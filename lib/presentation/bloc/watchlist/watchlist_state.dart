@@ -37,12 +37,3 @@ class WatchlistLoaded extends WatchlistState {
   List<Object?> get props => [watchlist];
 }
 
-class IsMovieOnWatchlistResult extends WatchlistState{
-  final bool  onWatchlist;
-
-  const IsMovieOnWatchlistResult(this.onWatchlist);
-
-  @override
-  List<Object?> get props => [];
-}
-

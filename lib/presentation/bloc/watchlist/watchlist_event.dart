@@ -5,9 +5,3 @@ sealed class WatchlistEvent {
 class GetWatchlist extends WatchlistEvent {
   const GetWatchlist();
 }
-
-class IsMovieOnWatchlist extends WatchlistEvent {
-  final int id;
-
-  const IsMovieOnWatchlist(this.id);
-}

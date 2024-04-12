@@ -4,6 +4,7 @@ import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_event.dart';
 import 'package:movie_finder/presentation/bloc/movie_details/movie_details_bloc.dart';
 import 'package:movie_finder/presentation/bloc/watchlist/watchlist_bloc.dart';
+import 'package:movie_finder/presentation/bloc/watchlist/watchlist_check_cubit.dart';
 import 'package:movie_finder/router/app_router.dart';
 import 'package:movie_finder/config/app_theme.dart';
 import 'package:movie_finder/injection_container.dart';
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider<MovieDetailsBloc>(create: (_) => serviceLocator<MovieDetailsBloc>()),
           BlocProvider<AuthBloc>(create: (_) => serviceLocator<AuthBloc>()..add(const CheckUserLoginStatus())),
-          BlocProvider<WatchlistBloc>(create: (_) => serviceLocator<WatchlistBloc>())
+          BlocProvider<WatchlistBloc>(create: (_) => serviceLocator<WatchlistBloc>()),
+          BlocProvider<WatchlistCheckCubit>(create: (_) => serviceLocator<WatchlistCheckCubit>())
         ],
         child: MaterialApp.router(
           title: "MovieFinder",
