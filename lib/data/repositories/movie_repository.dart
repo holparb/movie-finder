@@ -74,11 +74,34 @@ class MovieRepositoryImpl implements MovieRepository {
     }
   }
 
-  Future<bool> isMovieOnWatchlist(int movieId) async {
+  @override
+  Future<bool> isMovieOnWatchlist(int id) async {
     final watchlistIds = await _localMoviesDataSource.readWatchlistIds();
     if(watchlistIds == null || watchlistIds.isEmpty) {
       return false;
     }
-    return watchlistIds.contains(movieId.toString());
+    return watchlistIds.contains(id.toString());
+  }
+
+  @override
+  Future<bool> addToWatchlist(int id) async {
+    try {
+      await _localMoviesDataSource.addToWatchlist(id);
+      return true;
+    }
+    catch (e) {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> removeFromWatchlist(int id) async {
+    try {
+      await _localMoviesDataSource.removeFromWatchlist(id);
+      return true;
+    }
+    catch (e) {
+      return false;
+    }
   }
 }

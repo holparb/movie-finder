@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_finder/presentation/bloc/watchlist/watchlist_bloc.dart';
-import 'package:movie_finder/presentation/bloc/watchlist/watchlist_state.dart';
+import 'package:movie_finder/presentation/bloc/watchlist/watchlist_loader_bloc.dart';
+import 'package:movie_finder/presentation/bloc/watchlist/watchlist_loader_state.dart';
 import 'package:movie_finder/presentation/widgets/saved_movies_list/empty_list.dart';
 import 'package:movie_finder/presentation/widgets/saved_movies_list/saved_movies_header.dart';
 import 'package:movie_finder/presentation/widgets/saved_movies_list/saved_movies_list.dart';
@@ -18,7 +18,7 @@ class SavedMovies extends StatelessWidget {
         SavedMoviesHeader(username: username),
         const SizedBox(height: 16),
         Expanded(
-            child: BlocBuilder<WatchlistBloc, WatchlistState>(
+            child: BlocBuilder<WatchlistLoaderBloc, WatchlistLoaderState>(
               buildWhen: (previousState, currentState) {
                 return currentState != previousState;
               },

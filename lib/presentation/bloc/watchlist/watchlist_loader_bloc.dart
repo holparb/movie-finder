@@ -1,17 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/domain/usecases/get_watchlist.dart';
-import 'package:movie_finder/presentation/bloc/watchlist/watchlist_event.dart';
-import 'package:movie_finder/presentation/bloc/watchlist/watchlist_state.dart';
+import 'package:movie_finder/presentation/bloc/watchlist/watchlist_loader_event.dart';
+import 'package:movie_finder/presentation/bloc/watchlist/watchlist_loader_state.dart';
 
-class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
+class WatchlistLoaderBloc extends Bloc<WatchlistLoaderEvent, WatchlistLoaderState> {
   final GetWatchlistUseCase _getWatchListUseCase;
 
-  WatchlistBloc(this._getWatchListUseCase) : super(const WatchlistEmpy()) {
+  WatchlistLoaderBloc(this._getWatchListUseCase) : super(const WatchlistEmpty()) {
     on <GetWatchlist> (onGetWatchlist);
   }
 
-  void onGetWatchlist(GetWatchlist event, Emitter<WatchlistState> emit) async {
+  void onGetWatchlist(GetWatchlist event, Emitter<WatchlistLoaderState> emit) async {
     emit(const WatchlistLoading());
     final dataState = await _getWatchListUseCase();
 

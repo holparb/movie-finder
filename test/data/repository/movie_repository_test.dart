@@ -195,4 +195,44 @@ void main() {
       expect(result, false);
     });
   });
+
+  group("Add movie to watchlist", () {
+    test("Should return true if a movie was added to watchlist successfully", () async {
+      // arrange
+      when(moviesLocalDataSource.addToWatchlist(any)).thenAnswer((_) async => null);
+      // act
+      final result = await repository.addToWatchlist(1);
+      // assert
+      expect(result, true);
+    });
+
+    test("Should return false if an Exception is thrown by the datasource", () async {
+      // arrange
+      when(moviesLocalDataSource.addToWatchlist(any)).thenThrow(Exception("error"));
+      // act
+      final result = await repository.addToWatchlist(1);
+      // assert
+      expect(result, false);
+    });
+  });
+
+  group("Remove movie from watchlist", () {
+    test("Should return true if a movie was removed from watchlist successfully", () async {
+      // arrange
+      when(moviesLocalDataSource.removeFromWatchlist(any)).thenAnswer((_) async => null);
+      // act
+      final result = await repository.removeFromWatchlist(1);
+      // assert
+      expect(result, true);
+    });
+
+    test("Should return false if an Exception is thrown by the datasource", () async {
+      // arrange
+      when(moviesLocalDataSource.removeFromWatchlist(any)).thenThrow(Exception("error"));
+      // act
+      final result = await repository.removeFromWatchlist(1);
+      // assert
+      expect(result, false);
+    });
+  });
 }

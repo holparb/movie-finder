@@ -21,4 +21,28 @@ void main() {
     //assert
     expect(prefs.getStringList(constants.watchlistIds), testMovieModels.map((movie) => movie.id.toString()).toList(growable: false));
   });
+
+  test("Add to watchlist", () async {
+    // arrange
+    SharedPreferences.setMockInitialValues({
+      "watchlistIds" : ["1", "2", "3"]
+    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // act
+    await localMoviesDataSource.addToWatchlist(4);
+    //assert
+    expect(prefs.getStringList(constants.watchlistIds), ["1", "2", "3", "4"]);
+  });
+
+  test("Remove from watchlist", () async {
+    // arrange
+    SharedPreferences.setMockInitialValues({
+      "watchlistIds" : ["1", "2", "3"]
+    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // act
+    await localMoviesDataSource.removeFromWatchlist(3);
+    //assert
+    expect(prefs.getStringList(constants.watchlistIds), ["1", "2"]);
+  });
 }

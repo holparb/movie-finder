@@ -5,31 +5,30 @@ import 'package:mockito/mockito.dart';
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/domain/usecases/get_watchlist.dart';
-import 'package:movie_finder/domain/usecases/is_movie_on_watchlist.dart';
-import 'package:movie_finder/presentation/bloc/watchlist/watchlist_bloc.dart';
-import 'package:movie_finder/presentation/bloc/watchlist/watchlist_event.dart';
-import 'package:movie_finder/presentation/bloc/watchlist/watchlist_state.dart';
+import 'package:movie_finder/presentation/bloc/watchlist/watchlist_loader_bloc.dart';
+import 'package:movie_finder/presentation/bloc/watchlist/watchlist_loader_event.dart';
+import 'package:movie_finder/presentation/bloc/watchlist/watchlist_loader_state.dart';
 
 import '../../../helper/test_data.dart';
-import 'watchlist_bloc_test.mocks.dart';
+import 'watchlist_loader_bloc_test.mocks.dart';
 
-@GenerateMocks([GetWatchlistUseCase, IsMovieOnWatchlistUseCase])
+@GenerateMocks([GetWatchlistUseCase])
 void main() {
 
   late MockGetWatchlistUseCase mockGetWatchlistUseCase;
-  late WatchlistBloc bloc;
+  late WatchlistLoaderBloc bloc;
 
   setUp(() {
     mockGetWatchlistUseCase = MockGetWatchlistUseCase();
-    bloc = WatchlistBloc(mockGetWatchlistUseCase);
+    bloc = WatchlistLoaderBloc(mockGetWatchlistUseCase);
   });
 
   test("Initial state should be WatchlistEmpty", () {
-    expect(bloc.state, const WatchlistEmpy());
+    expect(bloc.state, const WatchlistEmpty());
   });
 
   group("GetWatchlist", () {
-    blocTest<WatchlistBloc, WatchlistState>("Should return WatchlistLoaded with valid movies list if DataSuccess is returned from mockGetTrendingMoviesUseCase",
+    blocTest<WatchlistLoaderBloc, WatchlistLoaderState>("Should return WatchlistLoaded with valid movies list if DataSuccess is returned from mockGetTrendingMoviesUseCase",
         build: () {
           when(mockGetWatchlistUseCase()).thenAnswer((_) async => const DataSuccess(testMovies));
           return bloc;
@@ -42,7 +41,7 @@ void main() {
         ]
     );
     DataError error = const DataError(message: "Data fetch failed!");
-    blocTest<WatchlistBloc, WatchlistState>("Should return WatchlistError if DataFailure is returned from mockGetTrendingMoviesUseCase",
+    blocTest<WatchlistLoaderBloc, WatchlistLoaderState>("Should return WatchlistError if DataFailure is returned from mockGetTrendingMoviesUseCase",
         build: () {
           when(mockGetWatchlistUseCase()).thenAnswer((_) async => DataFailure(error));
           return bloc;

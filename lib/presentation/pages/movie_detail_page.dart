@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_finder/domain/entities/movie.dart';
 import 'package:movie_finder/presentation/bloc/movie_details/movie_details_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movie_details/movie_details_state.dart';
-import 'package:movie_finder/presentation/bloc/watchlist/watchlist_check_cubit.dart';
 import 'package:movie_finder/presentation/widgets/movie_detail/movie_details_body.dart';
 
 @RoutePage()
@@ -32,7 +31,6 @@ class MovieDetailsPage extends StatelessWidget {
         }
         if(state is MovieDetailsLoaded) {
           // Display details page
-          BlocProvider.of<WatchlistCheckCubit>(context).checkIfMovieIsOnWatchlist(state.movie.id);
           return MovieDetailsBody(movie: state.movie);
         }
         return const SizedBox();

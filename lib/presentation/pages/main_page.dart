@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_state.dart';
-import 'package:movie_finder/presentation/bloc/watchlist/watchlist_bloc.dart';
-import 'package:movie_finder/presentation/bloc/watchlist/watchlist_event.dart';
+import 'package:movie_finder/presentation/bloc/watchlist/watchlist_loader_bloc.dart';
+import 'package:movie_finder/presentation/bloc/watchlist/watchlist_loader_event.dart';
 import 'package:movie_finder/presentation/pages/home_page.dart';
 import 'package:movie_finder/presentation/pages/saved_movies_page.dart';
 import 'package:movie_finder/presentation/pages/search_page.dart';
@@ -39,7 +39,7 @@ class _MainPageState extends State<MainPage> {
         },
         listener: (context, state) {
           if (state is LoggedIn) {
-            BlocProvider.of<WatchlistBloc>(context).add(const GetWatchlist());
+            BlocProvider.of<WatchlistLoaderBloc>(context).add(const GetWatchlist());
           }
         },
         child: IndexedStack(

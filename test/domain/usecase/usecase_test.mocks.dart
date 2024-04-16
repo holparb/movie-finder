@@ -136,6 +136,24 @@ class MockMovieRepository extends _i1.Mock implements _i3.MovieRepository {
         ),
         returnValue: _i4.Future<bool>.value(false),
       ) as _i4.Future<bool>);
+
+  @override
+  _i4.Future<bool> addToWatchlist(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #addToWatchlist,
+          [id],
+        ),
+        returnValue: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
+
+  @override
+  _i4.Future<bool> removeFromWatchlist(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #removeFromWatchlist,
+          [id],
+        ),
+        returnValue: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 }
 
 /// A class which mocks [UserRepository].
