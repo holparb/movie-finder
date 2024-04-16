@@ -1,27 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_finder/domain/entities/movie.dart';
-import 'package:movie_finder/presentation/bloc/watchlist/watchlist_check_cubit.dart';
+import 'package:movie_finder/presentation/bloc/watchlist/watchlist_handler_bloc.dart';
+import 'package:movie_finder/presentation/bloc/watchlist/watchlist_handler_event.dart';
+import 'package:movie_finder/presentation/bloc/watchlist/watchlist_handler_state.dart';
 import 'package:movie_finder/presentation/widgets/movie_detail/movie_details_picture_and_title.dart';
 
-class MovieDetailsBody extends StatefulWidget {
+class MovieDetailsBody extends StatelessWidget {
   const MovieDetailsBody({super.key, required this.movie});
-
   final Movie movie;
-
-  @override
-  State<MovieDetailsBody> createState() => _MovieDetailsBodyState();
-}
-
-class _MovieDetailsBodyState extends State<MovieDetailsBody> {
-
-  late bool onWatchlist;
-
-  @override
-  void initState() {
-    super.initState();
-    onWatchlist = BlocProvider.of<WatchlistCheckCubit>(context).state;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +18,11 @@ class _MovieDetailsBodyState extends State<MovieDetailsBody> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            MovieDetailsPictureAndTitle(movie: widget.movie),
+            MovieDetailsPictureAndTitle(movie: movie),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                widget.movie.overview,
+                movie.overview,
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
               ),
@@ -43,37 +30,20 @@ class _MovieDetailsBodyState extends State<MovieDetailsBody> {
             isUserLoggedIn(context) ?
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: BlocListener<WatchlistCheckCubit, bool>(
-                listener: (context, result) {
-                  setState(() {
-                    onWatchlist = result;
-                  });
+              child: BlocConsumer<WatchlistHandlerBloc, WatchlistHandlerState>(
+                listenWhen: (previous, current) => current is WatchlistHandlerError,
+                listener: (_, state) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(const SnackBar(content: Text("Could not add/remove movie from/to watchlist!")));
                 },
-                child: ElevatedButton(
-                  onPressed: onWatchlistButtonPress,
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0)
-                      ),
-                      backgroundColor: onWatchlist ? Theme.of(context).colorScheme.outlineVariant : Colors.white,
-                      padding: const EdgeInsets.all(16.0)
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(onWatchlist ? Icons.check : Icons.add, color: onWatchlist ? Colors.white : Colors.black,),
-                      const SizedBox(width: 16,),
-                      onWatchlist ? Text(
-                          "Added to watchlist",
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white),
-                      ) :
-                      Text(
-                          "Add to watchlist",
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black),
-                      )
-                    ],
-                  ),
-                ),
+                buildWhen: (previous, current) => true,//current != previous,
+                builder: (_, state) {
+                  return switch (state) {
+                    OnWatchlist() => AddedToWatchlistButton(onButtonPress: removeFromWatchlist,),
+                    NotOnWatchlist() => AddToWatchlistButton(onButtonPress: addToWatchlist),
+                    WatchlistHandlerError() => const SizedBox(),
+                  };
+                },
               ),
             ) : const SizedBox()
           ],
@@ -87,44 +57,38 @@ class _MovieDetailsBodyState extends State<MovieDetailsBody> {
     //return (BlocProvider.of<AuthBloc>(context).state is LoggedIn);
   }
 
-  void addToWatchlist() {
-
+  void addToWatchlist(BuildContext context) {
+    BlocProvider.of<WatchlistHandlerBloc>(context).add(AddToWatchlist(movie.id));
   }
 
-  void removeFromWatchlist() {
-
-  }
-
-  void onWatchlistButtonPress() {
-    setState(() {
-      onWatchlist = !onWatchlist;
-    });
+  void removeFromWatchlist(BuildContext context) {
+    BlocProvider.of<WatchlistHandlerBloc>(context).add(RemoveFromWatchlist(movie.id));
   }
 }
 
 class AddToWatchlistButton extends StatelessWidget {
   const AddToWatchlistButton({super.key, required this.onButtonPress});
 
-  final void Function() onButtonPress;
+  final void Function(BuildContext context) onButtonPress;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onButtonPress,
+      onPressed: () => onButtonPress(context),
       style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0)
           ),
-          backgroundColor: Theme.of(context).colorScheme.outlineVariant,
+          backgroundColor: Colors.white,
           textStyle: Theme.of(context).textTheme.bodyLarge,
           padding: const EdgeInsets.all(16.0)
       ),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.check),
-          SizedBox(width: 16,),
-          Text("Added to watchlist")
+          const Icon(Icons.add, color: Colors.black,),
+          const SizedBox(width: 16,),
+          Text("Add to watchlist", style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black),)
         ],
       ),
     );
@@ -134,26 +98,25 @@ class AddToWatchlistButton extends StatelessWidget {
 class AddedToWatchlistButton extends StatelessWidget {
   const AddedToWatchlistButton({super.key, required this.onButtonPress});
 
-  final void Function() onButtonPress;
+  final void Function(BuildContext context) onButtonPress;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onButtonPress,
+      onPressed: () => onButtonPress(context),
       style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0)
           ),
           backgroundColor: Theme.of(context).colorScheme.outlineVariant,
-          textStyle: Theme.of(context).textTheme.bodyLarge,
           padding: const EdgeInsets.all(16.0)
       ),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.check),
-          SizedBox(width: 16,),
-          Text("Added to watchlist")
+          const Icon(Icons.check, color: Colors.white,),
+          const SizedBox(width: 16,),
+          Text("Added to watchlist", style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white),)
         ],
       ),
     );
