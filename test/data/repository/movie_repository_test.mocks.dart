@@ -126,6 +126,65 @@ class MockMoviesDataSource extends _i1.Mock implements _i4.MoviesDataSource {
       ) as _i5.Future<List<_i3.MovieModel>>);
 
   @override
+  _i5.Future<bool> editWatchlist({
+    required int? movieId,
+    required String? userId,
+    required String? sessionId,
+    required bool? add,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #editWatchlist,
+          [],
+          {
+            #movieId: movieId,
+            #userId: userId,
+            #sessionId: sessionId,
+            #add: add,
+          },
+        ),
+        returnValue: _i5.Future<bool>.value(false),
+      ) as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> addToWatchlist({
+    required int? movieId,
+    required String? userId,
+    required String? sessionId,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #addToWatchlist,
+          [],
+          {
+            #movieId: movieId,
+            #userId: userId,
+            #sessionId: sessionId,
+          },
+        ),
+        returnValue: _i5.Future<bool>.value(false),
+      ) as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> removeFromWatchlist({
+    required int? movieId,
+    required String? userId,
+    required String? sessionId,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #removeFromWatchlist,
+          [],
+          {
+            #movieId: movieId,
+            #userId: userId,
+            #sessionId: sessionId,
+          },
+        ),
+        returnValue: _i5.Future<bool>.value(false),
+      ) as _i5.Future<bool>);
+
+  @override
   String createUrlString(
     String? endpoint, {
     Map<String, String>? queryParameters,
