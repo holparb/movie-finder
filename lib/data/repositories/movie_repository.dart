@@ -25,9 +25,9 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<DataState<MovieModel>> getMovieDetails(int id) async {
+  Future<DataState<MovieModel>> getMovieDetails(int movieId) async {
     try {
-      MovieModel movie = await _remoteDataSource.getMovieDetails(id);
+      MovieModel movie = await _remoteDataSource.getMovieDetails(movieId);
       return DataSuccess(movie);
     }
     on DataError catch(error) {
@@ -59,13 +59,9 @@ class MovieRepositoryImpl implements MovieRepository {
 
   @override
   Future<DataState<List<MovieModel>>> getWatchlist() async {
-    final userId = await _localUserDataSource.readUserId();
-    final sessionId = await _localUserDataSource.readSessionId();
-    if(userId == null || sessionId == null) {
-      return const DataFailure(DataError(message: "Local user data could not be read!"));
-    }
     try {
-      List<MovieModel> watchlist = await _remoteDataSource.getWatchList(userId, sessionId);
+      final userAuthData = await _localUserDataSource.getUserAuthData();
+      List<MovieModel> watchlist = await _remoteDataSource.getWatchList(userAuthData.userId, userAuthData.sessionId);
       await _localMoviesDataSource.writeWatchlistIds(watchlist);
       return DataSuccess(watchlist);
     }
@@ -75,19 +71,23 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<bool> isMovieOnWatchlist(int id) async {
+  Future<bool> isMovieOnWatchlist(int movieId) async {
     final watchlistIds = await _localMoviesDataSource.readWatchlistIds();
     if(watchlistIds == null || watchlistIds.isEmpty) {
       return false;
     }
-    return watchlistIds.contains(id.toString());
+    return watchlistIds.contains(movieId.toString());
   }
 
   @override
-  Future<bool> addToWatchlist(int id) async {
+  Future<bool> addToWatchlist(int movieId) async {
     try {
-      await _localMoviesDataSource.addToWatchlist(id);
-      return true;
+      final userAuthData = await _localUserDataSource.getUserAuthData();
+      final success = await _remoteDataSource.addToWatchlist(movieId: movieId, userId: userAuthData.userId, sessionId: userAuthData.sessionId);
+      if(success) {
+        await _localMoviesDataSource.addToWatchlist(movieId);
+      }
+      return success;
     }
     catch (e) {
       return false;
@@ -95,10 +95,14 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<bool> removeFromWatchlist(int id) async {
+  Future<bool> removeFromWatchlist(int movieId) async {
     try {
-      await _localMoviesDataSource.removeFromWatchlist(id);
-      return true;
+      final userAuthData = await _localUserDataSource.getUserAuthData();
+      final success = await _remoteDataSource.removeFromWatchlist(movieId: movieId, userId: userAuthData.userId, sessionId: userAuthData.sessionId);
+      if(success) {
+        await _localMoviesDataSource.removeFromWatchlist(movieId);
+      }
+      return success;
     }
     catch (e) {
       return false;

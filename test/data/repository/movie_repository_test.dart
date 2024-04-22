@@ -118,8 +118,7 @@ void main() {
   group("Get watchlist", () {
     test("Should return a valid movie list if no exception was thrown", () async {
       // arrange
-      when(userDataSource.readSessionId()).thenAnswer((_) async => testSessionId);
-      when(userDataSource.readUserId()).thenAnswer((_) async => testUserModel.id.toString());
+      when(userDataSource.getUserAuthData()).thenAnswer((_) async => UserAuthData(userId: testUserModel.id.toString(), sessionId: testSessionId));
       when(moviesRemoteDataSource.getWatchList(testUserModel.id.toString(), testSessionId)).thenAnswer((_) async => testMovieModels);
       // act
       final result = await repository.getWatchlist();
@@ -127,24 +126,10 @@ void main() {
       expect(result, const DataSuccess(testMovieModels));
     });
 
-    test("Should return DataFailure when userId could not be read", () async {
+    test("Should return DataFailure when userAuthData could not be read", () async {
       // arrange
       DataError error = const DataError(message: "Local user data could not be read!");
-      when(userDataSource.readSessionId()).thenAnswer((_) async => testSessionId);
-      when(userDataSource.readUserId()).thenAnswer((_) async => null);
-      when(moviesRemoteDataSource.getWatchList(testUserModel.id.toString(), testSessionId)).thenAnswer((_) async => testMovieModels);
-      // act
-      final result = await repository.getWatchlist();
-      // assert
-      expect(result, isA<DataFailure>());
-      expect(result.error, error);
-    });
-
-    test("Should return DataFailure when sessionId could not be read", () async {
-      // arrange
-      DataError error = const DataError(message: "Local user data could not be read!");
-      when(userDataSource.readSessionId()).thenAnswer((_) async => null);
-      when(userDataSource.readUserId()).thenAnswer((_) async => testUserModel.id.toString());
+      when(userDataSource.getUserAuthData()).thenAnswer((_) async => throw error);
       when(moviesRemoteDataSource.getWatchList(testUserModel.id.toString(), testSessionId)).thenAnswer((_) async => testMovieModels);
       // act
       final result = await repository.getWatchlist();
@@ -156,8 +141,7 @@ void main() {
     test("Should return DataFailure when a DataError exception is thrown by the remote data source", () async {
       // arrange
       DataError error = const DataError(message: "Data fetch failed!");
-      when(userDataSource.readSessionId()).thenAnswer((_) async => testSessionId);
-      when(userDataSource.readUserId()).thenAnswer((_) async => testUserModel.id.toString());
+      when(userDataSource.getUserAuthData()).thenAnswer((_) async => UserAuthData(userId: testUserModel.id.toString(), sessionId: testSessionId));
       when(moviesRemoteDataSource.getWatchList(testUserModel.id.toString(), testSessionId)).thenThrow(error);
       // act
       final result = await repository.getWatchlist();
@@ -197,40 +181,96 @@ void main() {
   });
 
   group("Add movie to watchlist", () {
+    const int movieId = 1;
     test("Should return true if a movie was added to watchlist successfully", () async {
       // arrange
+      when(userDataSource.getUserAuthData()).thenAnswer((_) async => UserAuthData(userId: testUserModel.id.toString(), sessionId: testSessionId));
+      when(moviesRemoteDataSource.addToWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId)).thenAnswer((_) async => true);
       when(moviesLocalDataSource.addToWatchlist(any)).thenAnswer((_) async => null);
       // act
-      final result = await repository.addToWatchlist(1);
+      final result = await repository.addToWatchlist(movieId);
       // assert
       expect(result, true);
     });
 
-    test("Should return false if an Exception is thrown by the datasource", () async {
+    test("Should return false if a remote data source returns false", () async {
       // arrange
+      when(userDataSource.getUserAuthData()).thenAnswer((_) async => UserAuthData(userId: testUserModel.id.toString(), sessionId: testSessionId));
+      when(moviesRemoteDataSource.addToWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId)).thenAnswer((_) async => false);
+      // act
+      final result = await repository.addToWatchlist(movieId);
+      // assert
+      expect(result, false);
+      verifyNever(moviesLocalDataSource.addToWatchlist(any));
+    });
+
+    test("Should return false if an Exception is thrown by the local datasource", () async {
+      // arrange
+      when(userDataSource.getUserAuthData()).thenAnswer((_) async => UserAuthData(userId: testUserModel.id.toString(), sessionId: testSessionId));
+      when(moviesRemoteDataSource.addToWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId)).thenAnswer((_) async => true);
       when(moviesLocalDataSource.addToWatchlist(any)).thenThrow(Exception("error"));
       // act
-      final result = await repository.addToWatchlist(1);
+      final result = await repository.addToWatchlist(movieId);
+      // assert
+      expect(result, false);
+    });
+
+    test("Should return false when userAuthData could not be read", () async {
+      // arrange
+      DataError error = const DataError(message: "Local user data could not be read!");
+      when(userDataSource.getUserAuthData()).thenAnswer((_) async => throw error);
+      when(moviesRemoteDataSource.addToWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId)).thenAnswer((_) async => true);
+      when(moviesLocalDataSource.addToWatchlist(any)).thenAnswer((_) async => null);
+      // act
+      final result = await repository.addToWatchlist(movieId);
       // assert
       expect(result, false);
     });
   });
 
   group("Remove movie from watchlist", () {
+    const int movieId = 1;
     test("Should return true if a movie was removed from watchlist successfully", () async {
       // arrange
-      when(moviesLocalDataSource.removeFromWatchlist(any)).thenAnswer((_) async => null);
+      when(userDataSource.getUserAuthData()).thenAnswer((_) async => UserAuthData(userId: testUserModel.id.toString(), sessionId: testSessionId));
+      when(moviesRemoteDataSource.removeFromWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId)).thenAnswer((_) async => true);
+      when(moviesLocalDataSource.removeFromWatchlist(any)).thenAnswer((_) async {});
       // act
-      final result = await repository.removeFromWatchlist(1);
+      final result = await repository.removeFromWatchlist(movieId);
       // assert
       expect(result, true);
     });
 
-    test("Should return false if an Exception is thrown by the datasource", () async {
+    test("Should return false if a remote data source returns false", () async {
       // arrange
+      when(userDataSource.getUserAuthData()).thenAnswer((_) async => UserAuthData(userId: testUserModel.id.toString(), sessionId: testSessionId));
+      when(moviesRemoteDataSource.removeFromWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId)).thenAnswer((_) async => false);
+      // act
+      final result = await repository.removeFromWatchlist(movieId);
+      // assert
+      expect(result, false);
+      verifyNever(moviesLocalDataSource.removeFromWatchlist(any));
+    });
+
+    test("Should return false if an Exception is thrown by the local datasource", () async {
+      // arrange
+      when(userDataSource.getUserAuthData()).thenAnswer((_) async => UserAuthData(userId: testUserModel.id.toString(), sessionId: testSessionId));
+      when(moviesRemoteDataSource.removeFromWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId)).thenAnswer((_) async => true);
       when(moviesLocalDataSource.removeFromWatchlist(any)).thenThrow(Exception("error"));
       // act
-      final result = await repository.removeFromWatchlist(1);
+      final result = await repository.removeFromWatchlist(movieId);
+      // assert
+      expect(result, false);
+    });
+
+    test("Should return false when userAuthData could not be read", () async {
+      // arrange
+      DataError error = const DataError(message: "Local user data could not be read!");
+      when(userDataSource.getUserAuthData()).thenAnswer((_) async => throw error);
+      when(moviesRemoteDataSource.removeFromWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId)).thenAnswer((_) async => true);
+      when(moviesLocalDataSource.removeFromWatchlist(any)).thenAnswer((_) async {});
+      // act
+      final result = await repository.removeFromWatchlist(movieId);
       // assert
       expect(result, false);
     });
