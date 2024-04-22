@@ -8,4 +8,6 @@ abstract class MovieRepository {
   Future<DataState<Movie>> getMovieDetails(int id);
   Future<DataState<List<Movie>>> getWatchlist();
   Future<bool> isMovieOnWatchlist(int id);
+  Future<bool> addToWatchlist(int id);
+  Future<bool> removeFromWatchlist(int id);
 }

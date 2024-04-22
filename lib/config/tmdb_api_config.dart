@@ -12,5 +12,6 @@ class TmdbApiConfig {
   static const String trendingMoviesEndpoint = "/trending/movie/week";
   static const String topRatedMoviesEndpoint = "/movie/top_rated";
   static const String movieDetailEndpoint = "/movie/{{id}}";
-  static const String watchListEndpoint = "/account/{{userId}}/watchlist/movies";
+  static const String watchlistEndpoint = "/account/{{userId}}/watchlist/movies";
+  static const String watchlistEditEndpoint = "/account/{{userId}}/watchlist";
 }

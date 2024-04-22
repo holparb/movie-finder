@@ -20,4 +20,25 @@ class LocalMoviesDataSource {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getStringList(constants.watchlistIds);
   }
+
+  Future<void> addToWatchlist(int id) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? watchlistIds = await readWatchlistIds();
+    if(watchlistIds == null) {
+      throw Exception("Could not read watchlist ids!");
+    }
+    await prefs.setStringList(constants.watchlistIds, [...watchlistIds, id.toString()]);
+    return;
+  }
+
+  Future<void> removeFromWatchlist(int id) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? watchlistIds = await readWatchlistIds();
+    if(watchlistIds == null) {
+      throw Exception("Could not read watchlist ids!");
+    }
+    watchlistIds.remove(id.toString());
+    await prefs.setStringList(constants.watchlistIds, watchlistIds);
+    return;
+  }
 }

@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 import 'package:movie_finder/config/tmdb_api_config.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
+import 'package:movie_finder/core/exceptions/http_error.dart';
 import 'package:movie_finder/core/utils/format_string.dart';
 import 'package:movie_finder/data/datasources/remote/movies_data_source.dart';
 
@@ -156,7 +159,7 @@ void main() {
 
   group("Fetch watchlist", () {
     const String userId = "123";
-    final String watchlistUrlString = "${createUrlString(formatString(TmdbApiConfig.watchListEndpoint, [userId]))}&session_id=$testSessionId";
+    final String watchlistUrlString = "${createUrlString(formatString(TmdbApiConfig.watchlistEndpoint, [userId]))}&session_id=$testSessionId";
     test("Should return a valid MovieModel list after fetching data", () async {
       // arrange
       when(mockClient.get(Uri.parse(watchlistUrlString)))
@@ -185,6 +188,144 @@ void main() {
       final call = moviesDataSource.getWatchList(userId, testSessionId);
       // assert
       expect(() => call, throwsA(isA<DataError>()));
+    });
+  });
+
+  group("Add to watchlist", () {
+    final String watchlistEditUrlString = "${createUrlString(formatString(TmdbApiConfig.watchlistEditEndpoint, [testUserModel.id.toString()]))}&session_id=$testSessionId";
+    const int movieId = 1;
+    Map<String, dynamic> body = {
+      "media_type": "movie",
+      "media_id": movieId,
+      "watchlist": true
+    };
+    test("Should return true if success is returned by API", () async {
+      // arrange
+      when(mockClient.post(
+          Uri.parse(watchlistEditUrlString),
+          body: jsonEncode(body),
+          headers: {
+            "Content-Type": "application/json",
+          })
+      ).thenAnswer((_) async => http.Response(fixture("watchlist_edit_success_response.json"), 200));
+      // act
+      final result = await moviesDataSource.addToWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId);
+      // assert
+      expect(result, true);
+    });
+
+    test("Should return false if failure is returned by API", () async {
+      // arrange
+      when(mockClient.post(
+          Uri.parse(watchlistEditUrlString),
+          body: jsonEncode(body),
+          headers: {
+            "Content-Type": "application/json",
+          })
+      ).thenAnswer((_) async => http.Response(fixture("watchlist_edit_failure_response.json"), 200));
+      // act
+      final result = await moviesDataSource.addToWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId);
+      // assert
+      expect(result, false);
+    });
+
+    test("Should throw HttpError if code is not 200", () async {
+      // arrange
+      when(mockClient.post(
+          Uri.parse(watchlistEditUrlString),
+          body: jsonEncode(body),
+          headers: {
+            "Content-Type": "application/json",
+          })
+      ).thenAnswer((_) async => http.Response("Something went wrong!", 400));
+      // act
+      final call =  moviesDataSource.addToWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId);
+      // assert
+      expect(call, throwsA(isA<HttpError>()));
+    });
+
+    test("Should throw HttpError if Exception is thrown during http call", () async {
+      // arrange
+      when(mockClient.post(
+          Uri.parse(watchlistEditUrlString),
+          body: jsonEncode(body),
+          headers: {
+            "Content-Type": "application/json",
+          })
+      ).thenThrow(Exception("error"));
+      // act
+      final call =  moviesDataSource.addToWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId);
+      // assert
+      expect(call, throwsA(isA<HttpError>()));
+    });
+  });
+
+  group("Remove from watchlist", () {
+    final String watchlistEditUrlString = "${createUrlString(formatString(TmdbApiConfig.watchlistEditEndpoint, [testUserModel.id.toString()]))}&session_id=$testSessionId";
+    const int movieId = 1;
+    Map<String, dynamic> body = {
+      "media_type": "movie",
+      "media_id": movieId,
+      "watchlist": false
+    };
+    test("Should return true if success is returned by API", () async {
+      // arrange
+      when(mockClient.post(
+          Uri.parse(watchlistEditUrlString),
+          body: jsonEncode(body),
+          headers: {
+            "Content-Type": "application/json",
+          })
+      ).thenAnswer((_) async => http.Response(fixture("watchlist_edit_success_response.json"), 200));
+      // act
+      final result = await moviesDataSource.removeFromWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId);
+      // assert
+      expect(result, true);
+    });
+
+    test("Should return false if failure is returned by API", () async {
+      // arrange
+      when(mockClient.post(
+          Uri.parse(watchlistEditUrlString),
+          body: jsonEncode(body),
+          headers: {
+            "Content-Type": "application/json",
+          })
+      ).thenAnswer((_) async => http.Response(fixture("watchlist_edit_failure_response.json"), 200));
+      // act
+      final result = await moviesDataSource.removeFromWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId);
+      // assert
+      expect(result, false);
+    });
+
+    test("Should throw HttpError if code is not 200", () async {
+      // arrange
+      when(mockClient.post(
+          Uri.parse(watchlistEditUrlString),
+          body: jsonEncode(body),
+          headers: {
+            "Content-Type": "application/json",
+          })
+      ).thenAnswer((_) async => http.Response("Something went wrong!", 400));
+      // act
+      final call =  moviesDataSource.removeFromWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId);
+      // assert
+      expect(call, throwsA(isA<HttpError>()));
+    });
+
+    test("Should throw HttpError if Exception is thrown during http call", () async {
+      // arrange
+      when(mockClient.post(
+          Uri.parse(watchlistEditUrlString),
+          body: jsonEncode(body),
+          headers: {
+            "Content-Type": "application/json",
+          })
+      ).thenThrow(Exception("error"));
+      // act
+      final call =  moviesDataSource.removeFromWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId);
+      // assert
+      expect(call, throwsA(isA<HttpError>()));
     });
   });
 }

@@ -3,15 +3,15 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
+import 'dart:async' as _i7;
 
 import 'package:http/http.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i7;
+import 'package:mockito/src/dummies.dart' as _i8;
 import 'package:movie_finder/data/datasources/local/local_user_data_source.dart'
-    as _i8;
-import 'package:movie_finder/data/datasources/remote/user_data_source.dart'
     as _i5;
+import 'package:movie_finder/data/datasources/remote/user_data_source.dart'
+    as _i6;
 import 'package:movie_finder/data/models/request_token_model.dart' as _i3;
 import 'package:movie_finder/data/models/user_model.dart' as _i4;
 
@@ -59,10 +59,20 @@ class _FakeUserModel_2 extends _i1.SmartFake implements _i4.UserModel {
         );
 }
 
+class _FakeUserAuthData_3 extends _i1.SmartFake implements _i5.UserAuthData {
+  _FakeUserAuthData_3(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [UserDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockUserDataSource extends _i1.Mock implements _i5.UserDataSource {
+class MockUserDataSource extends _i1.Mock implements _i6.UserDataSource {
   MockUserDataSource() {
     _i1.throwOnMissingStub(this);
   }
@@ -77,23 +87,23 @@ class MockUserDataSource extends _i1.Mock implements _i5.UserDataSource {
       ) as _i2.Client);
 
   @override
-  _i6.Future<_i3.RequestTokenModel> getRequestToken() => (super.noSuchMethod(
+  _i7.Future<_i3.RequestTokenModel> getRequestToken() => (super.noSuchMethod(
         Invocation.method(
           #getRequestToken,
           [],
         ),
         returnValue:
-            _i6.Future<_i3.RequestTokenModel>.value(_FakeRequestTokenModel_1(
+            _i7.Future<_i3.RequestTokenModel>.value(_FakeRequestTokenModel_1(
           this,
           Invocation.method(
             #getRequestToken,
             [],
           ),
         )),
-      ) as _i6.Future<_i3.RequestTokenModel>);
+      ) as _i7.Future<_i3.RequestTokenModel>);
 
   @override
-  _i6.Future<_i3.RequestTokenModel> validateToken(
+  _i7.Future<_i3.RequestTokenModel> validateToken(
           Map<String, String>? requestBody) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -101,56 +111,56 @@ class MockUserDataSource extends _i1.Mock implements _i5.UserDataSource {
           [requestBody],
         ),
         returnValue:
-            _i6.Future<_i3.RequestTokenModel>.value(_FakeRequestTokenModel_1(
+            _i7.Future<_i3.RequestTokenModel>.value(_FakeRequestTokenModel_1(
           this,
           Invocation.method(
             #validateToken,
             [requestBody],
           ),
         )),
-      ) as _i6.Future<_i3.RequestTokenModel>);
+      ) as _i7.Future<_i3.RequestTokenModel>);
 
   @override
-  _i6.Future<String> createSession(_i3.RequestTokenModel? requestToken) =>
+  _i7.Future<String> createSession(_i3.RequestTokenModel? requestToken) =>
       (super.noSuchMethod(
         Invocation.method(
           #createSession,
           [requestToken],
         ),
-        returnValue: _i6.Future<String>.value(_i7.dummyValue<String>(
+        returnValue: _i7.Future<String>.value(_i8.dummyValue<String>(
           this,
           Invocation.method(
             #createSession,
             [requestToken],
           ),
         )),
-      ) as _i6.Future<String>);
+      ) as _i7.Future<String>);
 
   @override
-  _i6.Future<_i4.UserModel> getUserAccountDetails(String? sessionId) =>
+  _i7.Future<_i4.UserModel> getUserAccountDetails(String? sessionId) =>
       (super.noSuchMethod(
         Invocation.method(
           #getUserAccountDetails,
           [sessionId],
         ),
-        returnValue: _i6.Future<_i4.UserModel>.value(_FakeUserModel_2(
+        returnValue: _i7.Future<_i4.UserModel>.value(_FakeUserModel_2(
           this,
           Invocation.method(
             #getUserAccountDetails,
             [sessionId],
           ),
         )),
-      ) as _i6.Future<_i4.UserModel>);
+      ) as _i7.Future<_i4.UserModel>);
 
   @override
-  _i6.Future<bool> deleteSession(Map<String, String>? requestBody) =>
+  _i7.Future<bool> deleteSession(Map<String, String>? requestBody) =>
       (super.noSuchMethod(
         Invocation.method(
           #deleteSession,
           [requestBody],
         ),
-        returnValue: _i6.Future<bool>.value(false),
-      ) as _i6.Future<bool>);
+        returnValue: _i7.Future<bool>.value(false),
+      ) as _i7.Future<bool>);
 
   @override
   String createUrlString(
@@ -163,7 +173,7 @@ class MockUserDataSource extends _i1.Mock implements _i5.UserDataSource {
           [endpoint],
           {#queryParameters: queryParameters},
         ),
-        returnValue: _i7.dummyValue<String>(
+        returnValue: _i8.dummyValue<String>(
           this,
           Invocation.method(
             #createUrlString,
@@ -210,13 +220,13 @@ class MockUserDataSource extends _i1.Mock implements _i5.UserDataSource {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockLocalUserDataSource extends _i1.Mock
-    implements _i8.LocalUserDataSource {
+    implements _i5.LocalUserDataSource {
   MockLocalUserDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<void> writeUserData(
+  _i7.Future<void> writeUserData(
     String? sessionId,
     _i4.UserModel? user,
   ) =>
@@ -228,44 +238,59 @@ class MockLocalUserDataSource extends _i1.Mock
             user,
           ],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
 
   @override
-  _i6.Future<void> deleteUserData() => (super.noSuchMethod(
+  _i7.Future<void> deleteUserData() => (super.noSuchMethod(
         Invocation.method(
           #deleteUserData,
           [],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
 
   @override
-  _i6.Future<String?> readSessionId() => (super.noSuchMethod(
+  _i7.Future<String?> readSessionId() => (super.noSuchMethod(
         Invocation.method(
           #readSessionId,
           [],
         ),
-        returnValue: _i6.Future<String?>.value(),
-      ) as _i6.Future<String?>);
+        returnValue: _i7.Future<String?>.value(),
+      ) as _i7.Future<String?>);
 
   @override
-  _i6.Future<String?> readUsername() => (super.noSuchMethod(
+  _i7.Future<String?> readUsername() => (super.noSuchMethod(
         Invocation.method(
           #readUsername,
           [],
         ),
-        returnValue: _i6.Future<String?>.value(),
-      ) as _i6.Future<String?>);
+        returnValue: _i7.Future<String?>.value(),
+      ) as _i7.Future<String?>);
 
   @override
-  _i6.Future<String?> readUserId() => (super.noSuchMethod(
+  _i7.Future<String?> readUserId() => (super.noSuchMethod(
         Invocation.method(
           #readUserId,
           [],
         ),
-        returnValue: _i6.Future<String?>.value(),
-      ) as _i6.Future<String?>);
+        returnValue: _i7.Future<String?>.value(),
+      ) as _i7.Future<String?>);
+
+  @override
+  _i7.Future<_i5.UserAuthData> getUserAuthData() => (super.noSuchMethod(
+        Invocation.method(
+          #getUserAuthData,
+          [],
+        ),
+        returnValue: _i7.Future<_i5.UserAuthData>.value(_FakeUserAuthData_3(
+          this,
+          Invocation.method(
+            #getUserAuthData,
+            [],
+          ),
+        )),
+      ) as _i7.Future<_i5.UserAuthData>);
 }
