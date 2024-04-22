@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_finder/domain/entities/movie.dart';
+import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
+import 'package:movie_finder/presentation/bloc/auth/auth_state.dart';
 import 'package:movie_finder/presentation/bloc/watchlist/watchlist_handler_bloc.dart';
 import 'package:movie_finder/presentation/bloc/watchlist/watchlist_handler_event.dart';
 import 'package:movie_finder/presentation/bloc/watchlist/watchlist_handler_state.dart';
@@ -53,8 +55,7 @@ class MovieDetailsBody extends StatelessWidget {
   }
 
   bool isUserLoggedIn(BuildContext context) {
-    return true;
-    //return (BlocProvider.of<AuthBloc>(context).state is LoggedIn);
+    return (BlocProvider.of<AuthBloc>(context).state is LoggedIn);
   }
 
   void addToWatchlist(BuildContext context) {
