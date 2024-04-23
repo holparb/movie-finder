@@ -9,7 +9,7 @@ What's next:
 - ~~Top rated movies list on home page instead of trending movies~~
 - ~~Bottom nav with Search and my list items~~
 - ~~Login with TMDB account~~
-- User favorites list (with remove items option)
-- Add movies to favorite list
-- Search for movies
+- ~~User favorites list (with remove items option)~~
+- ~~Add movies to watchlist~~
 - Add local data handling
+- Search for movies

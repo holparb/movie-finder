@@ -9,8 +9,8 @@ import 'package:mockito/mockito.dart' as _i1;
 import 'package:movie_finder/core/data_state.dart' as _i2;
 import 'package:movie_finder/domain/entities/movie.dart' as _i5;
 import 'package:movie_finder/domain/entities/user.dart' as _i7;
-import 'package:movie_finder/domain/repositories/auth_repository.dart' as _i6;
 import 'package:movie_finder/domain/repositories/movie_repository.dart' as _i3;
+import 'package:movie_finder/domain/repositories/user_repository.dart' as _i6;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -110,13 +110,57 @@ class MockMovieRepository extends _i1.Mock implements _i3.MovieRepository {
           ),
         )),
       ) as _i4.Future<_i2.DataState<_i5.Movie>>);
+
+  @override
+  _i4.Future<_i2.DataState<List<_i5.Movie>>> getWatchlist() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getWatchlist,
+          [],
+        ),
+        returnValue: _i4.Future<_i2.DataState<List<_i5.Movie>>>.value(
+            _FakeDataState_0<List<_i5.Movie>>(
+          this,
+          Invocation.method(
+            #getWatchlist,
+            [],
+          ),
+        )),
+      ) as _i4.Future<_i2.DataState<List<_i5.Movie>>>);
+
+  @override
+  _i4.Future<bool> isMovieOnWatchlist(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #isMovieOnWatchlist,
+          [id],
+        ),
+        returnValue: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
+
+  @override
+  _i4.Future<bool> addToWatchlist(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #addToWatchlist,
+          [id],
+        ),
+        returnValue: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
+
+  @override
+  _i4.Future<bool> removeFromWatchlist(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #removeFromWatchlist,
+          [id],
+        ),
+        returnValue: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 }
 
-/// A class which mocks [AuthRepository].
+/// A class which mocks [UserRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAuthRepository extends _i1.Mock implements _i6.AuthRepository {
-  MockAuthRepository() {
+class MockUserRepository extends _i1.Mock implements _i6.UserRepository {
+  MockUserRepository() {
     _i1.throwOnMissingStub(this);
   }
 

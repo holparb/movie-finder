@@ -16,22 +16,27 @@ class MovieListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: 170,
+        width: 150,
+        height: 180,
         child: GestureDetector(
           onTap: () {
             context.pushRoute(MovieDetailsRoute(movie: movie));
             BlocProvider.of<MovieDetailsBloc>(context).add(GetMovieDetails(id: movie.id));
           },
-          child: Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            clipBehavior: Clip.antiAlias,
-            child: CachedNetworkImage(
-              imageUrl: "${TmdbApiConfig.imageBaseUrl}${movie.posterPath}",
-              placeholder: (context, url) => Image.asset('assets/images/image_placeholder.png'),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-              fit: BoxFit.fill,
-            ),
+          child: Column(
+            children: [
+              Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                clipBehavior: Clip.antiAlias,
+                child: CachedNetworkImage(
+                  imageUrl: "${TmdbApiConfig.imageBaseUrl}${movie.posterPath}",
+                  placeholder: (context, url) => Image.asset('assets/images/image_placeholder.png'),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  fit: BoxFit.fill,
+                ),
+              )
+            ],
           ),
         ));
   }

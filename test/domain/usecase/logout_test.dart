@@ -9,10 +9,10 @@ import 'usecase_test.mocks.dart';
 
 void main() {
   late LogoutUsecase usecase;
-  late MockAuthRepository mockAuthRepository;
+  late MockUserRepository mockAuthRepository;
 
   setUp(() {
-    mockAuthRepository = MockAuthRepository();
+    mockAuthRepository = MockUserRepository();
     usecase = LogoutUsecase(mockAuthRepository);
   });
 

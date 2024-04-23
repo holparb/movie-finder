@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -7,7 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:movie_finder/config/tmdb_api_config.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/core/exceptions/http_error.dart';
-import 'package:movie_finder/data/datasources/remote/auth_data_source.dart';
+import 'package:movie_finder/data/datasources/remote/user_data_source.dart';
 
 import '../../../fixtures/fixture_reader.dart';
 import '../../../helper/test_data.dart';
@@ -16,11 +15,11 @@ import 'data_source_test.mocks.dart';
 void main() {
 
   late MockClient mockClient;
-  late AuthDataSource authDataSource;
+  late UserDataSource userDataSource;
 
   setUp(() {
     mockClient = MockClient();
-    authDataSource = AuthDataSource(mockClient);
+    userDataSource = UserDataSource(mockClient);
   });
 
   String createUrlString(String endpoint) {
@@ -38,7 +37,7 @@ void main() {
       when(mockClient.get(Uri.parse(createUrlString(TmdbApiConfig.getRequestTokenEndpoint))))
           .thenAnswer((_) async => http.Response(fixture("request_token_model.json"), 200));
       // act
-      final result = await authDataSource.getRequestToken();
+      final result = await userDataSource.getRequestToken();
       // assert
       expect(result, testRequestTokenModel);
     });
@@ -48,7 +47,7 @@ void main() {
       when(mockClient.get(Uri.parse(createUrlString(TmdbApiConfig.getRequestTokenEndpoint))))
           .thenAnswer((_) async => http.Response("Not authorized!", 400));
       // act
-      final call = authDataSource.getRequestToken();
+      final call = userDataSource.getRequestToken();
       // assert
       expect(() => call, throwsA(isA<DataError>()));
     });
@@ -57,7 +56,7 @@ void main() {
       // arrange
       when(mockClient.get(Uri.parse(createUrlString(TmdbApiConfig.getRequestTokenEndpoint)))).thenThrow(Exception("error message"));
       // act
-      final call = authDataSource.getRequestToken();
+      final call = userDataSource.getRequestToken();
       // assert
       expect(() => call, throwsA(isA<DataError>()));
     });
@@ -74,7 +73,7 @@ void main() {
           })
       ).thenAnswer((_) async => http.Response(fixture("request_token_model.json"), 200));
       // act
-      final result = await authDataSource.validateToken(loginRequestBody);
+      final result = await userDataSource.validateToken(loginRequestBody);
       // assert
       expect(result, testRequestTokenModel);
     });
@@ -89,7 +88,7 @@ void main() {
           })
       ).thenAnswer((_) async => http.Response("Not authorized!", 400));
       // act
-      final call = authDataSource.validateToken(loginRequestBody);
+      final call = userDataSource.validateToken(loginRequestBody);
       // assert
       expect(() => call, throwsA(isA<HttpError>()));
     });
@@ -104,7 +103,7 @@ void main() {
           })
       ).thenThrow(Exception("error message"));
       // act
-      final call = authDataSource.validateToken(loginRequestBody);
+      final call = userDataSource.validateToken(loginRequestBody);
       // assert
       expect(() => call, throwsA(isA<HttpError>()));
     });
@@ -121,7 +120,7 @@ void main() {
           })
       ).thenAnswer((_) async => http.Response(fixture("session_response.json"), 200));
       // act
-      final result = await authDataSource.createSession(testRequestTokenModel);
+      final result = await userDataSource.createSession(testRequestTokenModel);
       // assert
       expect(result, testSessionId);
     });
@@ -136,7 +135,7 @@ void main() {
           })
       ).thenAnswer((_) async => http.Response("Bad request!", 400));
       // act
-      final call = authDataSource.createSession(testRequestTokenModel);
+      final call = userDataSource.createSession(testRequestTokenModel);
       // assert
       expect(() => call, throwsA(isA<HttpError>()));
     });
@@ -151,7 +150,7 @@ void main() {
           })
       ).thenThrow(Exception("error message"));
       // act
-      final call = authDataSource.createSession(testRequestTokenModel);
+      final call = userDataSource.createSession(testRequestTokenModel);
       // assert
       expect(() => call, throwsA(isA<HttpError>()));
       });
@@ -163,7 +162,7 @@ void main() {
       when(mockClient.get(Uri.parse("${createUrlString("/account")}&session_id=$testSessionId")))
           .thenAnswer((_) async => http.Response(fixture("user_model.json"), 200));
       // act
-      final result = await authDataSource.getUserAccountDetails(testSessionId);
+      final result = await userDataSource.getUserAccountDetails(testSessionId);
       // assert
       expect(result.sessionId, testSessionId);
       expect(result.username, testUserModel.username);
@@ -175,7 +174,7 @@ void main() {
       when(mockClient.get(Uri.parse("${createUrlString("/account")}&session_id=$testSessionId")))
           .thenAnswer((_) async => http.Response("Something went wrong!", 404));
       // act
-      final call = authDataSource.getUserAccountDetails(testSessionId);
+      final call = userDataSource.getUserAccountDetails(testSessionId);
       // assert
       expect(() => call, throwsA(isA<DataError>()));
     });
@@ -184,7 +183,7 @@ void main() {
       // arrange
       when(mockClient.get(Uri.parse("${createUrlString("/account")}&session_id=$testSessionId"))).thenThrow(Exception("error message"));
       // act
-      final call = authDataSource.getUserAccountDetails(testSessionId);
+      final call = userDataSource.getUserAccountDetails(testSessionId);
       // assert
       expect(() => call, throwsA(isA<DataError>()));
     });
@@ -204,7 +203,7 @@ void main() {
           })
       ).thenAnswer((_) async => http.Response('{"success": true}', 200));
       // act
-      final result = await authDataSource.deleteSession(sessionIdBody);
+      final result = await userDataSource.deleteSession(sessionIdBody);
       // assert
       expect(result, true);
     });
@@ -222,7 +221,7 @@ void main() {
           })
       ).thenAnswer((_) async => http.Response('{"success": false}', 200));
       // act
-      final result = await authDataSource.deleteSession(sessionIdBody);
+      final result = await userDataSource.deleteSession(sessionIdBody);
       // assert
       expect(result, false);
     });
@@ -240,7 +239,7 @@ void main() {
           })
       ).thenAnswer((_) async => http.Response("Something went wrong!", 404));
       // act
-      final call = authDataSource.deleteSession(sessionIdBody);
+      final call = userDataSource.deleteSession(sessionIdBody);
       // assert
       expect(() => call, throwsA(isA<HttpError>()));
     });
@@ -258,7 +257,7 @@ void main() {
           })
       ).thenThrow(Exception("exception!"));
       // act
-      final call = authDataSource.deleteSession(sessionIdBody);
+      final call = userDataSource.deleteSession(sessionIdBody);
       // assert
       expect(() => call, throwsA(isA<HttpError>()));
     });
