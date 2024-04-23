@@ -67,7 +67,7 @@ abstract class RemoteDataSource {
     on Exception catch (exception) {
       throw HttpError(message: exception.toString());
     }
-    if (response.statusCode != 200) {
+    if (response.statusCode != 200 && response.statusCode != 201) {
       throw HttpError(message: "${response.statusCode}: ${response.reasonPhrase ?? ""}");
     }
     return json.decode(response.body);
@@ -90,9 +90,11 @@ abstract class RemoteDataSource {
       );
     }
     on Exception catch (exception) {
+      log(exception.toString());
       throw HttpError(message: exception.toString());
     }
     if (response.statusCode != 200) {
+      log("${response.statusCode}: ${response.reasonPhrase ?? ""}");
       throw HttpError(message: "${response.statusCode}: ${response.reasonPhrase ?? ""}");
     }
     return json.decode(response.body);
