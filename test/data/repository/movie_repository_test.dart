@@ -186,7 +186,7 @@ void main() {
       // arrange
       when(userDataSource.getUserAuthData()).thenAnswer((_) async => UserAuthData(userId: testUserModel.id.toString(), sessionId: testSessionId));
       when(moviesRemoteDataSource.addToWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId)).thenAnswer((_) async => true);
-      when(moviesLocalDataSource.addToWatchlist(any)).thenAnswer((_) async => null);
+      when(moviesLocalDataSource.addToWatchlist(any)).thenAnswer((_) async {});
       // act
       final result = await repository.addToWatchlist(movieId);
       // assert
@@ -220,7 +220,7 @@ void main() {
       DataError error = const DataError(message: "Local user data could not be read!");
       when(userDataSource.getUserAuthData()).thenAnswer((_) async => throw error);
       when(moviesRemoteDataSource.addToWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId)).thenAnswer((_) async => true);
-      when(moviesLocalDataSource.addToWatchlist(any)).thenAnswer((_) async => null);
+      when(moviesLocalDataSource.addToWatchlist(any)).thenAnswer((_)async {});
       // act
       final result = await repository.addToWatchlist(movieId);
       // assert
