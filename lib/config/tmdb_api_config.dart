@@ -14,4 +14,5 @@ class TmdbApiConfig {
   static const String movieDetailEndpoint = "/movie/{{id}}";
   static const String watchlistEndpoint = "/account/{{userId}}/watchlist/movies";
   static const String watchlistEditEndpoint = "/account/{{userId}}/watchlist";
+  static const String searchMoviesEndpoint = "/search/movie";
 }

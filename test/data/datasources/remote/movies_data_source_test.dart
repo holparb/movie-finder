@@ -328,4 +328,38 @@ void main() {
       expect(call, throwsA(isA<HttpError>()));
     });
   });
+
+  group("Search", () {
+    const String query = "some text";
+    final String urlString = "${createUrlString(TmdbApiConfig.searchMoviesEndpoint)}&query=$query";
+    test("Should return a valid MovieModel list after search input", () async {
+      // arrange
+      when(mockClient.get(Uri.parse(urlString)))
+          .thenAnswer((_) async => http.Response(fixture("movie_list.json"), 200));
+      // act
+      final result = await moviesDataSource.search(query);
+      // assert
+      expect(result.length, 3);
+      expect(result, testMovieModels);
+    });
+
+    test("Should catch exception if status code is not 200 or 201", () async {
+      // arrange
+      when(mockClient.get(Uri.parse(urlString)))
+          .thenAnswer((_) async => http.Response("Something went wrong!", 404));
+      // act
+      final call = moviesDataSource.search(query);
+      // assert
+      expect(() => call, throwsA(isA<DataError>()));
+    });
+
+    test("Should catch exception if an exception is thrown during search", () async {
+      // arrange
+      when(mockClient.get(Uri.parse(urlString))).thenThrow(Exception("error message"));
+      // act
+      final call = moviesDataSource.search(query);
+      // assert
+      expect(() => call, throwsA(isA<DataError>()));
+    });
+  });
 }
