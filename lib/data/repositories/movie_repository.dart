@@ -108,4 +108,15 @@ class MovieRepositoryImpl implements MovieRepository {
       return false;
     }
   }
+
+  @override
+  Future<DataState<List<MovieModel>>> search(String query) async {
+    try {
+      List<MovieModel> results = await _remoteDataSource.search(query);
+      return DataSuccess(results);
+    }
+    on DataError catch(error) {
+      return DataFailure(error);
+    }
+  }
 }

@@ -195,6 +195,15 @@ class MockMoviesDataSource extends _i1.Mock implements _i5.MoviesDataSource {
       ) as _i6.Future<bool>);
 
   @override
+  _i6.Future<List<_i3.MovieModel>> search(String? query) => (super.noSuchMethod(
+        Invocation.method(
+          #search,
+          [query],
+        ),
+        returnValue: _i6.Future<List<_i3.MovieModel>>.value(<_i3.MovieModel>[]),
+      ) as _i6.Future<List<_i3.MovieModel>>);
+
+  @override
   String createUrlString(
     String? endpoint, {
     Map<String, String>? queryParameters,
