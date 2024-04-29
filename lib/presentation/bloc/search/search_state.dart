@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:movie_finder/core/exceptions/repository_error.dart';
 import 'package:movie_finder/domain/entities/movie.dart';
 
 sealed class SearchState extends Equatable{
@@ -26,5 +27,14 @@ class SearchResult extends SearchState {
 
   @override
   List<Object?> get props => [result];
+}
+
+class SearchError extends SearchState {
+  final RepositoryError error;
+
+  const SearchError(this.error);
+
+  @override
+  List<Object?> get props => [error];
 }
 

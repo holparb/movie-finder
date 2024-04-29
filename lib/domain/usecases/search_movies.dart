@@ -12,5 +12,4 @@ class SearchMoviesUseCase implements UseCase<DataState<List<Movie>>, String> {
   Future<DataState<List<Movie>>> call({String params = ""}) async {
     return await _movieRepository.search(params);
   }
-
 }
