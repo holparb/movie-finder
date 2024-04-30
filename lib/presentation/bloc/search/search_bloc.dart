@@ -7,19 +7,20 @@ import 'package:rxdart/rxdart.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final SearchMoviesUseCase _useCase;
-  String query = "";
 
-  SearchBloc(this._useCase) : super(const SearchEmpty()) {
+  SearchBloc(this._useCase) : super(const SearchInitial()) {
     on <SearchInput> (onSearchInput,
-        transformer: (events, mapper) => events.debounceTime(const Duration(milliseconds: 500)).switchMap(mapper)
+        transformer: (events, mapper) => events.debounceTime(const Duration(milliseconds: 600)).switchMap(mapper)
     );
   }
 
   void onSearchInput(SearchInput event, Emitter<SearchState> emit) async {
-    query = query + event.input;
     emit(const SearchInProgress());
-    final dataState = await _useCase(params: query);
-    if(dataState is DataSuccess && dataState.data!.isNotEmpty) {
+    final dataState = await _useCase(params: event.input);
+    if(dataState is DataSuccess && dataState.data!.isEmpty) {
+      emit(const SearchEmpty());
+    }
+    else if(dataState is DataSuccess && dataState.data!.isNotEmpty) {
       emit(SearchResult(dataState.data!));
     }
     else if(dataState is DataFailure) {

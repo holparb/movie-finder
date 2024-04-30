@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:movie_finder/config/tmdb_api_config.dart';
+import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/core/utils/format_string.dart';
 import 'package:movie_finder/data/datasources/remote/remote_data_source.dart';
 import 'package:movie_finder/data/models/movie_model.dart';
@@ -12,7 +13,13 @@ class MoviesDataSource extends RemoteDataSource {
   Future<List<MovieModel>> _getMoviesList(String endpoint, {Map<String, String>? queryParameters}) async {
     final data = await get(createUrlString(endpoint, queryParameters: queryParameters));
     final List<dynamic> results = data["results"];
-    return results.map((json) => MovieModel.fromJson(json)).toList();
+    try {
+      return results.map((json) => MovieModel.fromJson(json)).toList();
+    }
+    catch (e) {
+      log(e.toString());
+      throw const DataError(message: "Movie list fetch or mapping error!");
+    }
   }
 
   Future<List<MovieModel>> getTrendingMovies() async {
