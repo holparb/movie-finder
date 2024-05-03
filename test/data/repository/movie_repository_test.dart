@@ -186,7 +186,7 @@ void main() {
       // arrange
       when(userDataSource.getUserAuthData()).thenAnswer((_) async => UserAuthData(userId: testUserModel.id.toString(), sessionId: testSessionId));
       when(moviesRemoteDataSource.addToWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId)).thenAnswer((_) async => true);
-      when(moviesLocalDataSource.addToWatchlist(any)).thenAnswer((_) async => null);
+      when(moviesLocalDataSource.addToWatchlist(any)).thenAnswer((_) async {});
       // act
       final result = await repository.addToWatchlist(movieId);
       // assert
@@ -220,7 +220,7 @@ void main() {
       DataError error = const DataError(message: "Local user data could not be read!");
       when(userDataSource.getUserAuthData()).thenAnswer((_) async => throw error);
       when(moviesRemoteDataSource.addToWatchlist(movieId: movieId, userId: testUserModel.id.toString(), sessionId: testSessionId)).thenAnswer((_) async => true);
-      when(moviesLocalDataSource.addToWatchlist(any)).thenAnswer((_) async => null);
+      when(moviesLocalDataSource.addToWatchlist(any)).thenAnswer((_)async {});
       // act
       final result = await repository.addToWatchlist(movieId);
       // assert
@@ -273,6 +273,29 @@ void main() {
       final result = await repository.removeFromWatchlist(movieId);
       // assert
       expect(result, false);
+    });
+  });
+
+  group("Search", () {
+    const String query = "some text";
+    test("Should return a valid movie list if no exception was thrown", () async {
+      // arrange
+      when(moviesRemoteDataSource.search(query)).thenAnswer((_) async => testMovieModels);
+      // act
+      final result = await repository.search(query);
+      // assert
+      expect(result, const DataSuccess(testMovieModels));
+    });
+
+    test("Should return DataFailure when a DataError exception is thrown by the remote data source", () async {
+      // arrange
+      DataError error = const DataError(message: "Data fetch failed!");
+      when(moviesRemoteDataSource.search(query)).thenThrow(error);
+      // act
+      final result = await repository.search(query);
+      // assert
+      expect(result, isA<DataFailure>());
+      expect(result.error, error);
     });
   });
 }

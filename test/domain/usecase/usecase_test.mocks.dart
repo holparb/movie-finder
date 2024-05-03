@@ -154,6 +154,23 @@ class MockMovieRepository extends _i1.Mock implements _i3.MovieRepository {
         ),
         returnValue: _i4.Future<bool>.value(false),
       ) as _i4.Future<bool>);
+
+  @override
+  _i4.Future<_i2.DataState<List<_i5.Movie>>> search(String? query) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #search,
+          [query],
+        ),
+        returnValue: _i4.Future<_i2.DataState<List<_i5.Movie>>>.value(
+            _FakeDataState_0<List<_i5.Movie>>(
+          this,
+          Invocation.method(
+            #search,
+            [query],
+          ),
+        )),
+      ) as _i4.Future<_i2.DataState<List<_i5.Movie>>>);
 }
 
 /// A class which mocks [UserRepository].

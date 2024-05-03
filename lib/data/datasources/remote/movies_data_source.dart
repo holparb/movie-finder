@@ -62,4 +62,11 @@ class MoviesDataSource extends RemoteDataSource {
   Future<bool> removeFromWatchlist({required int movieId, required String userId, required String sessionId}) async {
     return await editWatchlist(movieId: movieId, userId: userId, sessionId: sessionId, add: false);
   }
+
+  Future<List<MovieModel>> search(String query) async {
+    return await _getMoviesList(
+        TmdbApiConfig.searchMoviesEndpoint,
+        queryParameters: {"query": query}
+    );
+  }
 }

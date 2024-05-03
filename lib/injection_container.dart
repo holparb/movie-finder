@@ -18,6 +18,7 @@ import 'package:movie_finder/domain/usecases/is_user_logged_in.dart';
 import 'package:movie_finder/domain/usecases/login.dart';
 import 'package:movie_finder/domain/usecases/logout.dart';
 import 'package:movie_finder/domain/usecases/remove_from_watchlist.dart';
+import 'package:movie_finder/domain/usecases/search_movies.dart';
 import 'package:movie_finder/presentation/bloc/auth/auth_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/popular_movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/top_rated_movies_bloc.dart';
@@ -58,6 +59,7 @@ Future<void> initializeDependencies() async {
   serviceLocator.registerSingleton<IsMovieOnWatchlistUseCase>(IsMovieOnWatchlistUseCase(serviceLocator()));
   serviceLocator.registerSingleton<AddToWatchlistUseCase>(AddToWatchlistUseCase(serviceLocator()));
   serviceLocator.registerSingleton<RemoveFromWatchlistUseCase>(RemoveFromWatchlistUseCase(serviceLocator()));
+  serviceLocator.registerSingleton<SearchMoviesUseCase>(SearchMoviesUseCase(serviceLocator()));
 
   // blocs
   serviceLocator.registerFactory<TopRatedMoviesBloc>(() => TopRatedMoviesBloc(serviceLocator()));
