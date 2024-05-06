@@ -24,6 +24,7 @@ import 'package:movie_finder/presentation/bloc/movies/popular_movies_bloc.dart';
 import 'package:movie_finder/presentation/bloc/movies/top_rated_movies_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_finder/presentation/bloc/movie_details/movie_details_bloc.dart';
+import 'package:movie_finder/presentation/bloc/search/search_bloc.dart';
 import 'package:movie_finder/presentation/bloc/watchlist/watchlist_handler_bloc.dart';
 import 'package:movie_finder/presentation/bloc/watchlist/watchlist_loader_bloc.dart';
 import 'package:movie_finder/router/app_router.dart';
@@ -68,4 +69,5 @@ Future<void> initializeDependencies() async {
   serviceLocator.registerFactory<AuthBloc>(() => AuthBloc(serviceLocator(), serviceLocator(), serviceLocator()));
   serviceLocator.registerFactory<WatchlistLoaderBloc>(() => WatchlistLoaderBloc(serviceLocator()));
   serviceLocator.registerFactory<WatchlistHandlerBloc>(() => WatchlistHandlerBloc(serviceLocator(), serviceLocator(), serviceLocator()));
+  serviceLocator.registerFactory<SearchBloc>(() => SearchBloc(serviceLocator()));
 }

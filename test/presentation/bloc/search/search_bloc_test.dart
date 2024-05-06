@@ -23,8 +23,8 @@ void main() {
     bloc = SearchBloc(useCase);
   });
 
-  test("Initial state should be SearchEmpty", () {
-    expect(bloc.state, const SearchEmpty());
+  test("Initial state should be SearchInitial", () {
+    expect(bloc.state, const SearchInitial());
   });
 
   group("Search", () {
