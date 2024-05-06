@@ -15,7 +15,7 @@ class MovieModel extends Movie {
         backdropPath: json['backdrop_path'] ?? "",
         genreIds: json['genre_ids'] != null ?(json['genre_ids'] as List<dynamic>?)?.map((e) => e as int).toList() : [],
         genres: json['genres'] != null ? (json['genres'] as List<dynamic>?)?.map((e) => GenreModel.fromJson(e as Map<String, dynamic>)).toList() as List<Genre> : [],
-        releaseDate: json['release_date'] != null ? DateTime.parse(json['release_date']) : null,
+        releaseDate: DateTime.tryParse(json['release_date']),
         runtime: json['runtime'] ?? 0
     );
   }

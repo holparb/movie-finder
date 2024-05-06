@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
 import 'package:movie_finder/data/datasources/local/local_movies_datasource.dart';
@@ -113,6 +115,7 @@ class MovieRepositoryImpl implements MovieRepository {
   Future<DataState<List<MovieModel>>> search(String query) async {
     try {
       List<MovieModel> results = await _remoteDataSource.search(query);
+      log("Search result: ${results.toString()}");
       return DataSuccess(results);
     }
     on DataError catch(error) {

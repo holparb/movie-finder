@@ -31,6 +31,7 @@ class _MainPageState extends State<MainPage> {
           fontSize: 52,
         )),
         centerTitle: true,
+        forceMaterialTransparency: true,
       ),
       body:  BlocListener<AuthBloc, AuthState>(
         listenWhen: (previousState, currentState) {

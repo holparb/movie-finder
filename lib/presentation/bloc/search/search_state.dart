@@ -6,6 +6,13 @@ sealed class SearchState extends Equatable{
   const SearchState();
 }
 
+class SearchInitial extends SearchState {
+  const SearchInitial();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class SearchEmpty extends SearchState {
   const SearchEmpty();
 
@@ -21,12 +28,12 @@ class SearchInProgress extends SearchState {
 }
 
 class SearchResult extends SearchState {
-  final List<Movie> result;
+  final List<Movie> results;
 
-  const SearchResult(this.result);
+  const SearchResult(this.results);
 
   @override
-  List<Object?> get props => [result];
+  List<Object?> get props => [results];
 }
 
 class SearchError extends SearchState {
