@@ -9,4 +9,11 @@ class GenreModel extends Genre {
         name: json['name'] as String
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id": id,
+      "name": name
+    };
+  }
 }

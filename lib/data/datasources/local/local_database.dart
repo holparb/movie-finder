@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' show join;
 
-class DatabaseHelper {
+class LocalDatabase {
   static const String _databaseName = "localDatabase.db";
   static const int _databaseVersion = 1;
 
@@ -15,10 +15,13 @@ class DatabaseHelper {
   }
 
   Future<void> _createDatabase(Database db, int version) async {
-    return await db.execute(_createMovieTableQuery);
+    await db.execute(_createGenreTable);
+    await db.execute(_createMovieTable);
+    await db.execute(_createWatchlistTable);
+    return;
   }
 
-  final String _createMovieTableQuery = """CREATE TABLE Movie (
+  final String _createMovieTable = """CREATE TABLE Movie (
     id INTEGER PRIMARY KEY,
     title TEXT NOT NULL,
     overview TEXT NOT NULL,
@@ -26,12 +29,19 @@ class DatabaseHelper {
     vote_average REAL,
     backdrop_path TEXT,
     genre_ids TEXT,
-    genreId INTEGER,
     release_date DATETIME,
-    runtime INTEGER
+    runtime INTEGER,
+    genre_id INTEGER,
+    FOREIGN KEY(genre_id) REFERENCES Genre (id) ON DELETE NO ACTION ON UPDATE NO ACTION
   )""";
 
-  final String _createGenreTableQuery = """CREATE TABLE Genre (
+  final String _createWatchlistTable = """CREATE TABLE Watchlist (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    movie_id INTEGER,
+    FOREIGN KEY(movie_id) REFERENCES Movie (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+  )""";
+
+  final String _createGenreTable = """CREATE TABLE Genre (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL
   )""";
