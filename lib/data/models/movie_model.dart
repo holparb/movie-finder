@@ -30,7 +30,7 @@ class MovieModel extends Movie {
       "poster_path": posterPath,
       "vote_average": voteAverage,
       "backdrop_path": backdropPath,
-      "genre_ids": genreIds!.map((e) => e.toString()).join(","),
+      "genre_ids": json.encode(genreIds),
       "release_date": releaseDate ?? 0,
       "runtime": runtime,
       "genre_id": genres.isNotEmpty ? genres.first.id : 0,
