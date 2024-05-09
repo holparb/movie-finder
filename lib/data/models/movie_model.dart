@@ -32,12 +32,11 @@ class MovieModel extends Movie {
       "backdrop_path": backdropPath,
       "genre_ids": json.encode(genreIds),
       "release_date": releaseDate ?? 0,
-      "runtime": runtime,
-      "genre_id": genres.isNotEmpty ? genres.first.id : 0,
+      "runtime": runtime
     };
   }
 
-  factory MovieModel.fromMap(Map<String, dynamic> map) {
+  factory MovieModel.fromMap(Map<String, dynamic> map, List<GenreModel> genres) {
     return MovieModel(
       id: map["id"],
       title: map["title"],
@@ -46,7 +45,7 @@ class MovieModel extends Movie {
       voteAverage: map["vote_average"],
       backdropPath: map["backdrop_path"],
       genreIds: json.decode(map["genre_ids"]).cast<int>(),
-      genres: (map["genres"] as List<dynamic>?)?.map((e) => GenreModel.fromJson(e as Map<String, dynamic>)).toList() as List<Genre>,
+      genres: genres,
       releaseDate: map["release_date"],
       runtime: map["runtime"]
     );

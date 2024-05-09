@@ -64,7 +64,7 @@ class MovieRepositoryImpl implements MovieRepository {
     try {
       final userAuthData = await _localUserDataSource.getUserAuthData();
       List<MovieModel> watchlist = await _remoteDataSource.getWatchList(userAuthData.userId, userAuthData.sessionId);
-      await _localMoviesDataSource.writeWatchlistIds(watchlist);
+      await _localMoviesDataSource.writeWatchlist(watchlist);
       return DataSuccess(watchlist);
     }
     on DataError catch(error) {

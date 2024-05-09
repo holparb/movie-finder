@@ -5,6 +5,10 @@ class LocalDatabase {
   static const String _databaseName = "localDatabase.db";
   static const int _databaseVersion = 1;
 
+  static const String movieTable = "movie";
+  static const String genreTable = "genre";
+  static const String watchlistTable = "watchlist";
+
   Future<Database> openDb() async {
     String path = join(await getDatabasesPath(), _databaseName);
     return await openDatabase(
@@ -21,7 +25,7 @@ class LocalDatabase {
     return;
   }
 
-  final String _createMovieTable = """CREATE TABLE Movie (
+  final String _createMovieTable = """CREATE TABLE $movieTable (
     id INTEGER PRIMARY KEY,
     title TEXT NOT NULL,
     overview TEXT NOT NULL,
@@ -30,18 +34,14 @@ class LocalDatabase {
     backdrop_path TEXT,
     genre_ids TEXT,
     release_date DATETIME,
-    runtime INTEGER,
-    genre_id INTEGER,
-    FOREIGN KEY(genre_id) REFERENCES Genre (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+    runtime INTEGER
   )""";
 
-  final String _createWatchlistTable = """CREATE TABLE Watchlist (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    movie_id INTEGER,
-    FOREIGN KEY(movie_id) REFERENCES Movie (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+  final String _createWatchlistTable = """CREATE TABLE $watchlistTable (
+    movie_id INTEGER PRIMARY KEY,
   )""";
 
-  final String _createGenreTable = """CREATE TABLE Genre (
+  final String _createGenreTable = """CREATE TABLE $genreTable (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL
   )""";
