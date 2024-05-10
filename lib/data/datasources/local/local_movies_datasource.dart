@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:movie_finder/core/exceptions/data_error.dart';
+import 'package:movie_finder/core/exceptions/sqlite_error.dart';
 import 'package:movie_finder/data/datasources/local/local_database.dart';
 import 'package:movie_finder/data/models/genre_model.dart';
 import 'package:movie_finder/data/models/movie_model.dart';
@@ -10,39 +10,38 @@ import 'package:sqflite/sqflite.dart';
 
 class LocalMoviesDataSource {
 
-  final LocalDatabase _localDatabase;
 
-  LocalMoviesDataSource(this._localDatabase);
+  LocalMoviesDataSource();
 
   Future<MovieModel> upsertMovie(MovieModel movie) async {
-    Database db = await _localDatabase.openDb();
-    var count = Sqflite.firstIntValue(await db.rawQuery(
+    Database database = await LocalDatabase.instance.database;
+    var count = Sqflite.firstIntValue(await database.rawQuery(
         "SELECT COUNT(*) FROM ${LocalDatabase.movieTable} WHERE id = ?", [movie.id]));
     if (count == 0) {
-      await db.insert(LocalDatabase.movieTable, movie.toMap());
+      await database.insert(LocalDatabase.movieTable, movie.toMap());
     } else {
-      await db.update(
+      await database.update(
           LocalDatabase.movieTable, movie.toMap(), where: "id = ?", whereArgs: [movie.id]);
     }
     movie.genres.forEach((genre) { upsertGenre(genre as GenreModel); });
     return movie;
   }
 
-  Future<GenreModel> upsertGenre(GenreModel genre, [Database? db]) async {
-    db ??= await _localDatabase.openDb();
-    var count = Sqflite.firstIntValue(await db.rawQuery(
+  Future<GenreModel> upsertGenre(GenreModel genre, [Database? database]) async {
+    database ??= await LocalDatabase.instance.database;
+    var count = Sqflite.firstIntValue(await database.rawQuery(
         "SELECT COUNT(*) FROM ${LocalDatabase.genreTable} WHERE id = ?", [genre.id]));
     if (count == 0) {
-      await db.insert(LocalDatabase.genreTable, genre.toMap());
+      await database.insert(LocalDatabase.genreTable, genre.toMap());
     } else {
-      await db.update(
+      await database.update(
           LocalDatabase.genreTable, genre.toMap(), where: "id = ?", whereArgs: [genre.id]);
     }
     return genre;
   }
 
   Future<List<GenreModel>> fetchGenres(List<int> genreIds, [Database? database]) async {
-    database ??= await _localDatabase.openDb();
+    database ??= await LocalDatabase.instance.database;
     List<Map<String, dynamic>> results = await database.query(LocalDatabase.genreTable,
         where: "id = ?", whereArgs: genreIds);
 
@@ -54,8 +53,23 @@ class LocalMoviesDataSource {
     return genres;
   }
 
-  Future<MovieModel?> fetchMovie(int id) async {
-    Database database = await _localDatabase.openDb();
+  Future<List<MovieModel>> insertMovies(List<MovieModel> movies) async {
+    Database database = await LocalDatabase.instance.database;
+    final batch = database.batch();
+    for (var movie in movies) {
+      batch.insert(LocalDatabase.movieTable, movie.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    }
+    try {
+      batch.commit();
+    }
+    catch (e) {
+      throw const SqliteError(message: "Inserting movies failed during batch execution");
+    }
+    return movies;
+  }
+
+  Future<MovieModel?> fetchMovie(int id, [Database? database]) async {
+    database ??= await LocalDatabase.instance.database;
     List<Map<String, dynamic>> results = await database.query(LocalDatabase.movieTable,
         where: "id = ?", whereArgs: [id]);
     if(results.isEmpty) return null;
@@ -64,32 +78,36 @@ class LocalMoviesDataSource {
     return movie;
   }
 
-  Future<List<MovieModel>> fetchWatchlist() async {
-    Database db = await _localDatabase.openDb();
-    List<Map<String, dynamic>> results = await db.query(LocalDatabase.watchlistTable);
-    List<MovieModel> watchlist = [];
+  Future<List<MovieModel>> fetchMovies(List<int> ids, [Database? database]) async {
+    database ??= await LocalDatabase.instance.database;
+    List<MovieModel> movies = [];
+    for(var id in ids) {
+      MovieModel? movie = await fetchMovie(id, database);
+      if (movie != null) movies.add(movie);
+    }
+    return movies;
+  }
 
-    results.forEach((result) async {
-      MovieModel? movie = await fetchMovie(result["id"]);
-      if(movie != null) watchlist.add(movie);
-    });
-    return watchlist;
+  Future<List<MovieModel>> fetchWatchlist() async {
+    Database database = await LocalDatabase.instance.database;
+    List<Map<String, dynamic>> results = await database.query(LocalDatabase.watchlistTable);
+    return await fetchMovies(results.map((result) => result["id"] as int).toList(), database);
   }
 
   Future<void> writeWatchlist(List<MovieModel> watchlist) async {
-    final database = await _localDatabase.openDb();
+    final database = await LocalDatabase.instance.database;
     final batch = database.batch();
     for (var movie in watchlist) {
-      batch.insert(LocalDatabase.movieTable, movie.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
       batch.insert(LocalDatabase.watchlistTable, {"movie_id": movie.id});
+      batch.insert(LocalDatabase.movieTable, movie.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
     }
     try {
       await batch.commit();
-      writeWatchlistIds(watchlist);
+      await writeWatchlistIds(watchlist);
       return;
     }
     catch (e) {
-      throw const DataError(message: "writeWatchlist failed during batch execution");
+      throw const SqliteError(message: "writeWatchlist failed during batch execution");
     }
   }
 

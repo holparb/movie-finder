@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:movie_finder/core/data_state.dart';
 import 'package:movie_finder/core/exceptions/data_error.dart';
+import 'package:movie_finder/core/exceptions/sqlite_error.dart';
 import 'package:movie_finder/data/datasources/local/local_movies_datasource.dart';
 import 'package:movie_finder/data/datasources/local/local_user_data_source.dart';
 import 'package:movie_finder/data/datasources/remote/movies_data_source.dart';
@@ -41,6 +42,7 @@ class MovieRepositoryImpl implements MovieRepository {
   Future<DataState<List<MovieModel>>> getPopularMovies() async {
     try {
       List<MovieModel> movies = await _remoteDataSource.getPopularMovies();
+      await _localMoviesDataSource.insertMovies(movies);
       return DataSuccess(movies);
     }
     on DataError catch(error) {
@@ -61,14 +63,19 @@ class MovieRepositoryImpl implements MovieRepository {
 
   @override
   Future<DataState<List<MovieModel>>> getWatchlist() async {
+    List<MovieModel> watchlist = [];
     try {
       final userAuthData = await _localUserDataSource.getUserAuthData();
-      List<MovieModel> watchlist = await _remoteDataSource.getWatchList(userAuthData.userId, userAuthData.sessionId);
+      watchlist = await _remoteDataSource.getWatchList(userAuthData.userId, userAuthData.sessionId);
       await _localMoviesDataSource.writeWatchlist(watchlist);
       return DataSuccess(watchlist);
     }
     on DataError catch(error) {
       return DataFailure(error);
+    }
+    on SqliteError catch(error) {
+      log(error.message);
+      return DataSuccess(watchlist);
     }
   }
 

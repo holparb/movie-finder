@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' show join;
 
@@ -9,16 +11,27 @@ class LocalDatabase {
   static const String genreTable = "genre";
   static const String watchlistTable = "watchlist";
 
-  Future<Database> openDb() async {
+  LocalDatabase._privateConstructor();
+  static final LocalDatabase instance = LocalDatabase._privateConstructor();
+
+  static Database? _database;
+
+  Future<Database> get database async {
+    _database ??= await _initDatabase();
+    return _database!;
+  }
+
+  Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), _databaseName);
     return await openDatabase(
       path,
       version: _databaseVersion,
-      onCreate: (db, version) => _createDatabase
+      onUpgrade: (db, oldVersion, newVersion) => _createDatabase
     );
   }
 
-  Future<void> _createDatabase(Database db, int version) async {
+  Future<void> _createDatabase(Database db, int oldVersion, int newVersion) async {
+    log("Creating database");
     await db.execute(_createGenreTable);
     await db.execute(_createMovieTable);
     await db.execute(_createWatchlistTable);
@@ -33,7 +46,7 @@ class LocalDatabase {
     vote_average REAL,
     backdrop_path TEXT,
     genre_ids TEXT,
-    release_date DATETIME,
+    release_date INTEGER,
     runtime INTEGER
   )""";
 

@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:movie_finder/core/utils/network_info.dart';
-import 'package:movie_finder/data/datasources/local/local_database.dart';
 import 'package:movie_finder/data/datasources/local/local_movies_datasource.dart';
 import 'package:movie_finder/data/datasources/local/local_user_data_source.dart';
 import 'package:movie_finder/data/datasources/remote/user_data_source.dart';
@@ -41,11 +40,10 @@ Future<void> initializeDependencies() async {
   serviceLocator.registerLazySingleton<http.Client>(() => http.Client());
 
   // data sources
-  serviceLocator.registerSingleton<LocalDatabase>(LocalDatabase());
   serviceLocator.registerSingleton<MoviesDataSource>(MoviesDataSource(serviceLocator()));
   serviceLocator.registerSingleton<UserDataSource>(UserDataSource(serviceLocator()));
   serviceLocator.registerSingleton<LocalUserDataSource>(const LocalUserDataSource());
-  serviceLocator.registerSingleton<LocalMoviesDataSource>(LocalMoviesDataSource(serviceLocator()));
+  serviceLocator.registerSingleton<LocalMoviesDataSource>(LocalMoviesDataSource());
 
   // repositories
   serviceLocator.registerSingleton<MovieRepository>(MovieRepositoryImpl(serviceLocator(), serviceLocator(), serviceLocator()));

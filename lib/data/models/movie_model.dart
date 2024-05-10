@@ -31,7 +31,7 @@ class MovieModel extends Movie {
       "vote_average": voteAverage,
       "backdrop_path": backdropPath,
       "genre_ids": json.encode(genreIds),
-      "release_date": releaseDate ?? 0,
+      "release_date": releaseDate?.millisecondsSinceEpoch ?? 0,
       "runtime": runtime
     };
   }
@@ -46,7 +46,7 @@ class MovieModel extends Movie {
       backdropPath: map["backdrop_path"],
       genreIds: json.decode(map["genre_ids"]).cast<int>(),
       genres: genres,
-      releaseDate: map["release_date"],
+      releaseDate: map["release_date"] != 0 ? DateTime.fromMillisecondsSinceEpoch(map["release_date"] as int) : null,
       runtime: map["runtime"]
     );
   }
