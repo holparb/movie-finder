@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:movie_finder/core/exceptions/sqlite_error.dart';
 import 'package:movie_finder/data/datasources/local/local_database.dart';
@@ -23,7 +24,9 @@ class LocalMoviesDataSource {
       await database.update(
           LocalDatabase.movieTable, movie.toMap(), where: "id = ?", whereArgs: [movie.id]);
     }
-    movie.genres.forEach((genre) { upsertGenre(genre as GenreModel); });
+    for (var genre in movie.genres) {
+      upsertGenre(genre as GenreModel);
+    }
     return movie;
   }
 
@@ -46,17 +49,33 @@ class LocalMoviesDataSource {
         where: "id = ?", whereArgs: genreIds);
 
     List<GenreModel> genres = [];
-    results.forEach((result) {
+    for (var result in results) {
       GenreModel genre = GenreModel.fromJson(result);
       genres.add(genre);
-    });
+    }
     return genres;
+  }
+
+  Future<MovieModel> insertMovie(MovieModel movie) async {
+    Database database = await LocalDatabase.instance.database;
+    for (var (genre as GenreModel) in movie.genres) {
+      log("Inserting genre ${genre.name}");
+      database.insert(LocalDatabase.genreTable, genre.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    }
+    log("Inserting movie ${movie.title}");
+    database.insert(LocalDatabase.movieTable, movie.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    return movie;
   }
 
   Future<List<MovieModel>> insertMovies(List<MovieModel> movies) async {
     Database database = await LocalDatabase.instance.database;
     final batch = database.batch();
     for (var movie in movies) {
+      log("Inserting movie ${movie.title}");
+      for (var (genre as GenreModel) in movie.genres) {
+        log("Inserting genre ${genre.name}");
+        batch.insert(LocalDatabase.genreTable, genre.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+      }
       batch.insert(LocalDatabase.movieTable, movie.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
     }
     try {

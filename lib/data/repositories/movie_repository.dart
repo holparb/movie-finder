@@ -31,6 +31,7 @@ class MovieRepositoryImpl implements MovieRepository {
   Future<DataState<MovieModel>> getMovieDetails(int movieId) async {
     try {
       MovieModel movie = await _remoteDataSource.getMovieDetails(movieId);
+      await _localMoviesDataSource.insertMovie(movie);
       return DataSuccess(movie);
     }
     on DataError catch(error) {

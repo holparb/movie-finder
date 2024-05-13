@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' show join;
 
 class LocalDatabase {
-  static const String _databaseName = "localDatabase.db";
+  static const String _databaseName = "local_database.db";
   static const int _databaseVersion = 1;
 
   static const String movieTable = "movie";
@@ -22,20 +20,20 @@ class LocalDatabase {
   }
 
   Future<Database> _initDatabase() async {
-    String path = join(await getDatabasesPath(), _databaseName);
-    return await openDatabase(
+    final databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, _databaseName);
+    Database database = await openDatabase(
       path,
       version: _databaseVersion,
-      onUpgrade: (db, oldVersion, newVersion) => _createDatabase
+      onCreate: _createDatabase
     );
+    return database;
   }
 
-  Future<void> _createDatabase(Database db, int oldVersion, int newVersion) async {
-    log("Creating database");
+  Future<void> _createDatabase(Database db, int version) async {
     await db.execute(_createGenreTable);
     await db.execute(_createMovieTable);
     await db.execute(_createWatchlistTable);
-    return;
   }
 
   final String _createMovieTable = """CREATE TABLE $movieTable (
@@ -51,7 +49,7 @@ class LocalDatabase {
   )""";
 
   final String _createWatchlistTable = """CREATE TABLE $watchlistTable (
-    movie_id INTEGER PRIMARY KEY,
+    movie_id INTEGER PRIMARY KEY
   )""";
 
   final String _createGenreTable = """CREATE TABLE $genreTable (
