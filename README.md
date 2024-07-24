@@ -12,4 +12,4 @@ What's next:
 - ~~User favorites list (with remove items option)~~
 - ~~Add movies to watchlist~~
 - Add local data handling
-- Search for movies
+- ~~Search for movies~~
